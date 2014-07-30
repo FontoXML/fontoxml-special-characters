@@ -34,7 +34,8 @@ define([
 					labels[label] = {
 						name: label,
 						count: 0,
-						order: undefined
+						characterRangeStart: undefined,
+						characterRangeEnd: undefined
 					};
 				}
 
@@ -44,8 +45,11 @@ define([
 
 				character.codePoints.forEach(function(codePoint) {
 					var weight = parseInt(codePoint.substr(2), 16);
-					if(labelInfo.order==undefined || weight < labelInfo.order) {
-						labelInfo.order = weight;
+					if(labelInfo.characterRangeStart==undefined || weight < labelInfo.characterRangeStart) {
+						labelInfo.characterRangeStart = weight;
+					}
+					if(labelInfo.characterRangeEnd==undefined || weight > labelInfo.characterRangeEnd) {
+						labelInfo.characterRangeEnd = weight;
 					}
 				});
 
@@ -55,8 +59,6 @@ define([
 		// Return as an ordered array
 		return Object.keys(labels).map(function(labelName) {
 			return labels[labelName];
-		}).sort(function(a,b) {
-			return a.order < b.order ? -1 : 1;
 		});
 	}
 
@@ -72,8 +74,13 @@ define([
 		$scope.selectLabel = selectLabel;
 		$scope.selectCharacter = selectCharacter;
 
+		$scope.sortables = [
+			{ attribute: 'name', name: 'Label name' },
+			{ attribute: 'characterRangeStart', name: 'Character range' }
+		]
 		$scope.search = { // This is the "dot" fix for angular scope digests incarnate!
-			filter: undefined
+			filter: undefined,
+			sort: $scope.sortables[0]
 		};
 
 		$scope.labelIsSelected = labelIsSelected;

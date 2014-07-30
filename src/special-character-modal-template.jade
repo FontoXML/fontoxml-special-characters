@@ -15,9 +15,7 @@
 			.modal-toolbar
 				.view-sort
 					label.control-label Sort by
-					select.form-control
-						option(value='displayName') File name
-						option(value='type') File type
+					select.form-control(ng-model='search.sort', ng-options='sortable.name for sortable in sortables')
 				.view-search
 					input.form-control(type="text", placeholder="Filter labels and characters…", ng-model='search.filter')
 			.character-picker
@@ -25,7 +23,7 @@
 
 					ul.character-group-list.list--bordered
 						li.character-group-list__item(
-							ng-repeat='(labelName, label) in labels',
+							ng-repeat="(labelName, label) in labels | orderBy: search.sort.attribute",
 							ng-if='!search.filter || labelHasFilteredCharacters(label) || labelIsFiltered(label)',
 							ng-class='{active: labelIsSelected(label), highlighted: labelIsFiltered(label)}'
 						)
@@ -34,7 +32,7 @@
 					ul.character-list
 						//- Ng repeat this for chars from selected character set
 						li.character-list__item(
-							ng-repeat='character in labelCharacters track by character.id',
+							ng-repeat="character in labelCharacters track by character.id",
 							ng-click='selectCharacter(character)',
 							ng-bind-html='character.html',
 							ng-class='{selected: selectedCharacters.indexOf(character) >= 0, highlighted: characterIsFiltered(character)}'
