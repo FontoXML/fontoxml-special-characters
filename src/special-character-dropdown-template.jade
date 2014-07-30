@@ -1,0 +1,106 @@
+.dropdown.open(
+	on-click-outside="hideDropdown()",
+	on-click-outside-is-enabled="{{isOpen}}"
+)
+	button.btn.btn--transparent(
+		type="button",
+		ng-click="toggleDropdown()"
+	)
+		span.btn__label &Omega; Special character
+		i.btn__caret.icon.icon-angle-down
+
+	.dropdown-menu(ng-if="isOpen")
+		
+		.insert-special-characters
+
+			ul.character-list
+					
+				.common-characters
+
+					h6 Common
+
+					//- Ng repeat this for chars from common character set
+					li.character-list__item 
+						| &#9834;
+					li.character-list__item 
+						| &#9835;
+					li.character-list__item 
+						| &#9836;
+					li.character-list__item 
+						| &#9837;
+					li.character-list__item 
+						| &#9838;
+					li.character-list__item 
+						| &#9839;	
+					li.character-list__item
+						| &euro;
+					li.character-list__item
+						| &pound;
+					li.character-list__item
+						| &yen;
+					li.character-list__item
+						| &trade;
+					li.character-list__item
+						| &sect;
+					li.character-list__item
+						| &reg;
+					li.character-list__item
+						| &amp;
+					li.character-list__item
+						| &cent;
+					li.character-list__item
+						| &cent;
+					li.character-list__item
+						| &euro;
+					li.character-list__item 
+						| &#9834;
+					li.character-list__item 
+						| &#9835;
+					li.character-list__item 
+						| &#9836;
+					li.character-list__item 
+						| &#9837;
+					li.character-list__item 
+						| &#9838;
+					li.character-list__item 
+						| &#9839;	
+					li.character-list__item
+						| &euro;
+					li.character-list__item
+						| &pound;
+					li.character-list__item
+						| &yen;
+					li.character-list__item
+						| &trade;
+					li.character-list__item
+						| &sect;
+					li.character-list__item
+						| &reg;
+					li.character-list__item
+						| &amp;
+					li.character-list__item
+						| &cent;
+					li.character-list__item
+						| &cent;
+					li.character-list__item
+						| &euro;
+					
+
+				//- .favorite-characters
+					//- Ng repeat this for chars from favorites set 
+					//- Initially, there will be no favorite characters. Only a button to add favorites and seven empty items
+					h6 Favorites
+
+					//- If favorites = empty, display message
+					| You have not chosen any favorite characters yet 
+					
+
+					//- Button to add new favorites - what does it trigger?
+						button.btn.btn-primary
+							i.icon.icon-plus
+					
+			.character-controls
+				//- Todo: give button a tooltip to explain function
+				f-operation-button(f-operation='special-character')
+					
+

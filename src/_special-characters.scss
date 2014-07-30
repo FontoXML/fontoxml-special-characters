@@ -1,0 +1,178 @@
+//
+// Insert special characters
+// --------------------------------------------------
+
+
+// @TODO:
+$ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
+
+
+// Universal properties of character-list
+.character-list {
+	@extend .list-unstyled;
+	text-align: center;
+}
+
+.character-list__item {
+	// Add selectable css for :hover and .selected behaviour
+	@extend %selectable;
+
+
+	&.highlighted:not(.selected) {
+		@extend %highlighted;
+	}
+
+	font-family: $font-family-serif;
+
+	// Reset list item styling
+	list-style-type: none;
+
+	// Maybe use block with float because inline block shows html white-space?
+	display: inline-block;
+
+	// Fixed width is required because not all characters have same width
+	width: 24px;
+	// Use padding to make height 24px
+	padding: 1px 0;
+	text-align: center;
+}
+
+
+// Toolbar dropdown UI
+// ------
+
+// Dropdown menu sections
+.common-characters {
+	padding-bottom: $padding-tiny;
+}
+
+.favorite-characters {
+	border-top: 1px dotted $skin-accent;
+	padding-bottom: $padding-tiny;
+}
+
+.character-controls {
+	padding: $padding-tiny $padding-tiny 0;
+	border-top: 1px solid $skin-accent;
+}
+
+.dropdown {
+	.character-list {
+		// Is there no way to set width based on the content..?
+		min-width: 230px; // 24 x 8 items
+		padding: 0 $padding-small;
+	}
+}
+
+
+// Insert characters modal
+// ------
+.insert-special-character {
+	.modal-functional-body {
+		// Apply flex to make children equal-heighted
+		display: flex;
+	}
+}
+
+// Groups of characters that can be used as a filter
+.character-group-browser {
+	@include flex(1);
+	@extend %modal-column;
+	@extend %well;
+	margin-right: $ui-special-char-modal-column-spacing;
+	overflow: auto;
+}
+
+.character-group-list {
+	// Create a vertical-shrinkable child with a scrollbar
+	@include flex(1, 1, auto);
+}
+
+.character-group-list__item {
+	@extend %filter-list__item;
+	> a {
+		padding: 5px $padding-small;
+	}
+}
+.character-picker {
+	@include flex(3);
+	display: flex;
+	flex-direction: column;
+}
+.character-navigation {
+	margin-bottom: $ui-special-char-modal-column-spacing;
+}
+.character-views {
+	display: flex;
+	flex: 1;
+}
+// Actual list of characters to be selected from
+.character-browser {
+	@include flex(2);
+	@extend %modal-column;
+	@extend %well;
+	padding: $padding-small;
+	overflow: auto;
+	margin-right: $ui-special-char-modal-column-spacing;
+}
+
+.modal-body {
+	.character-list__item {
+		width: 12.5%;
+		font-size: $font-size-large;
+		line-height: 2;
+		margin: $padding-small 0;
+	}
+}
+
+// Information about current selected character
+.selected-character {
+	@include flex(1);
+	@extend %modal-column;
+	@extend %well;
+
+	.character-preview {
+		font-size: 5em;
+		line-height: 3;
+		font-family: $font-family-serif;
+		text-align: center;
+		padding: 32px $padding-small;
+	}
+
+	.character-label {
+		text-align: center;
+		padding: 0 $padding-small;
+	}
+}
+
+
+%filter-list__item {
+	a {
+		color: $text-color;
+		display: block;
+
+		&:hover,
+		&:focus {
+			text-decoration: none;
+			background-color: $skin-primary-ultralight;
+		}
+	}
+	&.highlighted > a {
+		background-color: rgba(yellow,0.3);
+		border-color: darken(rgba(yellow,0.3), 30);
+	}
+	&.active > a {
+		background-color: $skin-primary-lighter;
+
+		&:hover,
+		&:focus {
+			background-color: $skin-primary-ultralight;
+		}
+	}
+}
+
+// @TODO: Find a way to not !important this
+%highlighted {
+	background-color: rgba(yellow,0.3);
+	border-color: darken(rgba(yellow,0.3), 30);
+}
