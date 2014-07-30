@@ -70,7 +70,7 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 .insert-special-character {
 	.modal-functional-body {
 		// Apply flex to make children equal-heighted
-		display: flex;
+		flex-direction: column;
 	}
 }
 
@@ -95,9 +95,8 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 	}
 }
 .character-picker {
-	@include flex(3);
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 }
 .character-navigation {
 	margin-bottom: $ui-special-char-modal-column-spacing;
