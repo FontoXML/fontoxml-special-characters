@@ -23,23 +23,27 @@ define([
 		});
 	}
 
-	function getUniqueLabels() {
+	/**
+	 * Loops through all characters to gather information about the various labels once (like character
+	 * count, character range, etc.). The gathered information can later be used to order the UI with.
+	 * @returns {Array}
+	 */
+	function preprocessLabels() {
 		var labels = {};
 
-		// Make an object with key/value pairs for every label
-		// + Give every label a "weight"/order
 		smuflCharacters.forEach(function(character) {
-			character.labels.forEach(function(label) {
-				if(!labels[label]) {
-					labels[label] = {
-						name: label,
+			character.labels.forEach(function(labelName) {
+
+				if(!labels[labelName]) {
+					labels[labelName] = {
+						name: labelName,
 						count: 0,
 						characterRangeStart: undefined,
 						characterRangeEnd: undefined
 					};
 				}
 
-				var labelInfo = labels[label];
+				var labelInfo = labels[labelName];
 
 				++labelInfo.count;
 
@@ -65,37 +69,36 @@ define([
 	smuflCharacters = JSON.parse(smuflCharacters);
 
 	return /* @ngInject */ function($scope, $sce) {
-		$scope.selectedCharacters = [];
 
-		$scope.labels = getUniqueLabels();
+		var filteredLabels = [],
+			filteredCharacters = [],
+			labelsWithFilteredCharacters = [];
+
+		// Scope variables
+		$scope.labels = preprocessLabels();
 		$scope.labelCharacters = [];
 		$scope.selectedLabel = $scope.labels[0];
-
-		$scope.selectLabel = selectLabel;
-		$scope.selectCharacter = selectCharacter;
+		$scope.selectedCharacters = [];
 
 		$scope.sortables = [
-			{ attribute: 'name', name: 'Label name' },
-			{ attribute: 'characterRangeStart', name: 'Character range' }
-		]
+			{ attribute: 'name',                name: 'Label name' },
+			{ attribute: 'characterRangeStart', name: 'Character range' },
+			{ attribute: 'count',               name: 'Number of characters' }
+		];
 		$scope.search = { // This is the "dot" fix for angular scope digests incarnate!
 			filter: undefined,
 			sort: $scope.sortables[0]
 		};
 
+		// Scope functions
+		$scope.selectLabel = selectLabel;
+		$scope.selectCharacter = selectCharacter;
 		$scope.labelIsSelected = labelIsSelected;
 		$scope.labelIsFiltered = labelIsFiltered;
 		$scope.characterIsFiltered = characterIsFiltered;
 		$scope.labelHasFilteredCharacters = labelHasFilteredCharacters;
-
-		var filteredLabels = [];
-		var filteredCharacters = [];
-		var labelsWithFilteredCharacters = [];
-
 		$scope.apply = apply;
 		$scope.cancel = cancel;
-
-		selectLabel($scope.selectedLabel);
 
 		function selectCharacter(character) {
 			// @TODO: Push onto array selectedCharacters instead of overwrite
@@ -166,7 +169,7 @@ define([
 					if(labelsWithFilteredCharacters.indexOf(labelName) === -1) {
 						labelsWithFilteredCharacters.push(labelName);
 					}
-				})
+				});
 			});
 		}
 
@@ -179,6 +182,8 @@ define([
 		function cancel() {
 			$scope.$dismiss('cancel');
 		}
+
+		selectLabel($scope.selectedLabel);
 
 		$scope.$watch('search.filter', filter);
 
