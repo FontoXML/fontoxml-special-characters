@@ -12,6 +12,14 @@
 			| Select the character you want to insert into your document.
 
 		.modal-functional-body
+			.modal-toolbar
+				.view-sort
+					label.control-label Sort by
+					select.form-control
+						option(value='displayName') File name
+						option(value='type') File type
+				.view-search
+					input.form-control(type="text", placeholder="Filter labels and characters…", ng-model='search.filter')
 			.character-group-browser
 				
 				ul.character-group-list.list--bordered
@@ -21,32 +29,19 @@
 						ng-class='{active: labelIsSelected(label), highlighted: labelIsFiltered(label)}'
 					)
 						a(ng-click='selectLabel(label)') {{label.name}}
-			.character-picker
+			.character-browser
+				ul.character-list
+					//- Ng repeat this for chars from selected character set
+					li.character-list__item(
+						ng-repeat='character in labelCharacters track by character.id',
+						ng-click='selectCharacter(character)',
+						ng-bind-html='character.html',
+						ng-class='{selected: selectedCharacters.indexOf(character) >= 0, highlighted: characterIsFiltered(character)}'
+					)
 
-				.modal-toolbar
-					.view-sort
-						label.control-label Sort by
-						select.form-control
-							option(value='displayName') File name
-							option(value='type') File type
-					.view-search
-						input.form-control(type="text", placeholder="Filter labels and characters…", ng-model='search.filter')
-
-				.character-views
-
-					.character-browser
-						ul.character-list
-							//- Ng repeat this for chars from selected character set
-							li.character-list__item(
-								ng-repeat='character in labelCharacters track by character.id',
-								ng-click='selectCharacter(character)',
-								ng-bind-html='character.html',
-								ng-class='{selected: selectedCharacters.indexOf(character) >= 0, highlighted: characterIsFiltered(character)}'
-							)
-
-					.selected-character
-						.character-preview(ng-bind-html='selectedCharacters[0].html')
-						.character-label {{selectedCharacters[0].name}}
+			.selected-character
+				.character-preview(ng-bind-html='selectedCharacters[0].html')
+				.character-label {{selectedCharacters[0].name}}
 	
 	.modal-footer
 
