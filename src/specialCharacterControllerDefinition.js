@@ -1,23 +1,25 @@
 define([
 	'text!assets/configuration/smuflCharacters.json'
-], function (smuflCharacters) {
+], function (
+	smuflCharacters
+	) {
 	'use strict';
 
 	// Suggestions for user stories:
 	// - As a user I can see which label I'm currently browsing, so that I won't be confused as to what I'm looking at.
 	// - As a user I can not see characters named "Unused", because they are obviously unused.
 
-	function codePointToString(codePoint) {
+	function codePointToString (codePoint) {
 		return String.fromCodePoint(parseInt(codePoint.substr(2), 16));
 	}
 
-	function charactersToString(characters) {
+	function charactersToString (characters) {
 		return characters.map(function(character) {
 			return character.codePoints.map(codePointToString);
 		});
 	}
 
-	function getCharactersByLabel(label) {
+	function getCharactersByLabel (label) {
 		return smuflCharacters.filter(function(character) {
 			return character.labels.indexOf(label.name) >= 0;
 		});
@@ -31,10 +33,9 @@ define([
 	function preprocessLabels() {
 		var labels = {};
 
-		smuflCharacters.forEach(function(character) {
-			character.labels.forEach(function(labelName) {
-
-				if(!labels[labelName]) {
+		smuflCharacters.forEach(function (character) {
+			character.labels.forEach(function (labelName) {
+				if (!labels[labelName]) {
 					labels[labelName] = {
 						name: labelName,
 						count: 0,
@@ -49,27 +50,25 @@ define([
 
 				character.codePoints.forEach(function(codePoint) {
 					var weight = parseInt(codePoint.substr(2), 16);
-					if(labelInfo.characterRangeStart==undefined || weight < labelInfo.characterRangeStart) {
+					if (labelInfo.characterRangeStart == undefined || weight < labelInfo.characterRangeStart) {
 						labelInfo.characterRangeStart = weight;
 					}
-					if(labelInfo.characterRangeEnd==undefined || weight > labelInfo.characterRangeEnd) {
+					if (labelInfo.characterRangeEnd == undefined || weight > labelInfo.characterRangeEnd) {
 						labelInfo.characterRangeEnd = weight;
 					}
 				});
-
 			});
 		});
 
 		// Return as an ordered array
-		return Object.keys(labels).map(function(labelName) {
+		return Object.keys(labels).map(function (labelName) {
 			return labels[labelName];
 		});
 	}
 
 	smuflCharacters = JSON.parse(smuflCharacters);
 
-	return /* @ngInject */ function($scope, $sce) {
-
+	return /* @ngInject */ function ($scope, $sce) {
 		var filteredLabels = [],
 			filteredCharacters = [],
 			labelsWithFilteredCharacters = [];
@@ -85,6 +84,7 @@ define([
 			{ attribute: 'characterRangeStart', name: 'Character range' },
 			{ attribute: 'count',               name: 'Number of characters' }
 		];
+
 		$scope.search = { // This is the "dot" fix for angular scope digests incarnate!
 			filter: undefined,
 			sort: $scope.sortables[0]
@@ -97,10 +97,11 @@ define([
 		$scope.labelIsFiltered = labelIsFiltered;
 		$scope.characterIsFiltered = characterIsFiltered;
 		$scope.labelHasFilteredCharacters = labelHasFilteredCharacters;
+
 		$scope.apply = apply;
 		$scope.cancel = cancel;
 
-		function selectCharacter(character) {
+		function selectCharacter (character) {
 			// @TODO: Push onto array selectedCharacters instead of overwrite
 			// because inserting multiple special characters with one modal is
 			// a different user story.
@@ -108,41 +109,42 @@ define([
 			$scope.selectedCharacters = [character];
 		}
 
-		function characterHtmlSafe(character) {
-			if(!character.html) {
+		function characterHtmlSafe (character) {
+			if (!character.html) {
 				character.html = $sce.trustAsHtml(character.codePoints.map(codePointToString).join());
 			}
+
 			return character;
 		}
 
-		function selectLabel(label) {
+		function selectLabel (label) {
 			$scope.selectedLabel = label;
 			$scope.labelCharacters = getCharactersByLabel($scope.selectedLabel).map(characterHtmlSafe);
 		}
 
-		function labelIsSelected(label) {
+		function labelIsSelected (label) {
 			return $scope.selectedLabel === label;
 		}
-		function labelIsFiltered(label) {
+		function labelIsFiltered (label) {
 			return filteredLabels.indexOf(label) >= 0;
 		}
-		function characterIsFiltered(character) {
+		function characterIsFiltered (character) {
 			return filteredCharacters.indexOf(character) >= 0;
 		}
-		function labelHasFilteredCharacters(label) {
+		function labelHasFilteredCharacters (label) {
 			return labelsWithFilteredCharacters.indexOf(label.name) >= 0;
 		}
 
-		function resetFilter() {
+		function resetFilter () {
 			$scope.search.filter = '';
+
 			filteredLabels = [];
 			filteredCharacters = [];
 			labelsWithFilteredCharacters = [];
 		}
 
-		function filter(input, previousInput) {
-
-			if(input===previousInput) {
+		function filter (input, previousInput) {
+			if (input === previousInput) {
 				return;
 			}
 
@@ -173,13 +175,13 @@ define([
 			});
 		}
 
-		function apply() {
+		function apply () {
 			$scope.$close({
 				text: charactersToString($scope.selectedCharacters)
 			});
 		}
 
-		function cancel() {
+		function cancel () {
 			$scope.$dismiss('cancel');
 		}
 
