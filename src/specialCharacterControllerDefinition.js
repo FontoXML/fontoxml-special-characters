@@ -6,6 +6,7 @@ define([
 	'use strict';
 
 	var smuflLabels = [];
+	var smuflCharacters = [];
 
 	// Suggestions for user stories:
 	// - As a user I can see which label I'm currently browsing, so that I won't be confused as to what I'm looking at.
