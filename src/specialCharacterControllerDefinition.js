@@ -1,7 +1,7 @@
 define([
-	'text!assets/configuration/smuflCharacters.json'
+	'editor'
 ], function (
-	smuflCharacters
+	editor
 	) {
 	'use strict';
 
@@ -83,10 +83,6 @@ define([
 		return characters;
 	}
 
-	function preprocessCharacters() {
-		return JSON.parse(smuflCharacters);
-	}
-
 	/**
 	 * Loops through all characters to gather information about the various labels once (like character
 	 * count, character range, etc.). The gathered information can later be used to order the UI with.
@@ -126,7 +122,7 @@ define([
 		});
 	}
 
-	smuflCharacters = preprocessCharacters();
+	smuflCharacters = editor.getSmuflCharacters();
 	smuflLabels = preprocessLabels();
 
 	return /* @ngInject */ function ($scope, $sce) {
