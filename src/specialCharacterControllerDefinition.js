@@ -5,24 +5,86 @@ define([
 	) {
 	'use strict';
 
+	var smuflLabels = [];
+
 	// Suggestions for user stories:
 	// - As a user I can see which label I'm currently browsing, so that I won't be confused as to what I'm looking at.
 	// - As a user I can not see characters named "Unused", because they are obviously unused.
 
+	/**
+	 * One codepoint, one string
+	 * @param {String} codePoint
+	 * @returns {String}
+	 */
 	function codePointToString (codePoint) {
 		return String.fromCodePoint(parseInt(codePoint.substr(2), 16));
 	}
 
-	function charactersToString (characters) {
-		return characters.map(function(character) {
-			return character.codePoints.map(codePointToString);
-		});
+	function characterToString(character) {
+		return character.codePoints.map(codePointToString).join();
 	}
 
+	/**
+	 * Concatenate all codepoints for the given characters into a single string.
+	 * @param {Object[]} characters
+	 * @returns {String}
+	 */
+	function charactersToString (characters) {
+		return characters.map(characterToString).join();
+	}
+
+	/**
+	 * Get all characters that have the given label as (one of) the parent(s).
+	 * @param {Object} label
+	 * @returns {Object[]}
+	 */
 	function getCharactersByLabel (label) {
 		return smuflCharacters.filter(function(character) {
 			return character.labels.indexOf(label.name) >= 0;
 		});
+	}
+
+	/**
+	 * Get all characters that have the given substring in the character name.
+	 * @param {String} searchedString
+	 * @returns {Object[]}
+	 */
+	function getCharactersByMatchedName (searchedString) {
+		return smuflCharacters.filter(function(character) {
+			return character.name.toLowerCase().indexOf(searchedString) >= 0;
+		})
+	}
+
+	/**
+	 * Get all labels that have the given substring in label name.
+	 * @param {String} searchedString
+	 * @returns {Object[]} Label names
+	 */
+	function getLabelsByMatchedName (searchedString) {
+		return smuflLabels.filter(function(label) {
+			return label.name.toLowerCase().indexOf(searchedString) >= 0;
+		});
+	}
+
+	/**
+	 * Get all labels that have any of the given characters as child.
+	 * @param {Object[]} characters
+	 * @returns {String[]} Label names
+	 */
+	function getLabelsContainingCharacters (characters) {
+		var labelsWithFilteredCharacters = [];
+		characters.forEach(function(character) {
+			character.labels.forEach(function(labelName) {
+				if(labelsWithFilteredCharacters.indexOf(labelName) === -1) {
+					labelsWithFilteredCharacters.push(labelName);
+				}
+			});
+		});
+		return characters;
+	}
+
+	function preprocessCharacters() {
+		return JSON.parse(smuflCharacters);
 	}
 
 	/**
@@ -31,42 +93,41 @@ define([
 	 * @returns {Array}
 	 */
 	function preprocessLabels() {
-		var labels = {};
+		var labelsByName = {};
 
 		smuflCharacters.forEach(function (character) {
 			character.labels.forEach(function (labelName) {
-				if (!labels[labelName]) {
-					labels[labelName] = {
+				if (!labelsByName[labelName]) {
+					labelsByName[labelName] = {
 						name: labelName,
 						count: 0,
-						characterRangeStart: undefined,
-						characterRangeEnd: undefined
+						characterRangeStart: null,
+						characterRangeEnd: null
 					};
 				}
 
-				var labelInfo = labels[labelName];
-
-				++labelInfo.count;
+				var labelInfo = labelsByName[labelName];
+				labelInfo.count += 1;
 
 				character.codePoints.forEach(function(codePoint) {
 					var weight = parseInt(codePoint.substr(2), 16);
-					if (labelInfo.characterRangeStart == undefined || weight < labelInfo.characterRangeStart) {
+					if (labelInfo.characterRangeStart === null || weight < labelInfo.characterRangeStart) {
 						labelInfo.characterRangeStart = weight;
 					}
-					if (labelInfo.characterRangeEnd == undefined || weight > labelInfo.characterRangeEnd) {
+					if (labelInfo.characterRangeEnd === null || weight > labelInfo.characterRangeEnd) {
 						labelInfo.characterRangeEnd = weight;
 					}
 				});
 			});
 		});
 
-		// Return as an ordered array
-		return Object.keys(labels).map(function (labelName) {
-			return labels[labelName];
+		return Object.keys(labelsByName).map(function (labelName) {
+			return labelsByName[labelName];
 		});
 	}
 
-	smuflCharacters = JSON.parse(smuflCharacters);
+	smuflCharacters = preprocessCharacters();
+	smuflLabels = preprocessLabels();
 
 	return /* @ngInject */ function ($scope, $sce) {
 		var filteredLabels = [],
@@ -74,7 +135,7 @@ define([
 			labelsWithFilteredCharacters = [];
 
 		// Scope variables
-		$scope.labels = preprocessLabels();
+		$scope.labels = smuflLabels;
 		$scope.labelCharacters = [];
 		$scope.selectedLabel = $scope.labels[0];
 		$scope.selectedCharacters = [];
@@ -111,7 +172,7 @@ define([
 
 		function characterHtmlSafe (character) {
 			if (!character.html) {
-				character.html = $sce.trustAsHtml(character.codePoints.map(codePointToString).join());
+				character.html = $sce.trustAsHtml(characterToString(character));
 			}
 
 			return character;
@@ -143,36 +204,22 @@ define([
 			labelsWithFilteredCharacters = [];
 		}
 
-		function filter (input, previousInput) {
-			if (input === previousInput) {
+		function filter (searchedString, previousInput) {
+			if (searchedString === previousInput) {
 				return;
 			}
 
-			if(!input) {
+			if(!searchedString) {
 				return resetFilter();
 			}
 
-			input = input.toLowerCase();
+			searchedString = searchedString.toLowerCase();
 
-			// Labels meeting the filter criteria
-			filteredLabels = $scope.labels.filter(function(label) {
-				return label.name.toLowerCase().indexOf(input) >= 0;
-			});
+			filteredLabels = getLabelsByMatchedName(searchedString);
 
-			// Characters meeting the filter criteria
-			filteredCharacters = smuflCharacters.filter(function(character) {
-				return character.name.toLowerCase().indexOf(input) >= 0;
-			});
+			filteredCharacters = getCharactersByMatchedName(searchedString);
 
-			// Labels containing characters meeting the filter criteria
-			labelsWithFilteredCharacters = [];
-			filteredCharacters.forEach(function(character) {
-				character.labels.forEach(function(labelName) {
-					if(labelsWithFilteredCharacters.indexOf(labelName) === -1) {
-						labelsWithFilteredCharacters.push(labelName);
-					}
-				});
-			});
+			labelsWithFilteredCharacters = getLabelsContainingCharacters(filteredCharacters);
 		}
 
 		function apply () {

@@ -1,12 +1,9 @@
 .insert-special-character
-
 	.modal-header
-
 		h3.modal-title
 			| Insert special character
 
 	.modal-body
-			
 		.alert.alert-info
 			i.icon.icon-info-circle
 			| Select the character you want to insert into your document.
@@ -16,18 +13,24 @@
 				.view-sort
 					label.control-label Sort by
 					select.form-control(ng-model='search.sort', ng-options='sortable.name for sortable in sortables')
+
 				.view-search
-					input.form-control(type="text", placeholder="Filter labels and characters…", ng-model='search.filter')
+					input.form-control(
+						type="text",
+						placeholder="Filter labels and characters…",
+						ng-model='search.filter'
+					)
+
 			.character-picker
 				.character-group-browser
-
 					ul.character-group-list.list--bordered
 						li.character-group-list__item(
-							ng-repeat="(labelName, label) in labels | orderBy: search.sort.attribute",
+							ng-repeat="label in labels | orderBy: search.sort.attribute track by label.name",
 							ng-if='!search.filter || labelHasFilteredCharacters(label) || labelIsFiltered(label)',
 							ng-class='{active: labelIsSelected(label), highlighted: labelIsFiltered(label)}'
 						)
 							a(ng-click='selectLabel(label)') {{label.name}}
+
 				.character-browser
 					ul.character-list
 						//- Ng repeat this for chars from selected character set
@@ -43,6 +46,5 @@
 					.character-label {{selectedCharacters[0].name}}
 	
 	.modal-footer
-
 		button.btn.btn-default.pull-left(ng-click='cancel()') Cancel
 		button.btn.btn-primary(ng-click='apply()', ng-disabled='selectedCharacters.length === 0') Insert
