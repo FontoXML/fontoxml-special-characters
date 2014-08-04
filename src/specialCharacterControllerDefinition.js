@@ -120,6 +120,10 @@ define([
 
 		return Object.keys(labelsByName).map(function (labelName) {
 			return labelsByName[labelName];
+		}).sort(function(a,b) {
+			if(a.name===b.name)
+				return 0;
+			return a.name < b.name ? -1 : 1;
 		});
 	}
 
@@ -127,14 +131,14 @@ define([
 	smuflLabels = preprocessLabels();
 
 	return /* @ngInject */ function ($scope, $sce) {
-		var filteredLabels = [],
-			filteredCharacters = [],
-			labelsWithFilteredCharacters = [];
 
-		// Scope variables
-		$scope.labels = smuflLabels;
-		$scope.labelCharacters = [];
-		$scope.selectedLabel = $scope.labels[0];
+		var labels = smuflLabels,
+			selectedLabel,
+			labelCharacters;
+
+		$scope.displayedCharacters = [];
+		$scope.displayedLabels = [];
+
 		$scope.selectedCharacters = [];
 
 		$scope.sortables = [
@@ -148,13 +152,10 @@ define([
 			sort: $scope.sortables[0]
 		};
 
-		// Scope functions
+		// Scope functionsf
 		$scope.selectLabel = selectLabel;
-		$scope.selectCharacter = selectCharacter;
 		$scope.labelIsSelected = labelIsSelected;
-		$scope.labelIsFiltered = labelIsFiltered;
-		$scope.characterIsFiltered = characterIsFiltered;
-		$scope.labelHasFilteredCharacters = labelHasFilteredCharacters;
+		$scope.selectCharacter = selectCharacter;
 
 		$scope.apply = apply;
 		$scope.cancel = cancel;
@@ -176,48 +177,62 @@ define([
 		}
 
 		function selectLabel (label) {
-			$scope.selectedLabel = label;
-			$scope.labelCharacters = getCharactersByLabel($scope.selectedLabel).map(characterHtmlSafe);
+
+			selectedLabel = label;
+
+			if(label) {
+				labelCharacters = getCharactersByLabel(selectedLabel).map(characterHtmlSafe);
+			} else {
+				labelCharacters = smuflCharacters.map(characterHtmlSafe);
+			}
+			updateFilteredLabelsAndCharacters($scope.search.filter);
 		}
 
 		function labelIsSelected (label) {
-			return $scope.selectedLabel === label;
-		}
-		function labelIsFiltered (label) {
-			return filteredLabels.indexOf(label) >= 0;
-		}
-		function characterIsFiltered (character) {
-			return filteredCharacters.indexOf(character) >= 0;
-		}
-		function labelHasFilteredCharacters (label) {
-			return labelsWithFilteredCharacters.indexOf(label.name) >= 0;
+			return selectedLabel === label;
 		}
 
-		function resetFilter () {
-			$scope.search.filter = '';
+		function updateFilteredLabelsAndCharacters(filter) {
 
-			filteredLabels = [];
-			filteredCharacters = [];
-			labelsWithFilteredCharacters = [];
+			if(!filter) {
+				$scope.displayedCharacters = labelCharacters;
+			} else {
+				$scope.displayedCharacters = labelCharacters.filter(function(character) {
+					return character.name.toLowerCase().indexOf(filter.toLowerCase()) >= 0;
+				});
+			}
+
+			var labelCount = {};
+
+			// @TODO: May be improved by using reduce()
+			smuflCharacters.forEach(function(character) {
+				if(filter && character.name.toLowerCase().indexOf(filter.toLowerCase()) < 0) {
+					return;
+				}
+				character.labels.forEach(function(labelName) {
+					labelCount[labelName] = (labelCount[labelName] || 0) + 1;
+				});
+			});
+			$scope.displayedLabels = labels.map(function(label) {
+				label.matches = labelCount[label.name] || 0;
+				return label;
+			});
 		}
 
-		function filter (searchedString, previousInput) {
-			if (searchedString === previousInput) {
+		$scope.$watch('search.filter', function(newValue, oldValue) {
+			if(newValue===oldValue) {
 				return;
 			}
-
-			if(!searchedString) {
-				return resetFilter();
+			if(!oldValue) {
+				// Search has just started
+				selectLabel();
 			}
-
-			searchedString = searchedString.toLowerCase();
-
-			filteredLabels = getLabelsByMatchedName(searchedString);
-
-			filteredCharacters = getCharactersByMatchedName(searchedString);
-
-			labelsWithFilteredCharacters = getLabelsContainingCharacters(filteredCharacters);
-		}
+			if(!newValue && !selectedLabel) {
+				// Search query was removed
+				selectLabel(labels[0]);
+			}
+			updateFilteredLabelsAndCharacters(newValue);
+		})
 
 		function apply () {
 			$scope.$close({
@@ -229,9 +244,6 @@ define([
 			$scope.$dismiss('cancel');
 		}
 
-		selectLabel($scope.selectedLabel);
-
-		$scope.$watch('search.filter', filter);
-
+		selectLabel(labels[0]);
 	};
 });

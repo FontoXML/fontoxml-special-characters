@@ -24,10 +24,13 @@
 			.character-picker
 				.character-group-browser
 					ul.character-group-list.list--bordered
+						li.character-group-list__item(ng-if='search.filter.length>0', ng-class='{active: labelIsSelected()}')
+							a(ng-click='selectLabel()') Search results for "{{search.filter}}"
+
 						li.character-group-list__item(
-							ng-repeat="label in labels | orderBy: search.sort.attribute track by label.name",
-							ng-if='!search.filter || labelHasFilteredCharacters(label) || labelIsFiltered(label)',
-							ng-class='{active: labelIsSelected(label), highlighted: labelIsFiltered(label)}'
+							ng-repeat="label in displayedLabels | orderBy: search.sort.attribute track by label.name",
+							ng-class='{active: labelIsSelected(label)}',
+							ng-if='!search.filter || label.matches > 0'
 						)
 							a(ng-click='selectLabel(label)') {{label.name}}
 
@@ -35,10 +38,10 @@
 					ul.character-list
 						//- Ng repeat this for chars from selected character set
 						li.character-list__item(
-							ng-repeat="character in labelCharacters track by character.id",
+							ng-repeat="character in displayedCharacters track by character.id",
 							ng-click='selectCharacter(character)',
 							ng-bind-html='character.html',
-							ng-class='{selected: selectedCharacters.indexOf(character) >= 0, highlighted: characterIsFiltered(character)}'
+							ng-class='{selected: selectedCharacters.indexOf(character) >= 0}'
 						)
 
 				.selected-character
