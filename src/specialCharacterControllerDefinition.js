@@ -170,7 +170,9 @@ define([
 
 		function characterHtmlSafe (character) {
 			if (!character.html) {
-				character.html = $sce.trustAsHtml(characterToString(character));
+				// &#8202; is added to avoid the Chromium-specific bug that obstructs rendering zero-width characters:
+				// https://code.google.com/p/chromium/issues/detail?id=281402
+				character.html = $sce.trustAsHtml('&#8202;'+characterToString(character));
 			}
 
 			return character;
