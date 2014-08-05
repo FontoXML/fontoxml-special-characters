@@ -67,7 +67,6 @@ define([
 	smuflLabels = preprocessLabels();
 
 	return /* @ngInject */ function ($scope, $sce) {
-
 		var labels = smuflLabels,
 			selectedLabel,
 			labelCharacters;
@@ -105,9 +104,8 @@ define([
 		}
 
 		function selectCharacter(character) {
-			// @TODO: Push onto array selectedCharacters instead of overwrite
-			// because inserting multiple special characters with one modal is
-			// a different user story.
+			// TODO: Push onto array selectedCharacters instead of overwrite because inserting multiple special
+			// characters with one modal is a different user story.
 			$scope.selectedCharacters = [character];
 		}
 
@@ -144,6 +142,7 @@ define([
 						charactersPerLabel[labelName] = (charactersPerLabel[labelName] || 0) + 1;
 					});
 				}
+
 				return charactersPerLabel;
 			}, {});
 
@@ -157,12 +156,14 @@ define([
 			if (newSearchFilter === oldSearchFilter) {
 				return;
 			}
+
 			if (!oldSearchFilter) {
 				selectLabel();
 			}
-			if (!newSearchFilter && !selectedLabel) {
+			else if (!newSearchFilter && !selectedLabel) {
 				selectLabel(labels[0]);
 			}
+
 			updateFilteredLabelsAndCharacters(newSearchFilter);
 		});
 

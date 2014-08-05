@@ -36,7 +36,6 @@
 
 				.character-browser
 					ul.character-list
-						//- Ng repeat this for chars from selected character set
 						li.character-list__item(
 							ng-repeat="character in displayedCharacters track by character.id",
 							ng-click='selectCharacter(character)',
