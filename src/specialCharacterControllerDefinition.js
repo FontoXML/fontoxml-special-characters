@@ -63,10 +63,11 @@ define([
 		});
 	}
 
+	// TODO: move this inside the SpecialCharacterController to use characterSet // eg. create editor.getCharacterSet()
 	smuflCharacters = editor.getSmuflCharacters();
 	smuflLabels = preprocessLabels();
 
-	return /* @ngInject */ function ($scope, $sce) {
+	return /* @ngInject */ function SpecialCharacterController ($scope, $sce, characterSet) {
 		var labels = smuflLabels,
 			selectedLabel,
 			labelCharacters;
