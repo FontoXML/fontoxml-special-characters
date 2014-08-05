@@ -138,20 +138,17 @@ define([
 				});
 			}
 
-			var labelCount = {};
-
-			// @TODO: May be improved by using reduce()
-			smuflCharacters.forEach(function (character) {
-				if (filter && character.name.toLowerCase().indexOf(filter.toLowerCase()) < 0) {
-					return;
+			var matchedCharactersPerLabel = smuflCharacters.reduce(function (charactersPerLabel, character) {
+				if (filter && character.name.toLowerCase().indexOf(filter.toLowerCase()) >= 0) {
+					character.labels.forEach(function (labelName) {
+						charactersPerLabel[labelName] = (charactersPerLabel[labelName] || 0) + 1;
+					});
 				}
-				character.labels.forEach(function (labelName) {
-					labelCount[labelName] = (labelCount[labelName] || 0) + 1;
-				});
-			});
+				return charactersPerLabel;
+			}, {});
 
 			$scope.displayedLabels = labels.map(function (label) {
-				label.matches = labelCount[label.name] || 0;
+				label.matches = matchedCharactersPerLabel[label.name] || 0;
 				return label;
 			});
 		}
