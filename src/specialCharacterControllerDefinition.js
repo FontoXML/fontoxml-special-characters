@@ -3,9 +3,6 @@ define([
 ], function (editor) {
 	'use strict';
 
-	var smuflLabels = [];
-	var smuflCharacters = [];
-
 	function codePointToString(codePoint) {
 		return String.fromCodePoint(parseInt(codePoint.substr(2), 16));
 	}
@@ -18,16 +15,16 @@ define([
 		return characters.map(characterToString).join();
 	}
 
-	function getCharactersByLabel(label) {
-		return smuflCharacters.filter(function (character) {
+	function getCharactersByLabel(characters, label) {
+		return characters.filter(function (character) {
 			return character.labels.indexOf(label.name) >= 0;
 		});
 	}
 
-	function preprocessLabels() {
+	function preprocessLabels(characters) {
 		var labelsByName = {};
 
-		smuflCharacters.forEach(function (character) {
+		characters.forEach(function (character) {
 			character.labels.forEach(function (labelName) {
 				if (!labelsByName[labelName]) {
 					labelsByName[labelName] = {
@@ -63,14 +60,11 @@ define([
 		});
 	}
 
-	// TODO: move this inside the SpecialCharacterController to use characterSet // eg. create editor.getCharacterSet()
-	smuflCharacters = editor.getSmuflCharacters();
-	smuflLabels = preprocessLabels();
-
 	return /* @ngInject */ function SpecialCharacterController ($scope, $sce, characterSet) {
-		var labels = smuflLabels,
-			selectedLabel,
-			labelCharacters;
+		var selectedLabel = null;
+		var labelCharacters = null;
+		var characters = editor.getCharacterSetByName(characterSet);
+		var labels = preprocessLabels(characters);
 
 		$scope.displayedCharacters = [];
 		$scope.displayedLabels = [];
@@ -114,10 +108,10 @@ define([
 			selectedLabel = label;
 
 			if (label) {
-				labelCharacters = getCharactersByLabel(selectedLabel).map(characterHtmlSafe);
+				labelCharacters = getCharactersByLabel(characters, selectedLabel).map(characterHtmlSafe);
 			}
 			else {
-				labelCharacters = smuflCharacters.map(characterHtmlSafe);
+				labelCharacters = characters.map(characterHtmlSafe);
 			}
 
 			updateFilteredLabelsAndCharacters($scope.search.filter);
@@ -137,7 +131,7 @@ define([
 				});
 			}
 
-			var matchedCharactersPerLabel = smuflCharacters.reduce(function (charactersPerLabel, character) {
+			var matchedCharactersPerLabel = characters.reduce(function (charactersPerLabel, character) {
 				if (filter && character.name.toLowerCase().indexOf(filter.toLowerCase()) >= 0) {
 					character.labels.forEach(function (labelName) {
 						charactersPerLabel[labelName] = (charactersPerLabel[labelName] || 0) + 1;
