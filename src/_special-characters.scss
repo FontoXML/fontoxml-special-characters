@@ -40,7 +40,22 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 	}
 }
 
+.modal-body {
+	.character-list__item {
+		width: 12.5%;
+		font-size: $font-size-large;
+		line-height: 2;
+		//margin: $padding-small 0;
+	}
+}
+
+.character-picker {
+	display: flex;
+	flex-direction: row;
+}
+
 // Groups of characters that can be used as a filter
+// - First column in the special-characters modal
 .character-group-browser {
 	@include flex(1);
 	@extend %modal-column;
@@ -48,7 +63,6 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 	margin-right: $ui-special-char-modal-column-spacing;
 
 }
-
 
 .character-group-list {
 	// Create a vertical-shrinkable child with a scrollbar
@@ -75,28 +89,6 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 	color: $skin-accent-dark;
 	margin: 0;
 }
-.character-picker {
-	display: flex;
-	flex-direction: row;
-}
-
-.character-navigation {
-	margin-bottom: $ui-special-char-modal-column-spacing;
-}
-
-.character-views {
-	display: flex;
-	flex: 1;
-}
-
-// Actual list of characters to be selected from
-.character-browser {
-	@include flex(2);
-	@extend %modal-column;
-	border: 1px solid $skin-accent-light;
-	overflow: auto;
-	margin-right: $ui-special-char-modal-column-spacing;
-}
 
 .character-group-sort,
 .character-search {
@@ -107,6 +99,16 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 	> label {
 		display: none;
 	}
+}
+
+// Actual list of characters to be selected from
+// - Second (middle) column in the special-characters modal
+.character-browser {
+	@include flex(2);
+	@extend %modal-column;
+	border: 1px solid $skin-accent-light;
+	overflow: auto;
+	margin-right: $ui-special-char-modal-column-spacing;
 }
 
 // Universal properties of character-list
@@ -123,35 +125,18 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 	// Add selectable css for :hover and .selected behaviour
 	@extend %selectable;
 
-	&.highlighted:not(.selected) {
-		@extend %highlighted;
-	}
-
 	font-family: $font-family-serif;
-
-	// Reset list item styling
 	list-style-type: none;
-
-	// Maybe use block with float because inline block shows html white-space?
 	display: inline-block;
-
-	// Fixed width is required because not all characters have same width
 	width: 24px;
+
 	// Use padding to make height 24px
 	padding: 1px 0;
 	text-align: center;
 }
 
-.modal-body {
-	.character-list__item {
-		width: 12.5%;
-		font-size: $font-size-large;
-		line-height: 2;
-		//margin: $padding-small 0;
-	}
-}
-
 // Information about current selected character
+// - Third column in the special-characters modal
 .selected-character {
 	@include flex(1);
 	@extend %modal-column;
@@ -199,10 +184,4 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 			background-color: $skin-primary-ultralight;
 		}
 	}
-}
-
-// @TODO: Find a way to not !important this
-%highlighted {
-	background-color: rgba(yellow, 0.3);
-	border-color: darken(rgba(yellow, 0.3), 30);
 }
