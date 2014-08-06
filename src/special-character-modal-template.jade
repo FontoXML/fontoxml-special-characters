@@ -12,7 +12,7 @@
 			.modal-toolbar
 				//- .view-sort
 				//- 	label.control-label Sort by
-				//- 	select.form-control(ng-model='search.sort', ng-options='sortable.name for sortable in sortables')
+				//- 	select.form-control(ng-model='search.context', ng-options='sortable.name for sortable in sortables')
 				//
 				//.view-search
 				//	input.form-control(
@@ -26,19 +26,19 @@
 
 					.character-group-sort
 						label.control-label Sort character groups
-						select.form-control(ng-model='search.sort', ng-options='sortable.name for sortable in sortables')
+						select.form-control(ng-model='search.context', ng-options='context.sortLabel for context in contexts')
 
 					ul.character-group-list.list--bordered
 						li.character-group-list__item(ng-if='search.filter.length>0', ng-class='{active: labelIsSelected()}')
 							a(ng-click='selectLabel()') Search results for "{{search.filter}}"
 
 						li.character-group-list__item(
-							ng-repeat="label in displayedLabels | orderBy: search.sort.attribute track by label.name",
+							ng-repeat="label in displayedLabels | orderBy: search.context.attribute track by label.name",
 							ng-class='{active: labelIsSelected(label)}',
 							ng-if='!search.filter || label.matches > 0'
 						)
 							a(ng-click='selectLabel(label)')
-								span.character-group-explanation(ng-if='search.sort.explanation') {{search.sort.explanation(label)}}
+								span.character-group-explanation(ng-if='search.context.renderLabelSubtitle') {{search.context.renderLabelSubtitle(label)}}
 								span.character-group-name {{label.name}}
 
 				.character-browser
@@ -60,7 +60,7 @@
 				.selected-character
 					.character-preview(ng-if='selectedCharacters[0]', ng-bind-html='selectedCharacters[0].html')
 					.character-label(ng-if='selectedCharacters[0]') {{selectedCharacters[0].name}}
-					.character-numeric-codes(ng-if='selectedCharacters[0]') Character number {{characterNumericCodes(selectedCharacters[0])}}
+					.character-numeric-codes(ng-if='selectedCharacters[0] && search.context.renderCharacterSubtitle') {{search.context.renderCharacterSubtitle(selectedCharacters[0])}}
 
 	.modal-footer
 		button.btn.btn-default.pull-left(ng-click='cancel()') Cancel

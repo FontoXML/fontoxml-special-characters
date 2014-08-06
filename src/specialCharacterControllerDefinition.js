@@ -71,38 +71,40 @@ define([
 
 		$scope.selectedCharacters = [];
 
-		$scope.sortables = [
+		$scope.contexts = [
 			{
 				attribute: 'name',
-				name: 'Sort by label name'
+				sortLabel: 'Sort by label name',
+				renderCharacterSubtitle: function (character) {
+					return character.labels.join(', ');
+				}
 			},
 			{
 				attribute: 'characterRangeStart',
-				name: 'Sort by character range',
-				explanation: function (label) {
+				sortLabel: 'Sort by character range',
+				renderLabelSubtitle: function (label) {
 					return label.characterRangeStart + ' - ' + label.characterRangeEnd;
+				},
+				renderCharacterSubtitle: function (character) {
+					return 'Character number ' + character.codePoints.map(function (codePoint) {
+						return parseInt(codePoint.substr(2), 16);
+					}).join(', ');
 				}
 			}
 		];
 
 		$scope.search = {
 			filter: undefined,
-			sort: $scope.sortables[0]
+			context: $scope.contexts[0]
 		};
 
 		$scope.selectLabel = selectLabel;
 		$scope.labelIsSelected = labelIsSelected;
 		$scope.selectCharacter = selectCharacter;
-		$scope.characterNumericCodes = characterNumericCodes;
 
 		$scope.apply = apply;
 		$scope.cancel = cancel;
 
-		function characterNumericCodes(character) {
-			return character.codePoints.map(function (codePoint) {
-				return parseInt(codePoint.substr(2), 16);
-			}).join(', ');
-		}
 
 		function characterHtmlSafe(character) {
 			if (!character.html) {
