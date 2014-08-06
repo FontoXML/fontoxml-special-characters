@@ -165,9 +165,14 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 		padding: 32px $padding-small;
 	}
 
-	.character-label {
+	.character-label,
+	.character-numeric-codes {
 		text-align: center;
-		padding: 0 $padding-small;
+		padding: $padding-small $padding-small;
+	}
+
+	.character-numeric-codes {
+		color: $skin-accent-dark;
 	}
 }
 

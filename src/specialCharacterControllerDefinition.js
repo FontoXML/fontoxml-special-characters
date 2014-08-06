@@ -93,9 +93,16 @@ define([
 		$scope.selectLabel = selectLabel;
 		$scope.labelIsSelected = labelIsSelected;
 		$scope.selectCharacter = selectCharacter;
+		$scope.characterNumericCodes = characterNumericCodes;
 
 		$scope.apply = apply;
 		$scope.cancel = cancel;
+
+		function characterNumericCodes(character) {
+			return character.codePoints.map(function (codePoint) {
+				return parseInt(codePoint.substr(2), 16);
+			}).join(', ');
+		}
 
 		function characterHtmlSafe(character) {
 			if (!character.html) {

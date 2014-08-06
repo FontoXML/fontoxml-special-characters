@@ -58,9 +58,10 @@
 						)
 
 				.selected-character
-					.character-preview(ng-bind-html='selectedCharacters[0].html')
-					.character-label {{selectedCharacters[0].name}}
-	
+					.character-preview(ng-if='selectedCharacters[0]', ng-bind-html='selectedCharacters[0].html')
+					.character-label(ng-if='selectedCharacters[0]') {{selectedCharacters[0].name}}
+					.character-numeric-codes(ng-if='selectedCharacters[0]') Character number {{characterNumericCodes(selectedCharacters[0])}}
+
 	.modal-footer
 		button.btn.btn-default.pull-left(ng-click='cancel()') Cancel
 		button.btn.btn-primary(ng-click='apply()', ng-disabled='selectedCharacters.length === 0') Insert
