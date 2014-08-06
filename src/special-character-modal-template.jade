@@ -10,19 +10,24 @@
 
 		.modal-functional-body
 			.modal-toolbar
-				.view-sort
-					label.control-label Sort by
-					select.form-control(ng-model='search.sort', ng-options='sortable.name for sortable in sortables')
-
-				.view-search
-					input.form-control(
-						type="text",
-						placeholder="Filter labels and characters…",
-						ng-model='search.filter'
-					)
+				//- .view-sort
+				//- 	label.control-label Sort by
+				//- 	select.form-control(ng-model='search.sort', ng-options='sortable.name for sortable in sortables')
+				//
+				//.view-search
+				//	input.form-control(
+				//		type="text",
+				//		placeholder="Filter labels and characters…",
+				//		ng-model='search.filter'
+				//	)
 
 			.character-picker
 				.character-group-browser
+
+					.character-group-sort
+						label.control-label Sort character groups
+						select.form-control(ng-model='search.sort', ng-options='sortable.name for sortable in sortables')
+
 					ul.character-group-list.list--bordered
 						li.character-group-list__item(ng-if='search.filter.length>0', ng-class='{active: labelIsSelected()}')
 							a(ng-click='selectLabel()') Search results for "{{search.filter}}"
@@ -32,9 +37,18 @@
 							ng-class='{active: labelIsSelected(label)}',
 							ng-if='!search.filter || label.matches > 0'
 						)
-							a(ng-click='selectLabel(label)') {{label.name}}
+							a(ng-click='selectLabel(label)')
+								span.character-group-explanation(ng-if='search.sort.explanation') {{search.sort.explanation(label)}}
+								span.character-group-name {{label.name}}
 
 				.character-browser
+					.character-search
+						label.control-label Filter characters
+						input.form-control(
+							type="text",
+							placeholder="Filter labels and characters…",
+							ng-model='search.filter'
+						)
 					ul.character-list
 						li.character-list__item(
 							ng-repeat="character in displayedCharacters track by character.id",

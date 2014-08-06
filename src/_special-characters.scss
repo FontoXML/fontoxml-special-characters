@@ -2,41 +2,8 @@
 // Insert special characters
 // --------------------------------------------------
 
-
 // @TODO:
 $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
-
-
-// Universal properties of character-list
-.character-list {
-	@extend .list-unstyled;
-	text-align: center;
-}
-
-.character-list__item {
-	// Add selectable css for :hover and .selected behaviour
-	@extend %selectable;
-
-
-	&.highlighted:not(.selected) {
-		@extend %highlighted;
-	}
-
-	font-family: $font-family-serif;
-
-	// Reset list item styling
-	list-style-type: none;
-
-	// Maybe use block with float because inline block shows html white-space?
-	display: inline-block;
-
-	// Fixed width is required because not all characters have same width
-	width: 24px;
-	// Use padding to make height 24px
-	padding: 1px 0;
-	text-align: center;
-}
-
 
 // Toolbar dropdown UI
 // ------
@@ -64,7 +31,6 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 	}
 }
 
-
 // Insert characters modal
 // ------
 .insert-special-character {
@@ -78,41 +44,102 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 .character-group-browser {
 	@include flex(1);
 	@extend %modal-column;
-	@extend %well;
+	border: 1px solid $skin-accent-light;
 	margin-right: $ui-special-char-modal-column-spacing;
-	overflow: auto;
+
 }
+
 
 .character-group-list {
 	// Create a vertical-shrinkable child with a scrollbar
-	@include flex(1, 1, auto);
+	background-color: $white;
+	padding: $padding;
+	overflow: auto;
+	border-top: none;
 }
 
 .character-group-list__item {
 	@extend %filter-list__item;
+	@include flex(0, 0, auto);
+
 	> a {
 		padding: 5px $padding-small;
+		> * {
+			display: block;
+		}
 	}
+}
+
+.character-group-explanation {
+	font-size: 70%;
+	color: $skin-accent-dark;
+	margin: 0;
 }
 .character-picker {
 	display: flex;
 	flex-direction: row;
 }
+
 .character-navigation {
 	margin-bottom: $ui-special-char-modal-column-spacing;
 }
+
 .character-views {
 	display: flex;
 	flex: 1;
 }
+
 // Actual list of characters to be selected from
 .character-browser {
 	@include flex(2);
 	@extend %modal-column;
-	@extend %well;
-	padding: $padding-small;
+	border: 1px solid $skin-accent-light;
 	overflow: auto;
 	margin-right: $ui-special-char-modal-column-spacing;
+}
+
+.character-group-sort,
+.character-search {
+	@include flex(0, 0, auto);
+	@extend %modal-column-header;
+	border-bottom: 1px solid $skin-accent-light;
+
+	> label {
+		display: none;
+	}
+}
+
+// Universal properties of character-list
+.character-list {
+	background-color: $white;
+	padding: $padding;
+	@include flex(1, 1, auto);
+	overflow: auto;
+	text-align: center;
+	margin-bottom: 0px;
+}
+
+.character-list__item {
+	// Add selectable css for :hover and .selected behaviour
+	@extend %selectable;
+
+	&.highlighted:not(.selected) {
+		@extend %highlighted;
+	}
+
+	font-family: $font-family-serif;
+
+	// Reset list item styling
+	list-style-type: none;
+
+	// Maybe use block with float because inline block shows html white-space?
+	display: inline-block;
+
+	// Fixed width is required because not all characters have same width
+	width: 24px;
+	// Use padding to make height 24px
+	padding: 1px 0;
+	text-align: center;
 }
 
 .modal-body {
@@ -120,7 +147,7 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 		width: 12.5%;
 		font-size: $font-size-large;
 		line-height: 2;
-		margin: $padding-small 0;
+		//margin: $padding-small 0;
 	}
 }
 
@@ -144,7 +171,6 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 	}
 }
 
-
 %filter-list__item {
 	a {
 		color: $text-color;
@@ -157,8 +183,8 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 		}
 	}
 	&.highlighted > a {
-		background-color: rgba(yellow,0.3);
-		border-color: darken(rgba(yellow,0.3), 30);
+		background-color: rgba(yellow, 0.3);
+		border-color: darken(rgba(yellow, 0.3), 30);
 	}
 	&.active > a {
 		background-color: $skin-primary-lighter;
@@ -172,6 +198,6 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 
 // @TODO: Find a way to not !important this
 %highlighted {
-	background-color: rgba(yellow,0.3);
-	border-color: darken(rgba(yellow,0.3), 30);
+	background-color: rgba(yellow, 0.3);
+	border-color: darken(rgba(yellow, 0.3), 30);
 }

@@ -60,7 +60,7 @@ define([
 		});
 	}
 
-	return /* @ngInject */ function SpecialCharacterController ($scope, $sce, characterSet) {
+	return /* @ngInject */ function SpecialCharacterController($scope, $sce, characterSet) {
 		var selectedLabel = null;
 		var labelCharacters = null;
 		var characters = editor.getCharacterSetByName(characterSet);
@@ -72,8 +72,17 @@ define([
 		$scope.selectedCharacters = [];
 
 		$scope.sortables = [
-			{ attribute: 'name', name: 'Label name' },
-			{ attribute: 'characterRangeStart', name: 'Character range' }
+			{
+				attribute: 'name',
+				name: 'Sort by label name'
+			},
+			{
+				attribute: 'characterRangeStart',
+				name: 'Sort by character range',
+				explanation: function (label) {
+					return label.characterRangeStart + ' - ' + label.characterRangeEnd;
+				}
+			}
 		];
 
 		$scope.search = {
@@ -155,8 +164,10 @@ define([
 			if (!oldSearchFilter) {
 				selectLabel();
 			}
-			else if (!newSearchFilter && !selectedLabel) {
-				selectLabel(labels[0]);
+			else {
+				if (!newSearchFilter && !selectedLabel) {
+					selectLabel(labels[0]);
+				}
 			}
 
 			updateFilteredLabelsAndCharacters(newSearchFilter);
