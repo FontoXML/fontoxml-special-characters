@@ -177,18 +177,23 @@ $ui-special-char-modal-grid-border-width: 1px;
 	@extend %modal-column;
 	@extend %well;
 
+	display: flexbox;
+	flex-direction: column;
+
 	.character-preview {
 		font-size: 5em;
 		line-height: 3;
 		font-family: $font-family-serif;
 		text-align: center;
 		padding: 32px $padding-small;
+		flex: 4;
 	}
 
 	.character-label,
 	.character-numeric-codes {
 		text-align: center;
 		padding: $padding-small $padding-small;
+		flex: 1;
 	}
 
 	.character-numeric-codes {
@@ -197,7 +202,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 }
 
 %filter-list__item {
-	a {
+	> a {
 		color: $text-color;
 		display: block;
 
@@ -206,10 +211,6 @@ $ui-special-char-modal-grid-border-width: 1px;
 			text-decoration: none;
 			background-color: $skin-primary-ultralight;
 		}
-	}
-	&.highlighted > a {
-		background-color: rgba(yellow, 0.3);
-		border-color: darken(rgba(yellow, 0.3), 30);
 	}
 	&.active > a {
 		background-color: $skin-primary-lighter;
