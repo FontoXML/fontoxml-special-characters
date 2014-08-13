@@ -4,6 +4,23 @@
 
 // @TODO:
 $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
+$ui-special-char-modal-border: 1px dotted $skin-accent;
+
+
+$ui-special-char-modal-char-width: 48px;
+$ui-special-char-modal-char-height: 60px;
+$ui-special-char-modal-char-margin: 1px;
+$ui-special-char-modal-char-border-width: 1px;
+$ui-special-char-modal-grid-border-width: 1px;
+
+@mixin grid-background($color, $width, $height) {
+	background-color: transparent;
+	background-image: linear-gradient(0deg, transparent 0px, $color 0.001px, $color 0.999px, transparent 1px, transparent),
+	linear-gradient(90deg, transparent 0px, $color 0.001px, $color 0.999px, transparent 1px, transparent);
+	height:100%;
+	background-size: $width $height;
+	background-position: 0px 1px;
+}
 
 // Toolbar dropdown UI
 // ------
@@ -40,12 +57,17 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 	}
 }
 
+
 .modal-body {
 	.character-list__item {
-		width: 12.5%;
 		font-size: $font-size-large;
-		line-height: 2.8;
-		//margin: $padding-small 0;
+		width: $ui-special-char-modal-char-width;
+		line-height: $ui-special-char-modal-char-height;
+
+		margin-top: $ui-special-char-modal-char-margin + $ui-special-char-modal-grid-border-width;
+		margin-right: $ui-special-char-modal-char-border-width + $ui-special-char-modal-grid-border-width;
+		margin-bottom: $ui-special-char-modal-char-border-width;
+		margin-left: $ui-special-char-modal-char-border-width;
 	}
 }
 
@@ -104,7 +126,7 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 // Actual list of characters to be selected from
 // - Second (middle) column in the special-characters modal
 .character-browser {
-	@include flex(2);
+	@include flex(0, 0, 458px); // = 8 * volledige char breedte + 2 & $padding
 	@extend %modal-column;
 	border: 1px solid $skin-accent-light;
 	overflow: auto;
@@ -113,12 +135,28 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 
 // Universal properties of character-list
 .character-list {
+	@include flex(1, 1, auto);
 	background-color: $white;
 	padding: $padding;
-	@include flex(1, 1, auto);
 	overflow: auto;
-	text-align: center;
 	margin-bottom: 0px;
+	> ul {
+		padding: 1px - $ui-special-char-modal-grid-border-width 1px 1px 1px; // cell margin/2 I think?
+		margin: 0;
+
+		// 70 = lineHeight + 2*(1px padding + 1px border + 3px margin)
+		// 56 = width + 2*(1px border + 3px margin)
+		@include grid-background(
+			$skin-accent-lighter,
+
+			// minus two pixels because width is influenced by box-sizing:border-box.
+			$ui-special-char-modal-char-width + 2*($ui-special-char-modal-char-border-width + $ui-special-char-modal-char-margin) + $ui-special-char-modal-grid-border-width - 2px,
+
+			// not minus two pixels because line-height is not influenced by box-sizing.
+			$ui-special-char-modal-char-height + 2*($ui-special-char-modal-char-border-width + $ui-special-char-modal-char-margin) + $ui-special-char-modal-grid-border-width
+		);
+
+	}
 }
 
 .character-list__item {
@@ -130,8 +168,7 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 	display: inline-block;
 	width: 24px;
 
-	// Use padding to make height 24px
-	padding: 1px 0;
+	padding: 0;
 	text-align: center;
 }
 
@@ -182,6 +219,43 @@ $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 		&:hover,
 		&:focus {
 			background-color: $skin-primary-ultralight;
+		}
+	}
+}
+
+@media screen and (max-width: 991px) {
+	.character-browser {
+		@include flex(0, 0, 458px - 4*51px);
+	}
+	.modal-body {
+		.character-list__item {
+			&:nth-child(4n) {
+				margin-right: 0;
+			}
+
+		}
+	}
+	.character-list {
+		> ul {
+			max-width: 205px;
+		}
+	}
+}
+@media screen and (min-width: 992px) {
+	.character-browser {
+		@include flex(0, 0, 458px);
+	}
+	.character-list {
+		> ul {
+			max-width: 409px;
+		}
+	}
+	.modal-body {
+		.character-list__item {
+			&:nth-child(8n) {
+				margin-right: 0;
+			}
+
 		}
 	}
 }
