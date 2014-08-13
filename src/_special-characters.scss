@@ -57,20 +57,6 @@ $ui-special-char-modal-grid-border-width: 1px;
 	}
 }
 
-
-.modal-body {
-	.character-list__item {
-		font-size: $font-size-large;
-		width: $ui-special-char-modal-char-width;
-		line-height: $ui-special-char-modal-char-height;
-
-		margin-top: $ui-special-char-modal-char-margin + $ui-special-char-modal-grid-border-width;
-		margin-right: $ui-special-char-modal-char-border-width + $ui-special-char-modal-grid-border-width;
-		margin-bottom: $ui-special-char-modal-char-border-width;
-		margin-left: $ui-special-char-modal-char-border-width;
-	}
-}
-
 .character-picker {
 	display: flex;
 	flex-direction: row;
@@ -140,36 +126,48 @@ $ui-special-char-modal-grid-border-width: 1px;
 	padding: $padding;
 	overflow: auto;
 	margin-bottom: 0px;
-	> ul {
-		padding: 1px - $ui-special-char-modal-grid-border-width 1px 1px 1px; // cell margin/2 I think?
-		margin: 0;
-
-		// 70 = lineHeight + 2*(1px padding + 1px border + 3px margin)
-		// 56 = width + 2*(1px border + 3px margin)
-		@include grid-background(
-			$skin-accent-lighter,
-
-			// minus two pixels because width is influenced by box-sizing:border-box.
-			$ui-special-char-modal-char-width + 2*($ui-special-char-modal-char-border-width + $ui-special-char-modal-char-margin) + $ui-special-char-modal-grid-border-width - 2px,
-
-			// not minus two pixels because line-height is not influenced by box-sizing.
-			$ui-special-char-modal-char-height + 2*($ui-special-char-modal-char-border-width + $ui-special-char-modal-char-margin) + $ui-special-char-modal-grid-border-width
-		);
-
-	}
 }
+.character-list__grid {
+	// padding-top is smaller to compensate for the increased margin-top of list items
+	padding: 1px - $ui-special-char-modal-grid-border-width 1px 1px 1px;
+	margin: 0;
 
+	@include grid-background(
+		$skin-accent-lighter,
+
+		// Grid width: Does not count character border-width because block width is affected by box-sizing: border-box;
+		$ui-special-char-modal-char-width + 2*$ui-special-char-modal-char-border-width + $ui-special-char-modal-grid-border-width,
+
+		// Grid height: Regular sum of all influencing factors
+		$ui-special-char-modal-char-height + 2*($ui-special-char-modal-char-border-width + $ui-special-char-modal-char-margin) + $ui-special-char-modal-grid-border-width
+	 );
+
+ }
 .character-list__item {
 	// Add selectable css for :hover and .selected behaviour
 	@extend %selectable;
 
+	font-size: $font-size-large;
 	font-family: $font-family-serif;
+
+	width: $ui-special-char-modal-char-width;
+	line-height: $ui-special-char-modal-char-height;
+
 	list-style-type: none;
 	display: inline-block;
-	width: 24px;
-
-	padding: 0;
 	text-align: center;
+
+	// margin-top is larger, so that margin-bottom does not push grid border too far
+	margin-top: $ui-special-char-modal-char-margin + $ui-special-char-modal-grid-border-width;
+
+	// margin-right is larger to push neighbor well across the gridline. this effect is negated
+	// for each row's last child, see the mediaqueries below.
+	margin-right: $ui-special-char-modal-char-border-width + $ui-special-char-modal-grid-border-width;
+
+	margin-bottom: $ui-special-char-modal-char-border-width;
+	margin-left: $ui-special-char-modal-char-border-width;
+	padding: 0;
+
 }
 
 // Information about current selected character
@@ -223,39 +221,27 @@ $ui-special-char-modal-grid-border-width: 1px;
 	}
 }
 
+
+@media screen and (min-width: 992px) {
+	.character-browser {
+		@include flex(0, 0, 458px); // @TODO: calculate from size and number of characters in one row
+	}
+	.character-list__grid {
+		max-width: 409px; // @TODO: calculate from size and number of characters in one row
+	}
+	.character-list__item:nth-child(8n) {
+		margin-right: 0;
+	}
+}
+
 @media screen and (max-width: 991px) {
 	.character-browser {
 		@include flex(0, 0, 458px - 4*51px);
 	}
-	.modal-body {
-		.character-list__item {
-			&:nth-child(4n) {
-				margin-right: 0;
-			}
-
-		}
+	.character-list__item:nth-child(4n) {
+		margin-right: 0;
 	}
-	.character-list {
-		> ul {
-			max-width: 205px;
-		}
-	}
-}
-@media screen and (min-width: 992px) {
-	.character-browser {
-		@include flex(0, 0, 458px);
-	}
-	.character-list {
-		> ul {
-			max-width: 409px;
-		}
-	}
-	.modal-body {
-		.character-list__item {
-			&:nth-child(8n) {
-				margin-right: 0;
-			}
-
-		}
+	.character-list__grid {
+		max-width: 205px;
 	}
 }

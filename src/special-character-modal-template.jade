@@ -50,7 +50,7 @@
 							ng-model='search.filter'
 						)
 					.character-list
-						ul
+						ul.character-list__grid
 							li.character-list__item(
 								ng-repeat="character in displayedCharacters track by character.id",
 								ng-click='selectCharacter(character)',
