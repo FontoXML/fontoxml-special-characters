@@ -60,10 +60,10 @@ define([
 		});
 	}
 
-	return /* @ngInject */ function SpecialCharacterController($scope, $sce, characterSet) {
+	return /* @ngInject */ function SpecialCharacterController($scope, $sce, operationData) {
 		var selectedLabel = null;
 		var labelCharacters = null;
-		var characters = editor.getCharacterSetByName(characterSet);
+		var characters = editor.getCharacterSetByName(operationData.characterSet);
 		var labels = preprocessLabels(characters);
 
 		$scope.displayedCharacters = [];
@@ -183,9 +183,9 @@ define([
 		});
 
 		function apply() {
-			$scope.$close({
-				text: charactersToString($scope.selectedCharacters)
-			});
+			operationData.text = charactersToString($scope.selectedCharacters);
+
+			$scope.$close(operationData);
 		}
 
 		function cancel() {
