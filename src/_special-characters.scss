@@ -60,6 +60,8 @@ $ui-special-char-modal-grid-border-width: 1px;
 .character-picker {
 	display: flex;
 	flex-direction: row;
+	// Prevent from collapsing when child sections have no content
+	width: 100%;
 }
 
 // Groups of characters that can be used as a filter
