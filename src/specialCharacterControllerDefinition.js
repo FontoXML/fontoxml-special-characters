@@ -189,7 +189,7 @@ define([
 		}
 
 		function cancel() {
-			$scope.$dismiss('cancel');
+			$scope.$dismiss();
 		}
 
 		selectLabel(labels[0]);
