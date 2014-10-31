@@ -60,7 +60,7 @@ define([
 		});
 	}
 
-	return /* @ngInject */ function SpecialCharacterController($scope, $sce, operationData) {
+	return /* @ngInject */ function SpecialCharacterController($scope, operationData) {
 		var selectedLabel = null;
 		var labelCharacters = null;
 		var characters = editor.getCharacterSetByName(operationData.characterSet);
@@ -110,7 +110,7 @@ define([
 			if (!character.html) {
 				// &#8202; is added to avoid the Chromium-specific bug that obstructs rendering zero-width characters:
 				// https://code.google.com/p/chromium/issues/detail?id=281402
-				character.html = $sce.trustAsHtml('&#8202;' + characterToString(character));
+				character.html = '&#8202;' + characterToString(character);
 			}
 
 			return character;

@@ -49,12 +49,12 @@
 						li.character-list__item(
 							ng-repeat="character in displayedCharacters track by character.id",
 							ng-click="selectCharacter(character)",
-							ng-bind-html="character.html",
+							ng-bind-html="character.html | trustAsHtml",
 							ng-class="{selected: selectedCharacters.indexOf(character) >= 0}")
 
 			//- Character preview
 			.selected-character
-				.character-preview(ng-if="selectedCharacters[0]", ng-bind-html="selectedCharacters[0].html")
+				.character-preview(ng-if="selectedCharacters[0]", ng-bind-html="selectedCharacters[0].html | trustAsHtml")
 				.character-label(ng-if="selectedCharacters[0]") {{selectedCharacters[0].name}}
 				.character-numeric-codes(ng-if="selectedCharacters[0] && search.context.renderCharacterSubtitle") {{search.context.renderCharacterSubtitle(selectedCharacters[0])}}
 
