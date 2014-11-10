@@ -46,7 +46,7 @@
 						li.character-list__item(ng-repeat="character in displayedCharacters track by character.id",
 							                    ng-click="selectCharacter(character)",
 							                    ng-bind-html="character.html | trustAsHtml",
-							                    ng-class="{selected: selectedCharacters.indexOf(character) >= 0}")
+							                    ng-class="{selected: characterIsSelected(character)}")
 
 			.selected-character
 				.character-preview(ng-if="selectedCharacters[0]",

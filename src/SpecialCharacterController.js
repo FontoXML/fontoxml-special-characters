@@ -1,7 +1,14 @@
 define([
-	'editor'
-], function (editor) {
+	'editor',
+
+	'fontoxml-local-storage'
+], function (
+	editor,
+
+	localStorage) {
 	'use strict';
+
+	var localStorageService = localStorage.localStorageService;
 
 	function codePointToString (codePoint) {
 		return String.fromCodePoint(parseInt(codePoint.substr(2), 16));
@@ -15,7 +22,7 @@ define([
 		return characters.map(characterToString).join();
 	}
 
-	function getCharactersByLabel(characters, label) {
+	function getCharactersByLabel (characters, label) {
 		return characters.filter(function (character) {
 			return character.labels.indexOf(label.name) >= 0;
 		});
@@ -61,15 +68,12 @@ define([
 	}
 
 	return /* @ngInject */ function SpecialCharacterController ($scope, operationData) {
-		var selectedLabel = null;
 		var labelCharacters = null;
 		var characters = editor.getCharacterSetByName(operationData.characterSet);
 		var labels = preprocessLabels(characters);
 
 		$scope.displayedCharacters = [];
 		$scope.displayedLabels = [];
-
-		$scope.selectedCharacters = [];
 
 		$scope.contexts = [
 			{
@@ -93,12 +97,52 @@ define([
 			}
 		];
 
+		var storedSearchContextAttribute = $scope.contexts[0].attribute,
+			storedSelectedLabel = labels[0],
+			storedSearchFilter = '',
+			storedSelectedCharacters = [];
+
+		if (localStorageService.hasData('fontoxml-ui-special-characters|storedSearchContextAttribute')) {
+			storedSearchContextAttribute = localStorageService.getData('fontoxml-ui-special-characters|storedSearchContextAttribute');
+		}
+		if (localStorageService.hasData('fontoxml-ui-special-characters|storedSelectedLabel')) {
+			try {
+				var storedSelectedLabel = localStorageService.getData('fontoxml-ui-special-characters|storedSelectedLabel');
+				storedSelectedLabel = storedSelectedLabel != 'undefined' ? JSON.parse(storedSelectedLabel) : undefined;
+			} catch (error) {
+				console.error('Error during JSON parsing of localStorageService.getData("fontoxml-ui-special-characters|storedSelectedLabel")');
+			}
+		}
+		if (localStorageService.hasData('fontoxml-ui-special-characters|storedSearchFilter')) {
+			storedSearchFilter = localStorageService.getData('fontoxml-ui-special-characters|storedSearchFilter');
+		}
+		if (localStorageService.hasData('fontoxml-ui-special-characters|storedSelectedCharacters')) {
+			try {
+				storedSelectedCharacters = JSON.parse(localStorageService.getData('fontoxml-ui-special-characters|storedSelectedCharacters'));
+			} catch (error) {
+				console.error('Error during JSON parsing of localStorageService.getData("fontoxml-ui-special-characters|storedSelectedCharacters")');
+			}
+		}
+
+		console.log('storedSearchContextAttribute', storedSearchContextAttribute);
+		console.log('storedSelectedLabel', storedSelectedLabel);
+		console.log('storedSearchFilter', storedSearchFilter);
+		console.log('storedSelectedCharacters', storedSelectedCharacters);
+
+		var selectedLabel = storedSelectedLabel;
+
 		$scope.search = {
-			filter: undefined,
-			context: $scope.contexts[0]
+			context: $scope.contexts.find(function (context) {
+				return context.attribute === storedSearchContextAttribute
+			}),
+			filter: storedSearchFilter
 		};
+		$scope.selectedCharacters = storedSelectedCharacters;
+
+		selectLabel(selectedLabel);
 
 		$scope.selectLabel = selectLabel;
+		$scope.characterIsSelected = characterIsSelected;
 		$scope.labelIsSelected = labelIsSelected;
 		$scope.selectCharacter = selectCharacter;
 
@@ -116,12 +160,6 @@ define([
 			return character;
 		}
 
-		function selectCharacter (character) {
-			// TODO: Push onto array selectedCharacters instead of overwrite because inserting multiple special
-			// characters with one modal is a different user story.
-			$scope.selectedCharacters = [character];
-		}
-
 		function selectLabel (label) {
 			selectedLabel = label;
 
@@ -135,8 +173,32 @@ define([
 			updateFilteredLabelsAndCharacters($scope.search.filter);
 		}
 
+		function selectCharacter (character) {
+			// TODO: Push onto array selectedCharacters instead of overwrite because inserting multiple special
+			// characters with one modal is a different user story.
+			$scope.selectedCharacters = [character];
+		}
+
 		function labelIsSelected (label) {
-			return selectedLabel === label;
+			if (label === undefined && selectedLabel === undefined) {
+				return true;
+			} else if (label === undefined || selectedLabel === undefined) {
+				return false;
+			}
+
+			return selectedLabel.name === label.name;
+		}
+
+		function characterIsSelected (character) {
+			if (character === undefined && $scope.selectedCharacters.length === 0) {
+				return true;
+			} else if (character === undefined || $scope.selectedCharacters.length === 0) {
+				return false;
+			}
+
+			return $scope.selectedCharacters.find(function (selectedCharacter) {
+				return character.id === selectedCharacter.id;
+			});
 		}
 
 		function updateFilteredLabelsAndCharacters (filter) {
@@ -183,6 +245,11 @@ define([
 		});
 
 		function apply() {
+			localStorageService.setData('fontoxml-ui-special-characters|storedSearchContextAttribute', $scope.search.context.attribute);
+			localStorageService.setData('fontoxml-ui-special-characters|storedSelectedLabel', JSON.stringify(selectedLabel));
+			localStorageService.setData('fontoxml-ui-special-characters|storedSearchFilter', $scope.search.filter);
+			localStorageService.setData('fontoxml-ui-special-characters|storedSelectedCharacters', JSON.stringify($scope.selectedCharacters));
+
 			operationData.text = charactersToString($scope.selectedCharacters);
 
 			$scope.$close(operationData);
@@ -191,7 +258,5 @@ define([
 		function cancel() {
 			$scope.$dismiss();
 		}
-
-		selectLabel(labels[0]);
 	};
 });
