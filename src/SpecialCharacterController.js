@@ -3,15 +3,15 @@ define([
 ], function (editor) {
 	'use strict';
 
-	function codePointToString(codePoint) {
+	function codePointToString (codePoint) {
 		return String.fromCodePoint(parseInt(codePoint.substr(2), 16));
 	}
 
-	function characterToString(character) {
+	function characterToString (character) {
 		return character.codePoints.map(codePointToString).join();
 	}
 
-	function charactersToString(characters) {
+	function charactersToString (characters) {
 		return characters.map(characterToString).join();
 	}
 
@@ -21,7 +21,7 @@ define([
 		});
 	}
 
-	function preprocessLabels(characters) {
+	function preprocessLabels (characters) {
 		var labelsByName = {};
 
 		characters.forEach(function (character) {
@@ -60,7 +60,7 @@ define([
 		});
 	}
 
-	return /* @ngInject */ function SpecialCharacterController($scope, operationData) {
+	return /* @ngInject */ function SpecialCharacterController ($scope, operationData) {
 		var selectedLabel = null;
 		var labelCharacters = null;
 		var characters = editor.getCharacterSetByName(operationData.characterSet);
@@ -106,7 +106,7 @@ define([
 		$scope.cancel = cancel;
 
 
-		function characterHtmlSafe(character) {
+		function characterHtmlSafe (character) {
 			if (!character.html) {
 				// &#8202; is added to avoid the Chromium-specific bug that obstructs rendering zero-width characters:
 				// https://code.google.com/p/chromium/issues/detail?id=281402
@@ -116,13 +116,13 @@ define([
 			return character;
 		}
 
-		function selectCharacter(character) {
+		function selectCharacter (character) {
 			// TODO: Push onto array selectedCharacters instead of overwrite because inserting multiple special
 			// characters with one modal is a different user story.
 			$scope.selectedCharacters = [character];
 		}
 
-		function selectLabel(label) {
+		function selectLabel (label) {
 			selectedLabel = label;
 
 			if (label) {
@@ -135,11 +135,11 @@ define([
 			updateFilteredLabelsAndCharacters($scope.search.filter);
 		}
 
-		function labelIsSelected(label) {
+		function labelIsSelected (label) {
 			return selectedLabel === label;
 		}
 
-		function updateFilteredLabelsAndCharacters(filter) {
+		function updateFilteredLabelsAndCharacters (filter) {
 			if (!filter) {
 				$scope.displayedCharacters = labelCharacters;
 			}

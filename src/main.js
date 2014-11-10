@@ -1,17 +1,17 @@
 define([
 	'angular',
 
-	'./specialCharacterControllerDefinition'
+	'./SpecialCharacterController'
 ], function(
 	angular,
 
-	specialCharacterControllerDefinition
+	SpecialCharacterController
 	) {
 	'use strict';
 
 	var module = angular.module('ui-special-characters', []);
 
-	module.controller('SpecialCharacterModalController', specialCharacterControllerDefinition);
+	module.controller('SpecialCharacterModalController', SpecialCharacterController);
 
 	return {
 		module: module

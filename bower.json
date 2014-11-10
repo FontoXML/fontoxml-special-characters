@@ -1,15 +1,17 @@
 {
-	"name": "fontoxml-ui-special-characters",
-	"version": "0.1.0",
-	"description": "FontoXML UI special characters package",
-	"main": "src/main.js",
-	"private": true,
-	"ignore": [
-		"**/.*",
-		"node_modules",
-		"lib",
-		"test"
-	],
-	"dependencies": {
-	}
+  "name": "fontoxml-ui-special-characters",
+  "version": "0.1.0",
+  "description": "FontoXML UI modal: Special Characters",
+  "main": "src/main.js",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "lib",
+    "test"
+  ],
+  "dependencies": {
+    "angular": "~1.3.0",
+    "fontoxml-editor": "git@bitbucket.org:liones/fontoxml-editor.git#develop"
+  }
 }
