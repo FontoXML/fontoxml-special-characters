@@ -73,6 +73,7 @@ define([
 		var labels = preprocessLabels(characters);
 
 		$scope.displayedCharacters = [];
+		$scope.displayedRecentCharacters = [];
 		$scope.displayedLabels = [];
 
 		$scope.contexts = [
@@ -100,7 +101,8 @@ define([
 		var storedSearchContextAttribute = $scope.contexts[0].attribute,
 			storedSelectedLabel = labels[0],
 			storedSearchFilter = '',
-			storedSelectedCharacters = [];
+			storedSelectedCharacters = [],
+			storedDisplayedRecentCharacters = [];
 
 		if (localStorageService.hasData('fontoxml-ui-special-characters|storedSearchContextAttribute')) {
 			storedSearchContextAttribute = localStorageService.getData('fontoxml-ui-special-characters|storedSearchContextAttribute');
@@ -123,11 +125,13 @@ define([
 				console.error('Error during JSON parsing of localStorageService.getData("fontoxml-ui-special-characters|storedSelectedCharacters")');
 			}
 		}
-
-		console.log('storedSearchContextAttribute', storedSearchContextAttribute);
-		console.log('storedSelectedLabel', storedSelectedLabel);
-		console.log('storedSearchFilter', storedSearchFilter);
-		console.log('storedSelectedCharacters', storedSelectedCharacters);
+		if (localStorageService.hasData('fontoxml-ui-special-characters|storedDisplayedRecentCharacters')) {
+			try {
+				storedDisplayedRecentCharacters = JSON.parse(localStorageService.getData('fontoxml-ui-special-characters|storedDisplayedRecentCharacters'));
+			} catch (error) {
+				console.error('Error during JSON parsing of localStorageService.getData("fontoxml-ui-special-characters|storedDisplayedRecentCharacters")');
+			}
+		}
 
 		var selectedLabel = storedSelectedLabel;
 
@@ -138,6 +142,7 @@ define([
 			filter: storedSearchFilter
 		};
 		$scope.selectedCharacters = storedSelectedCharacters;
+		$scope.displayedRecentCharacters = storedDisplayedRecentCharacters;
 
 		selectLabel(selectedLabel);
 
@@ -249,6 +254,20 @@ define([
 			localStorageService.setData('fontoxml-ui-special-characters|storedSelectedLabel', JSON.stringify(selectedLabel));
 			localStorageService.setData('fontoxml-ui-special-characters|storedSearchFilter', $scope.search.filter);
 			localStorageService.setData('fontoxml-ui-special-characters|storedSelectedCharacters', JSON.stringify($scope.selectedCharacters));
+
+			$scope.selectedCharacters.forEach(function (selectedCharacter) {
+				var isInRecentCharacters = $scope.displayedRecentCharacters.some(function (recentCharacter) {
+					return recentCharacter.id === selectCharacter.id;
+				});
+				if (!isInRecentCharacters) {
+					$scope.displayedRecentCharacters.unshift(selectedCharacter);
+					if ($scope.displayedRecentCharacters.length > 8) {
+						$scope.displayedRecentCharacters = $scope.displayedRecentCharacters.slice(0, 8);
+					}
+				}
+			});
+
+			localStorageService.setData('fontoxml-ui-special-characters|storedDisplayedRecentCharacters', JSON.stringify($scope.displayedRecentCharacters));
 
 			operationData.text = charactersToString($scope.selectedCharacters);
 

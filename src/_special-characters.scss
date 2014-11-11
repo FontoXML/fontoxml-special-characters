@@ -174,20 +174,39 @@ $ui-special-char-modal-grid-border-width: 1px;
 
 // Information about current selected character
 // - Third column in the special-characters modal
-.selected-character {
+.character-picker-right-column {
 	@include flex(1);
 	@extend %modal-column;
-	@extend %well;
 
 	display: flexbox;
 	flex-direction: column;
+}
+
+.recent-characters {
+	@include flex(0, 0, auto);
+	// TODO: compute this based on variables somehow?
+	height: 200px;
+
+	// TODO: @extend %well has padding that is not desired here
+	background-color: $white;
+	border: 1px solid $skin-accent-light;
+
+	.recent-characters-header {
+		@extend %modal-column-header;
+		border-bottom: 1px solid $skin-accent-light;
+	}
+}
+
+.selected-character {
+	@include flex(1);
+	flex-direction: vertical-shrinkable;
+	@extend %well;
 
 	.character-preview {
 		font-size: 5em;
-		line-height: 3;
 		font-family: $font-family-serif;
 		text-align: center;
-		padding: 32px $padding-small;
+		padding: $padding-large;
 		flex: 4;
 	}
 
