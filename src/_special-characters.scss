@@ -184,8 +184,9 @@ $ui-special-char-modal-grid-border-width: 1px;
 
 .recent-characters {
 	@include flex(0, 0, auto);
+
 	// TODO: compute this based on variables somehow?
-	height: 200px;
+	height: 214px;
 
 	// TODO: @extend %well has padding that is not desired here
 	background-color: $white;
@@ -193,7 +194,10 @@ $ui-special-char-modal-grid-border-width: 1px;
 
 	.recent-characters-header {
 		@extend %modal-column-header;
+		padding-top: 15px;
+		padding-bottom: 15px;
 		border-bottom: 1px solid $skin-accent-light;
+		border-bottom-width: 0;
 	}
 }
 
@@ -249,6 +253,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 		@include flex(0, 0, 460px); // @TODO: calculate from size and number of characters in one row
 	}
 	.character-list__grid {
+		min-width: 206px; // @TODO: calculate from size and number of characters in one row
 		max-width: 409px; // @TODO: calculate from size and number of characters in one row
 	}
 	.character-list__item:nth-child(8n) {
