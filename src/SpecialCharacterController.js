@@ -88,7 +88,7 @@ define([
 				attribute: 'characterRangeStart',
 				sortLabel: 'Sort by character range',
 				renderLabelSubtitle: function (label) {
-					return label.characterRangeStart + ' - ' + label.characterRangeEnd;
+					return label.characterRangeStart + ' – ' + label.characterRangeEnd;
 				},
 				renderCharacterSubtitle: function (character) {
 					return 'Character number ' + character.codePoints.map(function (codePoint) {
