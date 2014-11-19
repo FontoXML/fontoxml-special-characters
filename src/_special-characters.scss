@@ -69,17 +69,14 @@ $ui-special-char-modal-grid-border-width: 1px;
 .character-group-browser {
 	@include flex(1);
 	@extend %modal-column;
+	background-color: $white;
 	border: 1px solid $skin-accent-light;
 	margin-right: $ui-special-char-modal-column-spacing;
-
 }
 
-.character-group-list {
-	// Create a vertical-shrinkable child with a scrollbar
-	background-color: $white;
+.character-group-list-container {
 	padding: $padding;
 	overflow: auto;
-	border-top: none;
 }
 
 .character-group-list__item {
@@ -119,6 +116,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 	border: 1px solid $skin-accent-light;
 	overflow: auto;
 	margin-right: $ui-special-char-modal-column-spacing;
+	min-height: 50vh;
 }
 
 // Universal properties of character-list

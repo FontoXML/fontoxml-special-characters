@@ -16,21 +16,22 @@
 					select.form-control(ng-model="search.context",
 						                ng-options="context.sortLabel for context in contexts")
 
-				ul.character-group-list.list--bordered
-					li.character-group-list__item(ng-if="search.filter.length>0",
-						                          ng-class="{active: labelIsSelected()}")
-						a(ng-click="selectLabel()")
-							| Search results for ‘{{search.filter}}’
+				.character-group-list-container
+					ul.list--bordered
+						li.character-group-list__item(ng-if="search.filter.length>0",
+							                          ng-class="{active: labelIsSelected()}")
+							a(ng-click="selectLabel()")
+								| Search results for ‘{{search.filter}}’
 
-					li.character-group-list__item(ng-repeat="label in displayedLabels | orderBy: search.context.attribute track by label.name",
-						                          ng-class="{active: labelIsSelected(label)}",
-						                          ng-if="!search.filter || label.matches > 0")
-						a(ng-click="selectLabel(label)")
-							span.character-group-explanation(ng-if="search.context.renderLabelSubtitle")
-								| {{search.context.renderLabelSubtitle(label)}}
+						li.character-group-list__item(ng-repeat="label in displayedLabels | orderBy: search.context.attribute track by label.name",
+							                          ng-class="{active: labelIsSelected(label)}",
+							                          ng-if="!search.filter || label.matches > 0")
+							a(ng-click="selectLabel(label)")
+								span.character-group-explanation(ng-if="search.context.renderLabelSubtitle")
+									| {{search.context.renderLabelSubtitle(label)}}
 
-							span.character-group-name
-								| {{label.name}}
+								span.character-group-name
+									| {{label.name}}
 
 			.character-browser
 				.character-search
