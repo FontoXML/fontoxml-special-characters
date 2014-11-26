@@ -38,7 +38,9 @@ define([
 						name: labelName,
 						count: 0,
 						characterRangeStart: null,
-						characterRangeEnd: null
+						characterRangeStartFrom: null,
+						characterRangeEnd: null,
+						characterRangeEndFrom: null
 					};
 				}
 
@@ -49,9 +51,11 @@ define([
 					var weight = parseInt(codePoint.substr(2), 16);
 					if (labelInfo.characterRangeStart === null || weight < labelInfo.characterRangeStart) {
 						labelInfo.characterRangeStart = weight;
+						labelInfo.characterRangeStartFrom = character;
 					}
 					if (labelInfo.characterRangeEnd === null || weight > labelInfo.characterRangeEnd) {
 						labelInfo.characterRangeEnd = weight;
+						labelInfo.characterRangeEndFrom = character;
 					}
 				});
 			});
@@ -76,6 +80,10 @@ define([
 		$scope.displayedRecentCharacters = [];
 		$scope.displayedLabels = [];
 
+		$scope.filterEmptyCharacters = function (character) {
+			return character && character.name;
+		};
+
 		$scope.contexts = [
 			{
 				attribute: 'name',
@@ -88,12 +96,11 @@ define([
 				attribute: 'characterRangeStart',
 				sortLabel: 'Sort by character range',
 				renderLabelSubtitle: function (label) {
-					return label.characterRangeStart + ' – ' + label.characterRangeEnd;
+					return label.characterRangeStartFrom.codePoints.join(', ') + ' – ' +
+						label.characterRangeEndFrom.codePoints.join(', ');
 				},
 				renderCharacterSubtitle: function (character) {
-					return 'Character number ' + character.codePoints.map(function (codePoint) {
-						return parseInt(codePoint.substr(2), 16);
-					}).join(', ');
+					return character.codePoints.join(', ');
 				}
 			}
 		];
@@ -109,7 +116,7 @@ define([
 		}
 		if (localStorageService.hasData('fontoxml-ui-special-characters|storedSelectedLabel')) {
 			try {
-				var storedSelectedLabel = localStorageService.getData('fontoxml-ui-special-characters|storedSelectedLabel');
+				storedSelectedLabel = localStorageService.getData('fontoxml-ui-special-characters|storedSelectedLabel');
 				storedSelectedLabel = storedSelectedLabel != 'undefined' ? JSON.parse(storedSelectedLabel) : undefined;
 			} catch (error) {
 				console.error('Error during JSON parsing of localStorageService.getData("fontoxml-ui-special-characters|storedSelectedLabel")');
@@ -137,7 +144,7 @@ define([
 
 		$scope.search = {
 			context: $scope.contexts.find(function (context) {
-				return context.attribute === storedSearchContextAttribute
+				return context.attribute === storedSearchContextAttribute;
 			}),
 			filter: storedSearchFilter
 		};
@@ -157,9 +164,10 @@ define([
 
 		function characterHtmlSafe (character) {
 			if (!character.html) {
-				// &#8202; is added to avoid the Chromium-specific bug that obstructs rendering zero-width characters:
+				// &#8202; is prepended to this html in the jade template file; avoids the Chromium-specific bug that
+				// obstructs rendering zero-width characters:
 				// https://code.google.com/p/chromium/issues/detail?id=281402
-				character.html = '&#8202;' + characterToString(character);
+				character.html = characterToString(character);
 			}
 
 			return character;

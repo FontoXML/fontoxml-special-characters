@@ -46,8 +46,8 @@
 					ul.character-list__grid
 						li.character-list__item(ng-repeat="character in displayedCharacters track by character.id",
 							                    ng-click="selectCharacter(character)",
-							                    ng-bind-html="character.html | trustAsHtml",
-							                    ng-class="{selected: characterIsSelected(character)}")
+							                    ng-class="{selected: characterIsSelected(character), disabled: !character.name}")
+							span(ng-if="character.name", ng-bind-html="'&#8202;' + character.html | trustAsHtml")
 
 
 
@@ -60,12 +60,12 @@
 						ul.character-list__grid
 							li.character-list__item(ng-repeat="character in displayedRecentCharacters track by character.id",
 								                    ng-click="selectCharacter(character)",
-								                    ng-bind-html="character.html | trustAsHtml",
-								                    ng-class="{selected: characterIsSelected(character)}")
+								                    ng-class="{selected: characterIsSelected(character), disabled: !character.name}")
+								span(ng-if="character.name", ng-bind-html="'&#8202;' + character.html | trustAsHtml")
 
 				.selected-character
 					.character-preview(ng-if="selectedCharacters[0]",
-					                   ng-bind-html="selectedCharacters[0].html | trustAsHtml")
+					                   ng-bind-html="'&#8202;' + selectedCharacters[0].html | trustAsHtml")
 
 					.character-label(ng-if="selectedCharacters[0]")
 						| {{selectedCharacters[0].name}}
