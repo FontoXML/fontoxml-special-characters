@@ -45,11 +45,9 @@
 				.character-list
 					ul.character-list__grid
 						li.character-list__item(ng-repeat="character in displayedCharacters track by character.id",
-							                    ng-click="selectCharacter(character)",
-							                    ng-class="{selected: characterIsSelected(character), disabled: !character.name}")
-							span(ng-if="character.name", ng-bind-html="'&#8202;' + character.html | trustAsHtml")
-
-
+							                    ng-click="selectCharacter(character)")
+							a(ng-if="character.name", ng-bind-html="'&#8202;' + character.html | trustAsHtml",
+							  ng-class="{selected: characterIsSelected(character), disabled: !character.name}")
 
 			.character-picker-right-column
 				.recent-characters

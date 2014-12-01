@@ -127,7 +127,12 @@ $ui-special-char-modal-grid-border-width: 1px;
 	overflow: auto;
 	margin-bottom: 0px;
 }
+
 .character-list__grid {
+
+	font-size: $font-size-large;
+	font-family: $font-family-serif;
+
 	// padding-top is smaller to compensate for the increased margin-top of list items
 	padding: 1px - $ui-special-char-modal-grid-border-width 1px 1px 1px;
 	margin: 0;
@@ -143,18 +148,13 @@ $ui-special-char-modal-grid-border-width: 1px;
 	 );
 
  }
+
 .character-list__item {
-	// Add selectable css for :hover and .selected behaviour
-	@extend %selectable;
-
-	font-size: $font-size-large;
-	font-family: $font-family-serif;
-
+	display: inline-block;
 	width: $ui-special-char-modal-char-width;
 	line-height: $ui-special-char-modal-char-height;
 
 	list-style-type: none;
-	display: inline-block;
 	text-align: center;
 
 	// margin-top is larger, so that margin-bottom does not push grid border too far
@@ -166,8 +166,11 @@ $ui-special-char-modal-grid-border-width: 1px;
 
 	margin-bottom: $ui-special-char-modal-char-border-width;
 	margin-left: $ui-special-char-modal-char-border-width;
-	padding: 0;
 
+	> a {
+		display: block;
+		@extend %selectable;
+	}
 }
 
 // Information about current selected character
@@ -229,18 +232,17 @@ $ui-special-char-modal-grid-border-width: 1px;
 		color: $text-color;
 		display: block;
 
-		&:hover,
-		&:focus {
+		@include focus() {
 			text-decoration: none;
-			background-color: $skin-primary-ultralight;
+			background-color: $color--focus-bg !important;
 		}
 	}
 	&.active > a {
-		background-color: $skin-primary-lighter;
+		background-color: $color--selection-bg;
+		border-color: $color--selection-border;
 
-		&:hover,
-		&:focus {
-			background-color: $skin-primary-ultralight;
+		@include focus() {
+			background-color: $color--selection-bg;
 		}
 	}
 }
