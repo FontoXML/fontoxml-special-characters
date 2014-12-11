@@ -1,14 +1,22 @@
 define([
 	'editor',
 
-	'fontoxml-local-storage'
+	'fontoxml-local-storage',
+
+	'text!/bower.json'
 ], function (
 	editor,
 
-	localStorage) {
+	localStorage,
+
+	bowerJSONFile) {
 	'use strict';
 
 	var localStorageService = localStorage.localStorageService;
+
+	var bowerJSON = JSON.parse(bowerJSONFile);
+
+	console.log("bowerJSON.name", bowerJSON.name);
 
 	function codePointToString (codePoint) {
 		return String.fromCodePoint(parseInt(codePoint.substr(2), 16));
@@ -76,7 +84,7 @@ define([
 		var characters = editor.getCharacterSetByName(operationData.characterSet);
 		var labels = preprocessLabels(characters);
 
-		var storagePrefix = 'fontoxml-ui-special-characters|' + operationData.characterSet + '|';
+		var storagePrefix = bowerJSON.name + '|fontoxml-ui-special-characters|' + operationData.characterSet + '|';
 
 		$scope.displayedCharacters = [];
 		$scope.displayedRecentCharacters = [];
