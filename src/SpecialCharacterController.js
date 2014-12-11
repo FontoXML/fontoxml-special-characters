@@ -16,8 +16,6 @@ define([
 
 	var bowerJSON = JSON.parse(bowerJSONFile);
 
-	console.log("bowerJSON.name", bowerJSON.name);
-
 	function codePointToString (codePoint) {
 		return String.fromCodePoint(parseInt(codePoint.substr(2), 16));
 	}
