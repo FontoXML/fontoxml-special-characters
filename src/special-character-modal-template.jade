@@ -1,8 +1,6 @@
-.modal-header
-	h3.modal-title
-		| Insert special character
+ui-modal-header(title="Insert special character", icon="keyboard-o")
 
-.modal-body
+ui-modal-body
 	.alert
 		| Select the character you’d like to insert into your document.
 
@@ -71,7 +69,7 @@
 					.character-numeric-codes(ng-if="selectedCharacters[0] && search.context.renderCharacterSubtitle")
 						| {{search.context.renderCharacterSubtitle(selectedCharacters[0])}}
 
-.modal-footer
+ui-modal-footer
 	button.btn.btn-default.pull-left(ng-click="cancel()")
 		| Cancel
 
