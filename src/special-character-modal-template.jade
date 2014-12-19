@@ -70,9 +70,14 @@ ui-modal-body
 						| {{search.context.renderCharacterSubtitle(selectedCharacters[0])}}
 
 ui-modal-footer
-	button.btn.btn-default.pull-left(ng-click="cancel()")
-		| Cancel
+	ui-button.pull-left(
+		type="default",
+		label="Cancel",
+		ng-click="cancel()")
 
-	button.btn.btn-primary(ng-click="apply()",
-		                   ng-disabled="selectedCharacters.length === 0")
-		| Insert
+	ui-button(
+		type="primary",
+		label="Insert",
+		ng-click="apply()",
+		ng-disabled="selectedCharacters.length === 0")
+
