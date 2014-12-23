@@ -1,4 +1,6 @@
-ui-modal-header(title="Insert special character", icon="keyboard-o")
+ui-modal-header(
+	title="Insert special character",
+	icon="keyboard-o")
 
 ui-modal-body
 	.alert
@@ -11,19 +13,22 @@ ui-modal-body
 					label.control-label
 						| Sort character groups
 
-					select.form-control(ng-model="search.context",
-						                ng-options="context.sortLabel for context in contexts")
+					select.form-control(
+						ng-model="search.context",
+						ng-options="context.sortLabel for context in contexts")
 
 				.character-group-list-container
 					ul.list--bordered
-						li.character-group-list__item(ng-if="search.filter.length>0",
-							                          ng-class="{active: labelIsSelected()}")
+						li.character-group-list__item(
+							ng-if="search.filter.length > 0",
+							ng-class="{active: labelIsSelected()}")
 							a(ng-click="selectLabel()")
 								| Search results for ‘{{search.filter}}’
 
-						li.character-group-list__item(ng-repeat="label in displayedLabels | orderBy: search.context.attribute track by label.name",
-							                          ng-class="{active: labelIsSelected(label)}",
-							                          ng-if="!search.filter || label.matches > 0")
+						li.character-group-list__item(
+							ng-repeat="label in displayedLabels | orderBy: search.context.attribute track by label.name",
+							ng-class="{active: labelIsSelected(label)}",
+							ng-if="!search.filter || label.matches > 0")
 							a(ng-click="selectLabel(label)")
 								span.character-group-explanation(ng-if="search.context.renderLabelSubtitle")
 									| {{search.context.renderLabelSubtitle(label)}}
@@ -36,16 +41,20 @@ ui-modal-body
 					label.control-label
 						| Filter characters
 
-					input.form-control(type="text",
-						               placeholder="Filter labels and characters…",
-						               ng-model="search.filter")
+					input.form-control(
+						type="text",
+						placeholder="Filter labels and characters…",
+						ng-model="search.filter")
 
 				.character-list
 					ul.character-list__grid
-						li.character-list__item(ng-repeat="character in displayedCharacters track by character.id",
-							                    ng-click="selectCharacter(character)")
-							a(ng-if="character.name", ng-bind-html="'&#8202;' + character.html | trustAsHtml",
-							  ng-class="{selected: characterIsSelected(character), disabled: !character.name}")
+						li.character-list__item(
+							ng-repeat="character in displayedCharacters track by character.id",
+							ng-click="selectCharacter(character)")
+							a(
+								ng-if="character.name",
+								ng-bind-html="'&#8202;' + character.html | trustAsHtml",
+								ng-class="{selected: characterIsSelected(character), disabled: !character.name}")
 
 			.character-picker-right-column
 				.recent-characters
@@ -54,14 +63,16 @@ ui-modal-body
 
 					.character-list(ng-if="displayedRecentCharacters.length > 0")
 						ul.character-list__grid
-							li.character-list__item(ng-repeat="character in displayedRecentCharacters track by character.id",
-								                    ng-click="selectCharacter(character)",
-								                    ng-class="{selected: characterIsSelected(character), disabled: !character.name}")
+							li.character-list__item(
+								ng-repeat="character in displayedRecentCharacters track by character.id",
+								ng-click="selectCharacter(character)",
+								ng-class="{selected: characterIsSelected(character), disabled: !character.name}")
 								span(ng-if="character.name", ng-bind-html="'&#8202;' + character.html | trustAsHtml")
 
 				.selected-character
-					.character-preview(ng-if="selectedCharacters[0]",
-					                   ng-bind-html="'&#8202;' + selectedCharacters[0].html | trustAsHtml")
+					.character-preview(
+						ng-if="selectedCharacters[0]",
+						ng-bind-html="'&#8202;' + selectedCharacters[0].html | trustAsHtml")
 
 					.character-label(ng-if="selectedCharacters[0]")
 						| {{selectedCharacters[0].name}}
@@ -79,5 +90,4 @@ ui-modal-footer
 		type="primary",
 		label="Insert",
 		ng-click="apply()",
-		ng-disabled="selectedCharacters.length === 0")
-
+		enabled="selectedCharacters.length > 0")
