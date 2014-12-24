@@ -88,6 +88,9 @@ $ui-special-char-modal-grid-border-width: 1px;
 		> * {
 			display: block;
 		}
+		@include focus() {
+			color: $text-color !important;
+		}
 	}
 }
 
@@ -170,6 +173,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 	> a {
 		display: block;
 		@extend %selectable;
+		color: $text-color;
 	}
 }
 
