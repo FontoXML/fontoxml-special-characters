@@ -57,11 +57,11 @@ ui-modal-body
 								ng-class="{selected: characterIsSelected(character), disabled: !character.name}")
 
 			.character-picker-right-column
-				.recent-characters
+				.recent-characters(ng-if="displayedRecentCharacters.length > 0")
 					.recent-characters-header
 						| Recently inserted
 
-					.character-list(ng-if="displayedRecentCharacters.length > 0")
+					.character-list
 						ul.character-list__grid
 							li.character-list__item(
 								ng-repeat="character in displayedRecentCharacters track by character.id",
