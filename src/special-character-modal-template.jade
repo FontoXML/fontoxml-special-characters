@@ -84,10 +84,10 @@ ui-modal-footer
 	ui-button.pull-left(
 		type="default",
 		label="Cancel",
-		ng-click="cancel()")
+		click="cancel()")
 
 	ui-button(
 		type="primary",
 		label="Insert",
-		ng-click="apply()",
-		enabled="selectedCharacters.length > 0")
+		click="apply()",
+		enabled="{{selectedCharacters.length > 0}}")
