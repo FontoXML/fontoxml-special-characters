@@ -1,93 +1,99 @@
-ui-modal-header(
-	title="Insert special character",
-	icon="keyboard-o")
+ui-modal(ng-keyup="$event.keyCode === 13 && selectedCharacters.length > 0 && apply()")
+	ui-modal-header(
+		title="Insert special character"
+		icon="keyboard-o")
 
-ui-modal-body
-	.alert
-		| Select the character you’d like to insert into your document.
+	ui-modal-body
+		.alert
+			| Select the character you’d like to insert into your document.
 
-	.modal-functional-body
-		.character-picker
-			.character-group-browser
-				.character-group-sort
-					label.control-label
-						| Sort character groups
+		.modal-functional-body
+			.character-picker
+				.character-group-browser
+					.character-group-sort
+						label.control-label
+							| Sort character groups
 
-					select.form-control(
-						ng-model="search.context",
-						ng-options="context.sortLabel for context in contexts")
+						select.form-control(
+							ng-model="search.context"
+							ng-options="context.sortLabel for context in contexts")
 
-				.character-group-list-container
-					ul.list--bordered
-						li.character-group-list__item(
-							ng-if="search.filter.length > 0",
-							ng-class="{active: labelIsSelected()}")
-							a(ng-click="selectLabel()")
-								| Search results for ‘{{search.filter}}’
+					.character-group-list-container
+						ul.list--bordered
+							li.character-group-list__item(
+								ng-if="search.filter.length > 0"
+								ng-class="{active: labelIsSelected()}")
+								a(ng-click="selectLabel()")
+									| Search results for ‘{{search.filter}}’
 
-						li.character-group-list__item(
-							ng-repeat="label in displayedLabels | orderBy: search.context.attribute track by label.name",
-							ng-class="{active: labelIsSelected(label)}",
-							ng-if="!search.filter || label.matches > 0")
-							a(ng-click="selectLabel(label)")
-								span.character-group-explanation(ng-if="search.context.renderLabelSubtitle")
-									| {{search.context.renderLabelSubtitle(label)}}
+							li.character-group-list__item(
+								ng-repeat="label in displayedLabels | orderBy: search.context.attribute track by label.name"
+								ng-class="{active: labelIsSelected(label)}"
+								ng-if="!search.filter || label.matches > 0")
+								a(ng-click="selectLabel(label)")
+									span.character-group-explanation(ng-if="search.context.renderLabelSubtitle")
+										| {{search.context.renderLabelSubtitle(label)}}
 
-								span.character-group-name
-									| {{label.name}}
+									span.character-group-name
+										| {{label.name}}
 
-			.character-browser
-				.character-search
-					label.control-label
-						| Filter characters
+				.character-browser
+					.character-search
+						label.control-label
+							| Filter characters
 
-					input.form-control(
-						type="text",
-						placeholder="Filter labels and characters…",
-						ng-model="search.filter")
-
-				.character-list
-					ul.character-list__grid
-						li.character-list__item(
-							ng-repeat="character in displayedCharacters track by character.id",
-							ng-click="selectCharacter(character)")
-							a(
-								ng-if="character.name",
-								ng-bind-html="'&#8202;' + character.html | trustAsHtml",
-								ng-class="{selected: characterIsSelected(character), disabled: !character.name}")
-
-			.character-picker-right-column
-				.recent-characters(ng-if="displayedRecentCharacters.length > 0")
-					.recent-characters-header
-						| Recently inserted
+						input.form-control(
+							type="text"
+							placeholder="Filter labels and characters…"
+							ng-model="search.filter")
 
 					.character-list
 						ul.character-list__grid
 							li.character-list__item(
-								ng-repeat="character in displayedRecentCharacters track by character.id",
-								ng-click="selectCharacter(character)",
-								ng-class="{selected: characterIsSelected(character), disabled: !character.name}")
-								span(ng-if="character.name", ng-bind-html="'&#8202;' + character.html | trustAsHtml")
+								ng-repeat="character in displayedCharacters track by character.id"
+								ng-click="selectCharacter(character)")
+								a(
+									ng-if="character.name"
+									ng-bind-html="'&#8202;' + character.html | trustAsHtml"
+									ng-class="{selected: characterIsSelected(character), disabled: !character.name}")
 
-				.selected-character
-					.character-preview(
-						ng-if="selectedCharacters[0]",
-						ng-bind-html="'&#8202;' + selectedCharacters[0].html | trustAsHtml")
+				.character-picker-right-column
+					.recent-characters(ng-if="displayedRecentCharacters.length > 0")
+						.recent-characters-header
+							| Recently inserted
 
-					.character-label(ng-if="selectedCharacters[0]")
-						| {{selectedCharacters[0].name}}
+						.character-list
+							ul.character-list__grid
+								li.character-list__item(
+									ng-repeat="character in displayedRecentCharacters track by character.id"
+									ng-click="selectCharacter(character)"
+									ng-class="{selected: characterIsSelected(character), disabled: !character.name}")
+									span(
+										ng-if="character.name"
+										ng-bind-html="'&#8202;' + character.html | trustAsHtml")
 
-					.character-numeric-codes(ng-if="selectedCharacters[0] && search.context.renderCharacterSubtitle")
-						| {{search.context.renderCharacterSubtitle(selectedCharacters[0])}}
+					.selected-character
+						.character-preview(
+							ng-if="selectedCharacters[0]"
+							ng-bind-html="'&#8202;' + selectedCharacters[0].html | trustAsHtml")
 
-ui-modal-footer
-	ui-button.pull-left(
-		type="default",
-		label="Cancel",
-		click="cancel()")
+						.character-label(ng-if="selectedCharacters[0]")
+							| {{selectedCharacters[0].name}}
 
-	ui-button(
-		type="primary",
-		label="Insert",
-		click="apply()",
-		enabled="{{selectedCharacters.length > 0}}")
+						.character-numeric-codes(ng-if="selectedCharacters[0] && search.context.renderCharacterSubtitle")
+							| {{search.context.renderCharacterSubtitle(selectedCharacters[0])}}
+
+	ui-modal-footer
+		ui-button-bar
+			ui-button-bar-region
+				ui-button(
+					type="default"
+					label="Cancel"
+					click="cancel()")
+
+			ui-button-bar-region
+				ui-button(
+					type="primary"
+					label="Insert"
+					click="apply()"
+					enabled="{{selectedCharacters.length > 0}}")
