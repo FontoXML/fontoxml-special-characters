@@ -195,13 +195,13 @@ $ui-special-char-modal-grid-border-width: 1px;
 
 	// TODO: @extend %well has padding that is not desired here
 	background-color: $white;
-	border: 1px solid $skin-accent-light;
 
 	.recent-characters-header {
 		@extend %modal-column-header;
+		border-top: 1px solid $skin-accent-light;
+		border-bottom: 1px solid $skin-accent-light;
 		padding-top: 15px;
 		padding-bottom: 15px;
-		border-bottom: 1px solid $skin-accent-light;
 		border-bottom-width: 0;
 	}
 }

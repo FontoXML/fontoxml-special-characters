@@ -37,6 +37,20 @@ ui-modal(ng-keyup="$event.keyCode === 13 && selectedCharacters.length > 0 && app
 									span.character-group-name
 										| {{label.name}}
 
+					.recent-characters(ng-if="displayedRecentCharacters.length > 0")
+						.recent-characters-header
+							| Recently inserted
+
+						.character-list
+							ul.character-list__grid
+								li.character-list__item(
+								ng-repeat="character in displayedRecentCharacters track by character.id"
+								ng-click="selectCharacter(character)"
+								ng-class="{selected: characterIsSelected(character), disabled: !character.name}")
+									span(
+									ng-if="character.name"
+									ng-bind-html="'&#8202;' + character.html | trustAsHtml")
+
 				.character-browser
 					.character-search
 						label.control-label
@@ -58,20 +72,6 @@ ui-modal(ng-keyup="$event.keyCode === 13 && selectedCharacters.length > 0 && app
 									ng-class="{selected: characterIsSelected(character), disabled: !character.name}")
 
 				.character-picker-right-column
-					.recent-characters(ng-if="displayedRecentCharacters.length > 0")
-						.recent-characters-header
-							| Recently inserted
-
-						.character-list
-							ul.character-list__grid
-								li.character-list__item(
-									ng-repeat="character in displayedRecentCharacters track by character.id"
-									ng-click="selectCharacter(character)"
-									ng-class="{selected: characterIsSelected(character), disabled: !character.name}")
-									span(
-										ng-if="character.name"
-										ng-bind-html="'&#8202;' + character.html | trustAsHtml")
-
 					.selected-character
 						.character-preview(
 							ng-if="selectedCharacters[0]"
