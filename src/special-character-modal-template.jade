@@ -1,4 +1,6 @@
-ui-modal(ng-keyup="$event.keyCode === 13 && selectedCharacters.length > 0 && apply()")
+ui-modal(
+	size="large"
+	ng-keyup="$event.keyCode === 13 && selectedCharacters.length > 0 && apply()")
 	ui-modal-header(
 		title="Insert special character"
 		icon="keyboard-o")
@@ -78,6 +80,8 @@ ui-modal(ng-keyup="$event.keyCode === 13 && selectedCharacters.length > 0 && app
 							ng-bind-html="'&#8202;' + selectedCharacters[0].html | trustAsHtml")
 
 						.character-label(ng-if="selectedCharacters[0]")
+							div
+								b {{selectedCharacters[0].codePoints.join(', ')}}
 							| {{selectedCharacters[0].name}}
 
 						.character-numeric-codes(ng-if="selectedCharacters[0] && search.context.renderCharacterSubtitle")

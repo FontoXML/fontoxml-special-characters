@@ -191,7 +191,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 	@include flex(0, 0, auto);
 
 	// TODO: compute this based on variables somehow?
-	height: 214px;
+	height: 133px;
 
 	// TODO: @extend %well has padding that is not desired here
 	background-color: $white;
