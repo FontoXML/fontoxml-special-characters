@@ -6,7 +6,6 @@
 $ui-special-char-modal-column-spacing: $ui-modal-column-spacing;
 $ui-special-char-modal-border: 1px dotted $skin-accent;
 
-
 $ui-special-char-modal-char-width: 48px;
 $ui-special-char-modal-char-height: 60px;
 $ui-special-char-modal-char-margin: 1px;
@@ -17,66 +16,14 @@ $ui-special-char-modal-grid-border-width: 1px;
 	background-color: transparent;
 	background-image: linear-gradient(0deg, transparent 0px, $color 0.001px, $color 0.999px, transparent 1px, transparent),
 	linear-gradient(90deg, transparent 0px, $color 0.001px, $color 0.999px, transparent 1px, transparent);
-	height:100%;
 	background-size: $width $height;
 	background-position: 0px 1px;
 }
 
-// Toolbar dropdown UI
-// ------
-
-// Dropdown menu sections
-.common-characters {
-	padding-bottom: $padding-tiny;
-}
-
-.favorite-characters {
-	border-top: 1px dotted $skin-accent;
-	padding-bottom: $padding-tiny;
-}
-
-.character-controls {
-	padding: $padding-tiny $padding-tiny 0;
-	border-top: 1px solid $skin-accent;
-}
-
-.dropdown {
-	.character-list {
-		// Is there no way to set width based on the content..?
-		min-width: 230px; // 24 x 8 items
-		padding: 0 $padding-small;
-	}
-}
-
-// Insert characters modal
-// ------
-.insert-special-character {
-	.modal-functional-body {
-		// Apply flex to make children equal-heighted
-		flex-direction: column;
-	}
-}
-
-.character-picker {
-	display: flex;
-	flex-direction: row;
-	// Prevent from collapsing when child sections have no content
-	width: 100%;
-}
-
-// Groups of characters that can be used as a filter
-// - First column in the special-characters modal
-.character-group-browser {
-	@include flex(1);
-	@extend %modal-column;
-	background-color: $white;
-	border: 1px solid $skin-accent-light;
-	margin-right: $ui-special-char-modal-column-spacing;
-}
-
 .character-group-list-container {
-	padding: $padding;
-	overflow: auto;
+	padding: $padding-small;
+	max-height: 30vh;
+	overflow-y: auto;
 }
 
 .character-group-list__item {
@@ -85,9 +32,11 @@ $ui-special-char-modal-grid-border-width: 1px;
 
 	> a {
 		padding: 5px $padding-small;
+
 		> * {
 			display: block;
 		}
+
 		@include focus() {
 			color: $text-color !important;
 		}
@@ -95,50 +44,23 @@ $ui-special-char-modal-grid-border-width: 1px;
 }
 
 .character-group-explanation {
-	font-size: 70%;
-	color: $skin-accent-dark;
-	margin: 0;
+	font-size: #{(12em / 14)};
+	line-height: 1;
+	color: $skin-accent-semidark;
 }
 
-.character-group-sort,
-.character-search {
-	@include flex(0, 0, auto);
-	@extend %modal-column-header;
-	border-bottom: 1px solid $skin-accent-light;
-
-	> label {
-		display: none;
-	}
-}
-
-// Actual list of characters to be selected from
-// - Second (middle) column in the special-characters modal
-.character-browser {
-	@include flex(0, 0, 460px); // = 8 * volledige char breedte + 2 & $padding
-	@extend %modal-column;
-	border: 1px solid $skin-accent-light;
-	overflow: auto;
-	margin-right: $ui-special-char-modal-column-spacing;
-	min-height: 50vh;
-}
-
-// Universal properties of character-list
 .character-list {
-	@include flex(1, 1, auto);
-	background-color: $white;
-	padding: $padding;
-	overflow: auto;
-	margin-bottom: 0px;
+	max-height: 40vh;
+	padding: half($padding);
 }
 
 .character-list__grid {
-
-	font-size: $font-size-large;
 	font-family: $font-family-serif;
+	font-size: $font-size-large;
 
+	margin-bottom: $padding;
 	// padding-top is smaller to compensate for the increased margin-top of list items
-	padding: 1px - $ui-special-char-modal-grid-border-width 1px 1px 1px;
-	margin: 0;
+	padding: 1px - $ui-special-char-modal-grid-border-width 1px 1px;
 
 	@include grid-background(
 		$skin-accent-lighter,
@@ -150,6 +72,9 @@ $ui-special-char-modal-grid-border-width: 1px;
 		$ui-special-char-modal-char-height + 2*($ui-special-char-modal-char-border-width + $ui-special-char-modal-char-margin) + $ui-special-char-modal-grid-border-width
 	 );
 
+	.recent-characters & {
+		margin-bottom: 0;
+	}
  }
 
 .character-list__item {
@@ -177,54 +102,24 @@ $ui-special-char-modal-grid-border-width: 1px;
 	}
 }
 
-// Information about current selected character
-// - Third column in the special-characters modal
-.character-picker-right-column {
-	@include flex(1);
-	@extend %modal-column;
-
-	display: flexbox;
-	flex-direction: column;
-}
-
 .recent-characters {
-	@include flex(0, 0, auto);
-
-	// TODO: compute this based on variables somehow?
-	height: 133px;
-
-	// TODO: @extend %well has padding that is not desired here
-	background-color: $white;
-
-	.recent-characters-header {
-		@extend %modal-column-header;
-		border-top: 1px solid $skin-accent-light;
-		border-bottom: 1px solid $skin-accent-light;
-		padding-top: 15px;
-		padding-bottom: 15px;
-		border-bottom-width: 0;
-	}
+	height: 80px; /* TODO: compute this based on variables somehow? */
 }
 
 .selected-character {
-	@include flex(1);
-	flex-direction: vertical-shrinkable;
-	@extend %well;
 	overflow-y: auto;
 
 	.character-preview {
-		font-size: 5em;
-		font-family: $font-family-serif;
-		text-align: center;
 		padding: $padding-large;
-		flex: 4;
+		font-family: $font-family-serif;
+		font-size: 5em;
+		text-align: center;
 	}
 
 	.character-label,
 	.character-numeric-codes {
 		text-align: center;
 		padding: $padding-small $padding-small;
-		flex: 1;
 	}
 
 	.character-numeric-codes {
@@ -242,6 +137,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 			background-color: $color--focus-bg !important;
 		}
 	}
+
 	&.active > a {
 		background-color: $color--selection-bg;
 		border-color: $color--selection-border;
@@ -251,7 +147,6 @@ $ui-special-char-modal-grid-border-width: 1px;
 		}
 	}
 }
-
 
 @media screen and (min-width: 992px) {
 	.character-browser {
