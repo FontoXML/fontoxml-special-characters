@@ -16,7 +16,11 @@ ui-modal(
 						ui-panel-header(title="Ranges")
 
 						ui-panel-toolbar
+							label
+								| Sort by
+
 							select.form-control(
+								style="display: inline-block; width: auto; margin-left: 8px;"
 								ng-model="search.context"
 								ng-options="context.sortLabel for context in contexts")
 
@@ -34,11 +38,11 @@ ui-modal(
 										ng-class="{active: labelIsSelected(label)}"
 										ng-if="!search.filter || label.matches > 0")
 										a(ng-click="selectLabel(label)")
-											span.character-group-explanation(ng-if="search.context.renderLabelSubtitle")
-												| {{search.context.renderLabelSubtitle(label)}}
-
 											span.character-group-name
 												| {{label.name}}
+
+											span.character-group-explanation(ng-if="search.context.renderLabelSubtitle")
+												| {{search.context.renderLabelSubtitle(label)}}
 
 				ui-region-row(
 					size="fixed"

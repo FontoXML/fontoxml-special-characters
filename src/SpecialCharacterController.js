@@ -89,21 +89,21 @@ define([
 
 		$scope.contexts = [
 			{
-				attribute: 'name',
-				sortLabel: 'Sort by label name',
-				renderCharacterSubtitle: function (character) {
-					return character.labels.join(', ');
-				}
-			},
-			{
 				attribute: 'characterRangeStart',
-				sortLabel: 'Sort by character range',
+				sortLabel: 'default',
 				renderLabelSubtitle: function (label) {
 					return label.characterRangeStartFrom.codePoints.join(', ') + ' – ' +
 						label.characterRangeEndFrom.codePoints.join(', ');
 				},
 				renderCharacterSubtitle: function (character) {
 					return character.codePoints.join(', ');
+				}
+			},
+			{
+				attribute: 'name',
+				sortLabel: 'name',
+				renderCharacterSubtitle: function (character) {
+					return character.labels.join(', ');
 				}
 			}
 		];
