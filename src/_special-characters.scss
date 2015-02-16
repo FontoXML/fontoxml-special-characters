@@ -21,9 +21,21 @@ $ui-special-char-modal-grid-border-width: 1px;
 }
 
 .character-group-list-container {
-	padding: $padding-small;
-	max-height: 30vh;
-	overflow-y: auto;
+	margin: half(-$padding);
+	max-height: 40vh;
+
+	> .list--bordered {
+		border-top-width: 0;
+
+		> :last-child {
+			border-bottom-width: 0;
+		}
+
+		> li > a {
+			padding-left: $padding;
+			padding-right: $padding;
+		}
+	}
 }
 
 .character-group-list__item {
