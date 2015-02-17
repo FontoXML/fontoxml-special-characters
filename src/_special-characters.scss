@@ -46,7 +46,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 			display: block;
 		}
 
-		@include focus() {
+		@include hover() {
 			color: $text-color !important;
 		}
 	}
@@ -141,7 +141,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 		color: $text-color;
 		display: block;
 
-		@include focus() {
+		@include hover() {
 			text-decoration: none;
 			background-color: $color--focus-bg !important;
 		}
@@ -151,7 +151,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 		background-color: $color--selection-bg;
 		border-color: $color--selection-border;
 
-		@include focus() {
+		@include hover() {
 			background-color: $color--selection-bg;
 		}
 	}
