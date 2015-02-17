@@ -37,7 +37,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 
 .character-group-list__item {
 	@extend %filter-list__item;
-	@include flex(0, 0, auto);
+	flex: 0 0 auto;
 
 	> a {
 		padding: 5px $padding-small;
@@ -159,7 +159,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 
 @media screen and (min-width: 992px) {
 	.character-browser {
-		@include flex(0, 0, 460px); // @TODO: calculate from size and number of characters in one row
+		flex: 0 0 460px; // @TODO: calculate from size and number of characters in one row
 	}
 	.character-list__grid {
 		min-width: 206px; // @TODO: calculate from size and number of characters in one row
@@ -172,7 +172,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 
 @media screen and (max-width: 991px) {
 	.character-browser {
-		@include flex(0, 0, 460px - 4*51px);
+		flex: 0 0 (460px - 4 * 51px);
 	}
 	.character-list__item:nth-child(4n) {
 		margin-right: 0;
