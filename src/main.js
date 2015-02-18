@@ -9,7 +9,7 @@ define([
 	) {
 	'use strict';
 
-	var module = angular.module('ui-special-characters', []);
+	var module = angular.module('fontoxml-ui-special-characters', []);
 
 	module.controller('SpecialCharacterModalController', SpecialCharacterController);
 
