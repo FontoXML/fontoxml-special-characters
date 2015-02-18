@@ -49,7 +49,7 @@ And as final step add the following operation to the editors operation.json:
 		{
 			"type": "modal/SpecialCharacter",
 			"options": {
-				"templateUrl": "ui-special-characters/special-character-modal-template.html",
+				"templateUrl": "fontoxml-ui-special-characters/special-character-modal-template.html",
 				"windowClass": "modal-lg"
 			},
 			"data": {
