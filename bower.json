@@ -12,7 +12,11 @@
   ],
   "dependencies": {
     "angular": "~1.3.0",
-    "fontoxml-editor": "git@bitbucket.org:liones/fontoxml-editor.git#develop",
-    "fontoxml-local-storage": "git@bitbucket.org:liones/fontoxml-local-storage.git#develop"
+    "fontoxml-local-storage": "git@bitbucket.org:liones/fontoxml-local-storage.git#develop",
+    "fontoxml-ui-buttons": "git@bitbucket.org:liones/fontoxml-ui-buttons.git#develop",
+    "fontoxml-ui-core": "git@bitbucket.org:liones/fontoxml-ui-core.git#develop",
+    "fontoxml-ui-modal": "git@bitbucket.org:liones/fontoxml-ui-modal.git#develop",
+    "fontoxml-ui-regions": "git@bitbucket.org:liones/fontoxml-ui-regions.git#develop",
+    "fontoxml-ui-panels": "git@bitbucket.org:liones/fontoxml-ui-panels.git#develop"
   }
 }
