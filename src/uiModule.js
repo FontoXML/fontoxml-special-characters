@@ -6,7 +6,7 @@ define([
 	'fontoxml-ui-regions/uiModule',
 	'fontoxml-ui-panels/uiModule',
 
-	'./SpecialCharacterController'
+	'./ui/SpecialCharacterController'
 ], function (
 	angular,
 

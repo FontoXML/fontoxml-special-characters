@@ -1,0 +1,25 @@
+{
+	"special-character-insert": {
+		"label": "Special character",
+		"description": "Insert a character that can not be easily inserted using your keyboard.",
+		"icon": "keyboard-o",
+		"flags": [
+			"exclude-from-operations-list"
+		],
+		"steps": [
+			{
+				"type": "modal/SpecialCharacter",
+				"options": {
+					"templateUrl": "fontoxml-ui-special-characters/ui/special-character-modal-template.html",
+					"windowClass": "modal-lg"
+				},
+				"data": {
+					"characterSet": "{{characterSet}}"
+				}
+			},
+			{
+				"type": "command/insertText"
+			}
+		]
+	}
+}
