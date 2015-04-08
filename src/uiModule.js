@@ -16,7 +16,7 @@ define([
 	uiPanelsUiModule,
 
 	SpecialCharacterModalController
-) {
+	) {
 	'use strict';
 
 	var module = angular.module('fontoxml-ui-special-characters', [

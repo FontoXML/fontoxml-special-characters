@@ -29,13 +29,11 @@
 		"flags": [
 			"exclude-from-operations-list"
 		],
-		"steps": [
-			{
-				"type": "operation/special-character-insert",
-				"data": {
-					"characterSet": "default"
-				}
+		"steps": {
+			"type": "operation/special-character-insert",
+			"data": {
+				"characterSet": "default"
 			}
-		]
+		}
 	}
 }

@@ -195,8 +195,6 @@ define([
 		}
 
 		function selectCharacter (character) {
-			// TODO: Push onto array selectedCharacters instead of overwrite because inserting multiple special
-			// characters with one modal is a different user story.
 			$scope.selectedCharacters = [character];
 		}
 

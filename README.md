@@ -10,54 +10,34 @@ node prune-unsupported-characters.js [path to specialCharacters.json] [font name
 
 For example
 ```
-node prune-unsupported-characters.js /home/fxitmuran/src/assets/configuration/specialCharacters.json
-node prune-unsupported-characters.js /home/fxitmuran/src/assets/configuration/specialCharacters.json Code2001
+node prune-unsupported-characters.js /path/to/specialCharacters.json
+node prune-unsupported-characters.js /path/to/code2001Characters.json Code2001
 ```
 
 `[font name]` defaults to "Code2000"
 
-prune-unsupported-characters.js overwrites your actual specialCharacters.json. Use git to revert unwanted results.
+prune-unsupported-characters.js overwrites the specified .json file if it exists. Use git to revert unwanted results.
 
 ## To integrate this package:
 
-Add this package to the bootstrap en bower files.
-Add a specialCharacters.json to the editors assets/configuration.
-Add this json to the EditorConfiguration.js like so: this.specialCharacters = JSON.parse(specialCharactersJSON);
+* Add this package as an add-on
+* Create a toolbar button to the "default-special-character-insert" operation.
 
-Add the following to your AppEditor:
+## To customize the character set:
 
-// SPECIAL CHARACTERS
-AppEditor.prototype.getCharacterSetByName = function(characterSetName) {
-	var characterSet = this._editorConfiguration[characterSetName];
-	if (!characterSet) {
-		throw new Error("No characters set found for character set name: " + characterSetName);
+* Generate a .json file as described above.
+* Create an sxModule which depends on this package.
+* In the sxModule, import the specialCharactersManager and call addCharacterSet, passing the parsed JSON:
+```
+specialCharactersManager.addCharacterSet('emoji', JSON.parse(emojiCharacterSetJSON));
+```
+* In the *same* sxModule, define an operation with a single step specifying the character set:
+```
+"steps": {
+	"type": "operation/special-character-insert",
+	"data": {
+		"characterSet": "emoji"
 	}
+}
+```
 
-	return characterSet;
-};
-
-And as final step add the following operation to the editors operation.json:
-
-"special-character-insert": {
-	"label": "Special character",
-	"description": "Insert a character that can not be easily inserted using your keyboard.",
-	"icon": "keyboard-o",
-	"flags": [
-		"exclude-from-operations-list"
-	],
-	"steps": [
-		{
-			"type": "modal/SpecialCharacter",
-			"options": {
-				"templateUrl": "fontoxml-ui-special-characters/special-character-modal-template.html",
-				"windowClass": "modal-lg"
-			},
-			"data": {
-				"characterSet": "specialCharacters"
-			}
-		},
-		{
-			"type": "command/insertText"
-		}
-	]
-},
