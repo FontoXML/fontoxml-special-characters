@@ -1,11 +1,16 @@
 define([
 	'editor',
 
-	'fontoxml-local-storage'
+	'fontoxml-local-storage',
+
+	'../specialCharactersManager'
 ], function (
 	editor,
 
-	localStorage) {
+	localStorage,
+
+	specialCharactersManager
+	) {
 	'use strict';
 
 	var localStorageService = localStorage.localStorageService;
@@ -71,9 +76,9 @@ define([
 		});
 	}
 
-	return /* @ngInject */ function SpecialCharacterController ($scope, $location, operationData) {
+	return /* @ngInject */ function SpecialCharacterModalController ($scope, $location, operationData) {
 		var labelCharacters = null;
-		var characters = editor.getCharacterSetByName(operationData.characterSet);
+		var characters = specialCharactersManager.getCharacterSet(operationData.characterSet);
 		var labels = preprocessLabels(characters);
 
 		var applicationPrefix = $location.host() + ':' + $location.port();

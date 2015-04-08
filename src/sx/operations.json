@@ -21,5 +21,21 @@
 				"type": "command/insertText"
 			}
 		]
+	},
+	"default-special-character-insert": {
+		"label": "Special character",
+		"description": "Insert a character that can not be easily inserted using your keyboard.",
+		"icon": "keyboard-o",
+		"flags": [
+			"exclude-from-operations-list"
+		],
+		"steps": [
+			{
+				"type": "operation/special-character-insert",
+				"data": {
+					"characterSet": "default"
+				}
+			}
+		]
 	}
 }

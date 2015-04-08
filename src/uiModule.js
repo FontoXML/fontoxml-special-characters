@@ -6,7 +6,7 @@ define([
 	'fontoxml-ui-regions/uiModule',
 	'fontoxml-ui-panels/uiModule',
 
-	'./ui/SpecialCharacterController'
+	'./ui/SpecialCharacterModalController'
 ], function (
 	angular,
 
@@ -15,7 +15,7 @@ define([
 	uiRegionsUiModule,
 	uiPanelsUiModule,
 
-	SpecialCharacterController
+	SpecialCharacterModalController
 ) {
 	'use strict';
 
@@ -26,7 +26,7 @@ define([
 			uiPanelsUiModule
 		]);
 
-	module.controller('SpecialCharacterModalController', SpecialCharacterController);
+	module.controller('SpecialCharacterModalController', SpecialCharacterModalController);
 
 	return module.name;
 });
