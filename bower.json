@@ -11,8 +11,8 @@
     "test"
   ],
   "dependencies": {
-    "angular": "~1.3.0",
     "fontoxml-local-storage": "git@bitbucket.org:liones/fontoxml-local-storage.git#develop",
+    "fontoxml-modular-ui": "git@bitbucket.org:liones/fontoxml-modular-ui.git#develop",
     "fontoxml-ui-buttons": "git@bitbucket.org:liones/fontoxml-ui-buttons.git#develop",
     "fontoxml-ui-core": "git@bitbucket.org:liones/fontoxml-ui-core.git#develop",
     "fontoxml-ui-modal": "git@bitbucket.org:liones/fontoxml-ui-modal.git#develop",
