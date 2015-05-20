@@ -65,7 +65,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 
 .character-list__grid {
 	font-family: $font-family-serif;
-	font-size: $font-size-large;
+	font-size: (20em / 14);
 
 	margin-bottom: $ui-length;
 	// padding-top is smaller to compensate for the increased margin-top of list items
