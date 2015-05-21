@@ -2,6 +2,17 @@
 // Insert special characters
 // --------------------------------------------------
 
+/* Special character fonts */
+@font-face {
+	font-family: "Code2000Regular";
+	src: url("assets/fonts/CODE2000.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Code2001Regular";
+	src: url("assets/fonts/CODE2001.woff") format("woff");
+}
+
 // @TODO:
 $ui-special-char-modal-char-width: 48px;
 $ui-special-char-modal-char-height: 60px;
