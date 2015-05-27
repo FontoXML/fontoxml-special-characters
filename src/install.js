@@ -1,6 +1,7 @@
 define([
 	'fontoxml-modular-ui/uiManager',
 	'fontoxml-operations/operationsManager',
+	'fontoxml-selection/selectionManager',
 
 	'./specialCharactersManager',
 
@@ -11,6 +12,7 @@ define([
 ], function (
 	uiManager,
 	operationsManager,
+	selectionManager,
 
 	specialCharactersManager,
 
@@ -25,6 +27,10 @@ define([
 		uiManager.addController('SpecialCharacterModalController', SpecialCharacterModalController);
 
 		operationsManager.addOperations(JSON.parse(operationsJson));
+
+		selectionManager.selectionChangeNotifier.addCallback(function () {
+			operationsManager.invalidateOperationStateByOperationName('default-special-character-insert');
+		});
 
 		specialCharactersManager.addCharacterSet('default', JSON.parse(defaultCharacterSetJson));
 	};
