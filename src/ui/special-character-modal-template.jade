@@ -1,6 +1,7 @@
 ui-modal(
 	size="large"
-	ng-keyup="$event.keyCode === 13 && selectedCharacters.length > 0 && apply()")
+	on-enter-key="selectedCharacters.length > 0 && apply()"
+	on-escape-key="cancel()")
 	ui-modal-header(
 		title="Insert special character"
 		icon="keyboard-o")
