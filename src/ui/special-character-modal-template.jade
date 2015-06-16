@@ -21,7 +21,6 @@ ui-modal(
 								| Sort by
 
 							select.form-control(
-								ui-autofocus
 								style="display: inline-block; width: auto; margin-left: 8px;"
 								ng-model="search.context"
 								ng-options="context.sortLabel for context in contexts")
@@ -70,6 +69,7 @@ ui-modal(
 
 					ui-panel-toolbar
 						input.form-control(
+							ui-autofocus
 							type="text"
 							placeholder="Filter labels and characters…"
 							ng-model="search.filter")
