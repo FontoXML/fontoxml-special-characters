@@ -155,16 +155,16 @@ $ui-special-char-modal-grid-border-width: 1px;
 
 		@include hover() {
 			text-decoration: none;
-			background-color: $color--focus-bg !important;
+			background-color: ui-color(hover) !important;
 		}
 	}
 
 	&.active > a {
-		background-color: $color--selection-bg;
-		border-color: $color--selection-border;
+		background-color: ui-color(selection);
+		border-color: ui-color(selection, semidark);
 
 		@include hover() {
-			background-color: $color--selection-bg;
+			background-color: ui-color(selection);
 		}
 	}
 }
