@@ -83,7 +83,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 	padding: 1px - $ui-special-char-modal-grid-border-width 1px 1px;
 
 	@include grid-background(
-		$skin-accent-lighter,
+		ui-color(neutral, lighter),
 
 		// Grid width: Does not count character border-width because block width is affected by box-sizing: border-box;
 		$ui-special-char-modal-char-width + 2*$ui-special-char-modal-char-border-width + $ui-special-char-modal-grid-border-width,
@@ -144,7 +144,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 	}
 
 	.character-numeric-codes {
-		color: $skin-accent-dark;
+		color: ui-color(neutral, dark);
 	}
 }
 
