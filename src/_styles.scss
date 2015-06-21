@@ -58,7 +58,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 		}
 
 		@include hover() {
-			color: $text-color !important;
+			color: ui-color(text) !important;
 		}
 	}
 }
@@ -118,7 +118,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 	> a {
 		display: block;
 		@extend %selectable;
-		color: $text-color;
+		color: ui-color(text);
 	}
 }
 
@@ -150,7 +150,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 
 %filter-list__item {
 	> a {
-		color: $text-color;
+		color: ui-color(text);
 		display: block;
 
 		@include hover() {
