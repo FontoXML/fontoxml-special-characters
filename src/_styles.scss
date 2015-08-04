@@ -75,7 +75,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 }
 
 .character-list__grid {
-	font-family: $font-family-serif;
+	font-family: $ui-font-stack--content;
 	font-size: (20em / 14);
 
 	margin-bottom: $ui-length;
@@ -131,7 +131,7 @@ $ui-special-char-modal-grid-border-width: 1px;
 
 	.character-preview {
 		padding: triple(half($ui-length));
-		font-family: $font-family-serif;
+		font-family: $ui-font-stack--content;
 		font-size: 5em;
 		line-height: 2;
 		text-align: center;
