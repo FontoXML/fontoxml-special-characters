@@ -29,5 +29,12 @@
 				"characterSet": "default"
 			}
 		}
+	},
+	"quick-special-character-insert": {
+		"steps": [
+			{
+				"type": "command/insertText"
+			}
+		]
 	}
 }

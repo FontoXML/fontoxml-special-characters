@@ -3,29 +3,19 @@ define([
 
 	'fontoxml-local-storage',
 
-	'../specialCharactersManager'
+	'../specialCharactersManager',
+	'../api/characterToString'
 ], function (
 	editor,
 
 	localStorage,
 
-	specialCharactersManager
+	specialCharactersManager,
+	characterToString
 	) {
 	'use strict';
 
 	var localStorageService = localStorage.localStorageService;
-
-	function codePointToString (codePoint) {
-		return String.fromCodePoint(parseInt(codePoint.substr(2), 16));
-	}
-
-	function characterToString (character) {
-		return character.codePoints.map(codePointToString).join();
-	}
-
-	function charactersToString (characters) {
-		return characters.map(characterToString).join();
-	}
 
 	function getCharactersByLabel (characters, label) {
 		return characters.filter(function (character) {
@@ -283,7 +273,7 @@ define([
 
 			localStorageService.setData(storagePrefix + 'storedDisplayedRecentCharacters', JSON.stringify($scope.displayedRecentCharacters));
 
-			operationData.text = charactersToString($scope.selectedCharacters);
+			operationData.text = $scope.selectedCharacters.map(characterToString).join();
 
 			$scope.$close(operationData);
 		}

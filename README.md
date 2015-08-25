@@ -41,3 +41,20 @@ specialCharactersManager.addCharacterSet('emoji', JSON.parse(emojiCharacterSetJS
 }
 ```
 
+## To enable quickly inserting one of a preconfigured set of characters
+You can use the `ui-special-character-grid` directive (configured with a character set, no more than a couple of tens).
+
+```
+ui-drop(
+	icon="keyboard-o"
+	label="Special character")
+	ui-special-character-grid(
+		columns="8"
+		character-set="quick-access")
+
+	ui-menu-item(label="More special characters")
+		fonto-operation(name="...")
+```
+
+Since the preconfigured set of character is a selection of special characters it is recommended to keep a button in order to open the full special characters modal near. This ui-menu-item should be added (to the same ui-drop) seperately. If this characterset is a superset of the quick-access selection, a label like "More special characters" is recommended.
+

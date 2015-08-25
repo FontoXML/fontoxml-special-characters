@@ -5,6 +5,7 @@ define([
 
 	'./specialCharactersManager',
 
+	'./ui/createSpecialCharacterGridDirective',
 	'./ui/SpecialCharacterModalController',
 
 	'text!./sx/operations.json',
@@ -16,6 +17,7 @@ define([
 
 	specialCharactersManager,
 
+	createSpecialCharacterGridDirective,
 	SpecialCharacterModalController,
 
 	operationsJson,
@@ -24,6 +26,8 @@ define([
 	'use strict';
 
 	return function install () {
+		uiManager.addDirective('uiSpecialCharacterGrid', createSpecialCharacterGridDirective);
+
 		uiManager.addController('SpecialCharacterModalController', SpecialCharacterModalController);
 
 		operationsManager.addOperations(JSON.parse(operationsJson));
