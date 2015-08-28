@@ -4,7 +4,7 @@ define([
 
 	'../specialCharactersManager',
 	'../api/characterToString'
-], function(
+], function (
 	operationsManager,
 	uiLayers,
 
@@ -15,7 +15,7 @@ define([
 
 	var visibleLayerChain = uiLayers.visibleLayerChain;
 
-	/* @ngInject */ function UiSpecialCharacterGridController ($scope) {
+	/* @ngInject */ function UiSpecialCharacterGridController () {
 		this.characters = specialCharactersManager.getCharacterSet(this.characterSet)
 			.map(function (character) {
 				character.html = characterToString(character);
