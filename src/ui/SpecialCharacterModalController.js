@@ -215,9 +215,15 @@ define([
 				$scope.displayedCharacters = labelCharacters;
 			}
 			else {
+				//$scope.displayedCharacters = labelCharacters.map(function (character) {
+				//	character.hidden = character.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1;
+				//	return character;
+				//});
 				$scope.displayedCharacters = labelCharacters.filter(function (character) {
 					return character.name.toLowerCase().indexOf(filter.toLowerCase()) >= 0;
 				});
+				// Limit to 100 results
+				$scope.displayedCharacters = $scope.displayedCharacters.slice(0, 100);
 			}
 
 			var matchedCharactersPerLabel = characters.reduce(function (charactersPerLabel, character) {
