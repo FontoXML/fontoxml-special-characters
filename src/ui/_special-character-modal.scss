@@ -1,21 +1,9 @@
-// @TODO:
-$ui-special-char-modal-char-width: 48px;
-$ui-special-char-modal-char-height: 60px;
-$ui-special-char-modal-char-margin: 1px;
-$ui-special-char-modal-char-border-width: 1px;
-$ui-special-char-modal-grid-border-width: 1px;
-
-@mixin grid-background($color, $width, $height) {
-	background-color: transparent;
-	background-image: linear-gradient(0deg, transparent 0px, $color 0.001px, $color 0.999px, transparent 1px, transparent),
-	linear-gradient(90deg, transparent 0px, $color 0.001px, $color 0.999px, transparent 1px, transparent);
-	background-size: $width $height;
-	background-position: 0px 1px;
-}
+$ui-special-char-modal-char-width: 2.5em;
+$ui-special-char-modal-char-height: 3em;
 
 .character-group-list-container {
-	margin: half(-$ui-length);
 	max-height: 40vh;
+	margin: half(-$ui-length);
 
 	> .list--bordered {
 		border-top-width: 0;
@@ -32,11 +20,14 @@ $ui-special-char-modal-grid-border-width: 1px;
 }
 
 .character-group-list__item {
-	@extend %filter-list__item;
 	flex: 0 0 auto;
+	cursor: pointer;
+	user-select: none;
 
 	> a {
+		display: block;
 		padding: 5px half($ui-length);
+		color: ui-color(text);
 
 		> * {
 			display: block;
@@ -44,101 +35,6 @@ $ui-special-char-modal-grid-border-width: 1px;
 
 		@include hover() {
 			color: ui-color(text) !important;
-		}
-	}
-}
-
-.character-group-explanation {
-	font-size: #{(12em / 14)};
-	line-height: (16 / 12);
-	color: rgba($black, 1/2);
-}
-
-.character-list {
-	max-height: 40vh;
-	padding: half($ui-length);
-}
-
-.character-list__grid {
-	font-family: ui-font-stack(content);
-	font-size: (20em / 14);
-
-	margin-bottom: $ui-length;
-	// padding-top is smaller to compensate for the increased margin-top of list items
-	padding: 1px - $ui-special-char-modal-grid-border-width 1px 1px;
-
-	@include grid-background(
-		ui-color(neutral, lighter),
-
-		// Grid width: Does not count character border-width because block width is affected by box-sizing: border-box;
-		$ui-special-char-modal-char-width + 2*$ui-special-char-modal-char-border-width + $ui-special-char-modal-grid-border-width,
-
-		// Grid height: Regular sum of all influencing factors
-		$ui-special-char-modal-char-height + 2*($ui-special-char-modal-char-border-width + $ui-special-char-modal-char-margin) + $ui-special-char-modal-grid-border-width
-	 );
-
-	.recent-characters & {
-		margin-bottom: 0;
-	}
- }
-
-.character-list__item {
-	display: inline-block;
-	width: $ui-special-char-modal-char-width;
-	line-height: $ui-special-char-modal-char-height;
-
-	list-style-type: none;
-	text-align: center;
-
-	// margin-top is larger, so that margin-bottom does not push grid border too far
-	margin-top: $ui-special-char-modal-char-margin + $ui-special-char-modal-grid-border-width;
-
-	// margin-right is larger to push neighbor well across the gridline. this effect is negated
-	// for each row's last child, see the mediaqueries below.
-	margin-right: $ui-special-char-modal-char-border-width + $ui-special-char-modal-grid-border-width;
-
-	margin-bottom: $ui-special-char-modal-char-border-width;
-	margin-left: $ui-special-char-modal-char-border-width;
-
-	> a {
-		display: block;
-		@extend %selectable;
-		color: ui-color(text);
-	}
-}
-
-.recent-characters {
-	height: 80px; /* TODO: compute this based on variables somehow? */
-}
-
-.selected-character {
-	overflow-y: auto;
-
-	.character-preview {
-		padding: triple(half($ui-length));
-		font-family: ui-font-stack(content);
-		font-size: 5em;
-		line-height: 2;
-		text-align: center;
-	}
-
-	.character-label,
-	.character-numeric-codes {
-		text-align: center;
-		padding: half($ui-length);
-	}
-
-	.character-numeric-codes {
-		color: ui-color(neutral, dark);
-	}
-}
-
-%filter-list__item {
-	> a {
-		color: ui-color(text);
-		display: block;
-
-		@include hover() {
 			text-decoration: none;
 			background-color: ui-color(hover) !important;
 		}
@@ -154,27 +50,75 @@ $ui-special-char-modal-grid-border-width: 1px;
 	}
 }
 
-@media screen and (min-width: 992px) {
-	.character-browser {
-		flex: 0 0 460px; // @TODO: calculate from size and number of characters in one row
+.character-group-explanation {
+	font-size: em(triple(eighth($ui-text-size)) + half($ui-text-size), $ui-text-size);
+	color: rgba($black, 1/2);
+}
+
+.character-list {
+	max-height: 40vh;
+	padding: half($ui-length);
+}
+
+.character-list__grid {
+	display: flex;
+	flex-wrap: wrap;
+	margin-bottom: $ui-length;
+	font-family: ui-font-stack(content);
+	font-size: em($ui-text-size + half($ui-text-size), $ui-text-size);
+
+	.recent-characters & {
+		margin-bottom: 0;
 	}
-	.character-list__grid {
-		min-width: 206px; // @TODO: calculate from size and number of characters in one row
-		max-width: 409px; // @TODO: calculate from size and number of characters in one row
-	}
-	.character-list__item:nth-child(8n) {
-		margin-right: 0;
+ }
+
+.character-list__item {
+	flex: none;
+	cursor: pointer;
+	width: $ui-special-char-modal-char-width;
+	line-height: $ui-special-char-modal-char-height;
+	text-align: center;
+	list-style-type: none;
+	user-select: none;
+
+	> a {
+		@extend %selectable;
+		display: block;
+		color: ui-color(text);
+
+		@include hover() {
+			text-decoration: none;
+			background-color: ui-color(hover);
+		}
+
+		&.selected {
+			background-color: ui-color(selection);
+
+			@include hover() {
+				background-color: ui-color(hover);
+			}
+		}
 	}
 }
 
-@media screen and (max-width: 991px) {
-	.character-browser {
-		flex: 0 0 (460px - 4 * 51px);
+.selected-character {
+	overflow-y: auto;
+
+	.character-preview {
+		padding: triple(half($ui-length));
+		font-family: ui-font-stack(content);
+		font-size: 5em;
+		line-height: 2;
+		text-align: center;
 	}
-	.character-list__item:nth-child(4n) {
-		margin-right: 0;
+
+	.character-label,
+	.character-numeric-codes {
+		padding: half($ui-length);
+		text-align: center;
 	}
-	.character-list__grid {
-		max-width: 205px;
+
+	.character-numeric-codes {
+		color: ui-color(neutral, dark);
 	}
 }
