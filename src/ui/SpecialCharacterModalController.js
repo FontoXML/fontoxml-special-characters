@@ -1,13 +1,9 @@
 define([
-	'editor',
-
 	'fontoxml-local-storage',
 
 	'../specialCharactersManager',
 	'../api/characterToString'
 ], function (
-	editor,
-
 	localStorage,
 
 	specialCharactersManager,
@@ -115,8 +111,9 @@ define([
 		if (localStorageService.hasData(storagePrefix + 'storedSelectedLabel')) {
 			try {
 				storedSelectedLabel = localStorageService.getData(storagePrefix + 'storedSelectedLabel');
-				storedSelectedLabel = storedSelectedLabel != 'undefined' ? JSON.parse(storedSelectedLabel) : undefined;
-			} catch (error) {
+				storedSelectedLabel = storedSelectedLabel !== 'undefined' ? JSON.parse(storedSelectedLabel) : undefined;
+			}
+			catch (error) {
 				console.error('Error during JSON parsing of localStorageService.getData(' + storagePrefix + 'storedSelectedLabel")');
 			}
 		}
@@ -126,14 +123,16 @@ define([
 		if (localStorageService.hasData(storagePrefix + 'storedSelectedCharacters')) {
 			try {
 				storedSelectedCharacters = JSON.parse(localStorageService.getData(storagePrefix + 'storedSelectedCharacters'));
-			} catch (error) {
+			}
+			catch (error) {
 				console.error('Error during JSON parsing of localStorageService.getData(' + storagePrefix + 'storedSelectedCharacters")');
 			}
 		}
 		if (localStorageService.hasData(storagePrefix + 'storedDisplayedRecentCharacters')) {
 			try {
 				storedDisplayedRecentCharacters = JSON.parse(localStorageService.getData(storagePrefix + 'storedDisplayedRecentCharacters'));
-			} catch (error) {
+			}
+			catch (error) {
 				console.error('Error during JSON parsing of localStorageService.getData(' + storagePrefix + 'storedDisplayedRecentCharacters")');
 			}
 		}
@@ -156,8 +155,34 @@ define([
 		$scope.labelIsSelected = labelIsSelected;
 		$scope.selectCharacter = selectCharacter;
 
-		$scope.apply = apply;
-		$scope.cancel = cancel;
+		$scope.apply = function apply () {
+			localStorageService.setData(storagePrefix + 'storedSearchContextAttribute', $scope.search.context.attribute);
+			localStorageService.setData(storagePrefix + 'storedSelectedLabel', JSON.stringify(selectedLabel));
+			localStorageService.setData(storagePrefix + 'storedSearchFilter', $scope.search.filter);
+			localStorageService.setData(storagePrefix + 'storedSelectedCharacters', JSON.stringify($scope.selectedCharacters));
+
+			$scope.selectedCharacters.forEach(function (selectedCharacter) {
+				var isInRecentCharacters = $scope.displayedRecentCharacters.some(function (recentCharacter) {
+					return recentCharacter.id === selectedCharacter.id;
+				});
+				if (!isInRecentCharacters) {
+					$scope.displayedRecentCharacters.unshift(selectedCharacter);
+					if ($scope.displayedRecentCharacters.length > 8) {
+						$scope.displayedRecentCharacters = $scope.displayedRecentCharacters.slice(0, 8);
+					}
+				}
+			});
+
+			localStorageService.setData(storagePrefix + 'storedDisplayedRecentCharacters', JSON.stringify($scope.displayedRecentCharacters));
+
+			operationData.text = $scope.selectedCharacters.map(characterToString).join();
+
+			$scope.$close(operationData);
+		};
+
+		$scope.cancel = function cancel () {
+			$scope.$dismiss();
+		};
 
 
 		function characterHtmlSafe (character) {
@@ -191,7 +216,8 @@ define([
 		function labelIsSelected (label) {
 			if (label === undefined && selectedLabel === undefined) {
 				return true;
-			} else if (label === undefined || selectedLabel === undefined) {
+			}
+			else if (label === undefined || selectedLabel === undefined) {
 				return false;
 			}
 
@@ -201,7 +227,8 @@ define([
 		function characterIsSelected (character) {
 			if (character === undefined && $scope.selectedCharacters.length === 0) {
 				return true;
-			} else if (character === undefined || $scope.selectedCharacters.length === 0) {
+			}
+			else if (character === undefined || $scope.selectedCharacters.length === 0) {
 				return false;
 			}
 
@@ -244,42 +271,11 @@ define([
 			if (!oldSearchFilter) {
 				selectLabel();
 			}
-			else {
-				if (!newSearchFilter && !selectedLabel) {
-					selectLabel(labels[0]);
-				}
+			else if (!newSearchFilter && !selectedLabel) {
+				selectLabel(labels[0]);
 			}
 
 			updateFilteredLabelsAndCharacters(newSearchFilter);
 		});
-
-		function apply() {
-			localStorageService.setData(storagePrefix + 'storedSearchContextAttribute', $scope.search.context.attribute);
-			localStorageService.setData(storagePrefix + 'storedSelectedLabel', JSON.stringify(selectedLabel));
-			localStorageService.setData(storagePrefix + 'storedSearchFilter', $scope.search.filter);
-			localStorageService.setData(storagePrefix + 'storedSelectedCharacters', JSON.stringify($scope.selectedCharacters));
-
-			$scope.selectedCharacters.forEach(function (selectedCharacter) {
-				var isInRecentCharacters = $scope.displayedRecentCharacters.some(function (recentCharacter) {
-					return recentCharacter.id == selectedCharacter.id;
-				});
-				if (!isInRecentCharacters) {
-					$scope.displayedRecentCharacters.unshift(selectedCharacter);
-					if ($scope.displayedRecentCharacters.length > 8) {
-						$scope.displayedRecentCharacters = $scope.displayedRecentCharacters.slice(0, 8);
-					}
-				}
-			});
-
-			localStorageService.setData(storagePrefix + 'storedDisplayedRecentCharacters', JSON.stringify($scope.displayedRecentCharacters));
-
-			operationData.text = $scope.selectedCharacters.map(characterToString).join();
-
-			$scope.$close(operationData);
-		}
-
-		function cancel() {
-			$scope.$dismiss();
-		}
 	};
 });
