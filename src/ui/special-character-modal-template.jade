@@ -1,5 +1,5 @@
 ui-modal(
-	size="large"
+	size="medium"
 	on-enter-key="selectedCharacters.length > 0 && apply()"
 	on-escape-key="cancel()")
 	ui-modal-header(
@@ -24,7 +24,7 @@ ui-modal(
 								ng-options="context.sortLabel for context in contexts")
 
 						ui-panel-body
-							.character-group-list-container
+							.character-group-list
 								ul.list--bordered
 									li.character-group-list__item(
 										ng-if="search.filter.length > 0"
@@ -37,10 +37,10 @@ ui-modal(
 										ng-class="{active: labelIsSelected(label)}"
 										ng-if="!search.filter || label.matches > 0")
 										a(ng-click="selectLabel(label)")
-											span.character-group-name
+											.character-group-list__item__name
 												| {{label.name}}
 
-											span.character-group-explanation(ng-if="search.context.renderLabelSubtitle")
+											.character-group-list__item__subtitle(ng-if="search.context.renderLabelSubtitle")
 												| {{search.context.renderLabelSubtitle(label)}}
 
 				ui-region-row(
@@ -51,9 +51,9 @@ ui-modal(
 
 						ui-panel-body
 							.recent-characters
-								.character-list
-									ul.character-list__grid
-										li.character-list__item(
+								.character-grid
+									ul.character-grid__list
+										li.character-grid__list__item(
 											ng-repeat="character in displayedRecentCharacters track by character.id"
 											ng-click="selectCharacter(character)"
 											ng-class="{selected: characterIsSelected(character), disabled: !character.name}")
@@ -73,9 +73,9 @@ ui-modal(
 							ng-model="search.filter")
 
 					ui-panel-body
-						.character-list
-							ul.character-list__grid
-								li.character-list__item(
+						.character-grid
+							ul.character-grid__list
+								li.character-grid__list__item(
 									ng-repeat="character in displayedCharacters track by character.id"
 									ng-click="selectCharacter(character)")
 									a(
@@ -89,16 +89,16 @@ ui-modal(
 
 					ui-panel-body
 						.selected-character
-							.character-preview(
+							.selected-character__preview(
 								ng-if="selectedCharacters[0]"
 								ng-bind-html="'&#8202;' + selectedCharacters[0].html | trustAsHtml")
 
-							.character-label(ng-if="selectedCharacters[0]")
+							.selected-character__name(ng-if="selectedCharacters[0]")
 								div
 									b {{selectedCharacters[0].codePoints.join(', ')}}
 								| {{selectedCharacters[0].name}}
 
-							.character-numeric-codes(ng-if="selectedCharacters[0] && search.context.renderCharacterSubtitle")
+							.selected-character__subtitle(ng-if="selectedCharacters[0] && search.context.renderCharacterSubtitle")
 								| {{search.context.renderCharacterSubtitle(selectedCharacters[0])}}
 
 	ui-modal-footer

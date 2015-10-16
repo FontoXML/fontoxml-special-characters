@@ -1,7 +1,4 @@
-$ui-special-char-modal-char-width: 2.5em;
-$ui-special-char-modal-char-height: 3em;
-
-.character-group-list-container {
+.character-group-list {
 	max-height: 40vh;
 	margin: half(-$ui-length);
 
@@ -13,31 +10,17 @@ $ui-special-char-modal-char-height: 3em;
 		}
 
 		> li > a {
-			padding-left: $ui-length;
-			padding-right: $ui-length;
+			padding-left: half($ui-length);
+			padding-right: half($ui-length);
 		}
 	}
 }
 
 .character-group-list__item {
-	flex: 0 0 auto;
-	cursor: pointer;
 	user-select: none;
 
 	> a {
-		display: block;
-		padding: 5px half($ui-length);
-		color: ui-color(text);
-
-		> * {
-			display: block;
-		}
-
-		@include hover() {
-			color: ui-color(text) !important;
-			text-decoration: none;
-			background-color: ui-color(hover) !important;
-		}
+		cursor: pointer;
 	}
 
 	&.active > a {
@@ -50,20 +33,22 @@ $ui-special-char-modal-char-height: 3em;
 	}
 }
 
-.character-group-explanation {
-	font-size: em(triple(eighth($ui-text-size)) + half($ui-text-size), $ui-text-size);
+.character-group-list__item__name {}
+
+.character-group-list__item__subtitle {
+	font-size: em($ui-text-size - eighth($ui-text-size), $ui-text-size);
 	color: rgba($black, 1/2);
 }
 
-.character-list {
+.character-grid {
 	max-height: 40vh;
 	padding: half($ui-length);
 }
 
-.character-list__grid {
+.character-grid__list {
 	display: flex;
 	flex-wrap: wrap;
-	margin-bottom: $ui-length;
+	margin: -$ui-length;
 	font-family: ui-font-stack(content);
 	font-size: em($ui-text-size + half($ui-text-size), $ui-text-size);
 
@@ -72,11 +57,8 @@ $ui-special-char-modal-char-height: 3em;
 	}
  }
 
-.character-list__item {
+.character-grid__list__item {
 	flex: none;
-	cursor: pointer;
-	width: $ui-special-char-modal-char-width;
-	line-height: $ui-special-char-modal-char-height;
 	text-align: center;
 	list-style-type: none;
 	user-select: none;
@@ -84,7 +66,10 @@ $ui-special-char-modal-char-height: 3em;
 	> a {
 		@extend %selectable;
 		display: block;
+		min-width: 2.5em;
+		padding: triple(quarter($ui-length)) 0;
 		color: ui-color(text);
+		cursor: pointer;
 
 		@include hover() {
 			text-decoration: none;
@@ -103,22 +88,22 @@ $ui-special-char-modal-char-height: 3em;
 
 .selected-character {
 	overflow-y: auto;
+}
 
-	.character-preview {
-		padding: triple(half($ui-length));
-		font-family: ui-font-stack(content);
-		font-size: 5em;
-		line-height: 2;
-		text-align: center;
-	}
+.selected-character__preview {
+	padding: triple(half($ui-length));
+	font-family: ui-font-stack(content);
+	font-size: 5em;
+	line-height: 2;
+	text-align: center;
+}
 
-	.character-label,
-	.character-numeric-codes {
-		padding: half($ui-length);
-		text-align: center;
-	}
+.selected-character__name,
+.selected-character__subtitle {
+	padding: half($ui-length);
+	text-align: center;
+}
 
-	.character-numeric-codes {
-		color: ui-color(neutral, dark);
-	}
+.selected-character__subtitle {
+	color: ui-color(neutral, dark);
 }

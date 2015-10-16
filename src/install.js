@@ -39,4 +39,3 @@ define([
 		specialCharactersManager.addCharacterSet('default', JSON.parse(defaultCharacterSetJson));
 	};
 });
-

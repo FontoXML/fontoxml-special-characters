@@ -8,7 +8,7 @@
 				"type": "modal/SpecialCharacter",
 				"options": {
 					"templateUrl": "fontoxml-ui-special-characters/ui/special-character-modal-template.html",
-					"windowClass": "modal-lg"
+					"windowClass": "modal-md"
 				},
 				"data": {
 					"characterSet": "{{characterSet}}"
