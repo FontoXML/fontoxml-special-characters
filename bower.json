@@ -12,7 +12,7 @@
   ],
   "dependencies": {
     "fontoxml-local-storage": "git@bitbucket.org:liones/fontoxml-local-storage.git#develop",
-    "fontoxml-modular-ui": "git@bitbucket.org:liones/fontoxml-modular-ui.git#develop",
+    "fontoxml-modular-ui": "git@bitbucket.org:liones/fontoxml-modular-ui.git#1.0.0",
     "fontoxml-operations": "git@bitbucket.org:liones/fontoxml-operations.git#develop",
     "fontoxml-ui-buttons": "git@bitbucket.org:liones/fontoxml-ui-buttons.git#develop",
     "fontoxml-ui-core": "git@bitbucket.org:liones/fontoxml-ui-core.git#develop",
