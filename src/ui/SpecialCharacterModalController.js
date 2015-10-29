@@ -1,17 +1,15 @@
 define([
-	'fontoxml-local-storage',
+	'fontoxml-local-storage/localStorageService',
 
 	'../specialCharactersManager',
 	'../api/characterToString'
 ], function (
-	localStorage,
+	localStorageService,
 
 	specialCharactersManager,
 	characterToString
 	) {
 	'use strict';
-
-	var localStorageService = localStorage.localStorageService;
 
 	function getCharactersByLabel (characters, label) {
 		return characters.filter(function (character) {
