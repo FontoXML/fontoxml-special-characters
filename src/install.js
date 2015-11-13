@@ -8,8 +8,8 @@ define([
 	'./ui/createSpecialCharacterGridDirective',
 	'./ui/SpecialCharacterModalController',
 
-	'text!./sx/operations.json',
-	'text!./sx/defaultCharacterSet.json'
+	'json!./sx/operations.json',
+	'json!./sx/defaultCharacterSet.json'
 ], function (
 	uiManager,
 	operationsManager,
@@ -30,12 +30,12 @@ define([
 
 		uiManager.addController('SpecialCharacterModalController', SpecialCharacterModalController);
 
-		operationsManager.addOperations(JSON.parse(operationsJson));
+		operationsManager.addOperations(operationsJson);
 
 		selectionManager.selectionChangeNotifier.addCallback(function () {
 			operationsManager.invalidateOperationStateByOperationName('default-special-character-insert');
 		});
 
-		specialCharactersManager.addCharacterSet('default', JSON.parse(defaultCharacterSetJson));
+		specialCharactersManager.addCharacterSet('default', defaultCharacterSetJson);
 	};
 });

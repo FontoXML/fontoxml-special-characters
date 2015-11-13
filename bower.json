@@ -1,6 +1,6 @@
 {
   "name": "fontoxml-ui-special-characters",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "FontoXML UI modal: Special Characters",
   "main": "src/main.js",
   "private": true,
