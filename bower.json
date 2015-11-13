@@ -1,6 +1,6 @@
 {
   "name": "fontoxml-ui-special-characters",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "FontoXML UI modal: Special Characters",
   "main": "src/main.js",
   "private": true,
@@ -13,11 +13,11 @@
   "dependencies": {
     "fontoxml-local-storage": "git@bitbucket.org:liones/fontoxml-local-storage.git#^1.0.0",
     "fontoxml-modular-ui": "git@bitbucket.org:liones/fontoxml-modular-ui.git#^1.0.0",
-    "fontoxml-operations": "git@bitbucket.org:liones/fontoxml-operations.git#develop",
-    "fontoxml-ui-buttons": "git@bitbucket.org:liones/fontoxml-ui-buttons.git#develop",
-    "fontoxml-ui-core": "git@bitbucket.org:liones/fontoxml-ui-core.git#develop",
-    "fontoxml-ui-modal": "git@bitbucket.org:liones/fontoxml-ui-modal.git#develop",
-    "fontoxml-ui-regions": "git@bitbucket.org:liones/fontoxml-ui-regions.git#develop",
-    "fontoxml-ui-panels": "git@bitbucket.org:liones/fontoxml-ui-panels.git#develop"
+    "fontoxml-operations": "git@bitbucket.org:liones/fontoxml-operations.git#^1.0.0",
+    "fontoxml-ui-buttons": "git@bitbucket.org:liones/fontoxml-ui-buttons.git#^1.0.0",
+    "fontoxml-ui-core": "git@bitbucket.org:liones/fontoxml-ui-core.git#^1.0.0",
+    "fontoxml-ui-modal": "git@bitbucket.org:liones/fontoxml-ui-modal.git#^1.0.0",
+    "fontoxml-ui-regions": "git@bitbucket.org:liones/fontoxml-ui-regions.git#^1.0.0",
+    "fontoxml-ui-panels": "git@bitbucket.org:liones/fontoxml-ui-panels.git#^1.0.0"
   }
 }
