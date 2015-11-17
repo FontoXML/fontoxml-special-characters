@@ -15,7 +15,7 @@
 				}
 			},
 			{
-				"type": "command/insertText"
+				"type": "operation/insert-text"
 			}
 		]
 	},
@@ -33,7 +33,7 @@
 	"quick-special-character-insert": {
 		"steps": [
 			{
-				"type": "command/insertText"
+				"type": "operation/insert-text"
 			}
 		]
 	}
