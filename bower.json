@@ -1,7 +1,7 @@
 {
-  "name": "fontoxml-ui-special-characters",
-  "version": "1.0.1",
-  "description": "FontoXML UI modal: Special Characters",
+  "name": "fontoxml-special-characters",
+  "version": "1.0.0",
+  "description": "Enables insertion of special characters via a modal or quick-access grid in the toolbar.",
   "main": "src/main.js",
   "private": true,
   "ignore": [
@@ -11,6 +11,7 @@
     "test"
   ],
   "dependencies": {
+    "fontoxml-base-flow": "git@bitbucket.org:liones/fontoxml-base-flow.git#^1.1.0",
     "fontoxml-local-storage": "git@bitbucket.org:liones/fontoxml-local-storage.git#^1.0.0",
     "fontoxml-modular-ui": "git@bitbucket.org:liones/fontoxml-modular-ui.git#^1.0.0",
     "fontoxml-operations": "git@bitbucket.org:liones/fontoxml-operations.git#^1.0.0",

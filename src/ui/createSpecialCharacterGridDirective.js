@@ -15,17 +15,16 @@ define([
 
 	var visibleLayerChain = uiLayers.visibleLayerChain;
 
-	/* @ngInject */ function UiSpecialCharacterGridController () {
+	function UiSpecialCharacterGridController () {
 		this.characters = specialCharactersManager.getCharacterSet(this.characterSet)
 			.map(function (character) {
 				character.html = characterToString(character);
 				return character;
 			});
 
-		this._operationName = 'quick-special-character-insert';
-		this.operationStateEnabled = operationsManager.getOperationState(this._operationName).enabled;
+		this.operationStateEnabled = operationsManager.getOperationState('insert-text').enabled;
 
-		this.columns = parseInt(this.columns || 8);
+		this.columns = parseInt(this.columns || 8, 10);
 		this.selectableColumns = new Array(this.columns);
 		this.selectableRows = new Array(Math.ceil(this.characters.length / this.columns));
 	}
@@ -41,9 +40,7 @@ define([
 
 		visibleLayerChain.removeAllLayers();
 
-		operationsManager.executeOperation(this._operationName, {
-			text: characterToString(character)
-		});
+		operationsManager.executeOperation('insert-text', { text: characterToString(character) });
 	};
 
 	return function createGridSizeSelectorDirective () {
@@ -51,7 +48,7 @@ define([
 			restrict: 'E',
 			require: ['uiSpecialCharacterGrid', '?^uiDrop'],
 			transclude: true,
-			templateUrl: require.toUrl('fontoxml-ui-special-characters/ui/ui-special-character-grid-template.html'),
+			templateUrl: require.toUrl('fontoxml-special-characters/ui/ui-special-character-grid-template.html'),
 			replace: false,
 			scope: {
 				columns: '@',

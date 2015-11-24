@@ -7,7 +7,7 @@
 			{
 				"type": "modal/SpecialCharacter",
 				"options": {
-					"templateUrl": "fontoxml-ui-special-characters/ui/special-character-modal-template.html",
+					"templateUrl": "fontoxml-special-characters/ui/special-character-modal-template.html",
 					"windowClass": "modal-md"
 				},
 				"data": {
@@ -29,12 +29,5 @@
 				"characterSet": "default"
 			}
 		}
-	},
-	"quick-special-character-insert": {
-		"steps": [
-			{
-				"type": "operation/insert-text"
-			}
-		]
 	}
 }

@@ -66,7 +66,7 @@ define([
 		var labels = preprocessLabels(characters);
 
 		var applicationPrefix = $location.host() + ':' + $location.port();
-		var storagePrefix = applicationPrefix + '|fontoxml-ui-special-characters|' + operationData.characterSet + '|';
+		var storagePrefix = applicationPrefix + '|fontoxml-special-characters|' + operationData.characterSet + '|';
 
 		$scope.displayedCharacters = [];
 		$scope.displayedRecentCharacters = [];

@@ -1,6 +1,6 @@
 define([
-
-], function () {
+], function (
+) {
 	'use strict';
 
 	function SpecialCharactersManager () {

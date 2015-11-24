@@ -1,9 +1,5 @@
-# fontoxml-ui-special-characters
-
-## 1.0.1
-
-Minify JSON files in build.
+# fontoxml-special-characters
 
 ## 1.0.0
 
-Initial release.
+Package renamed from fontoxml-ui-special-characters.
