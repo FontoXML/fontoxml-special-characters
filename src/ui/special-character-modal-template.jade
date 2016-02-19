@@ -9,7 +9,7 @@ ui-modal(
 
 	ui-modal-body
 		ui-region-root-row
-			ui-region-column
+			ui-region-column(style="flex-basis: 25%")
 				ui-region-row
 					ui-panel
 						ui-panel-header(title="Ranges")
@@ -61,7 +61,7 @@ ui-modal(
 												ng-if="character.name"
 												ng-bind-html="'&#8202;' + character.html | trustAsHtml")
 
-			ui-region-column(size="2")
+			ui-region-column(style="flex-basis: 50%")
 				ui-panel
 					ui-panel-header(title="Characters")
 
@@ -83,7 +83,7 @@ ui-modal(
 										ng-bind-html="'&#8202;' + character.html | trustAsHtml"
 										ng-class="{selected: characterIsSelected(character), disabled: !character.name}")
 
-			ui-region-column
+			ui-region-column(style="flex-basis: 25%")
 				ui-panel
 					ui-panel-header(title="Preview")
 

@@ -1,6 +1,6 @@
 {
   "name": "fontoxml-special-characters",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Enables insertion of special characters via a modal or quick-access grid in the toolbar.",
   "main": "src/main.js",
   "private": true,
