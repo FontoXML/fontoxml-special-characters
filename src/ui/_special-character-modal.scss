@@ -24,11 +24,11 @@
 	}
 
 	&.active > a {
-		background-color: ui-color(selection);
-		border-color: ui-color(selection, semidark);
+		background-color: ui-color('selection');
+		border-color: ui-color('selection', 'semidark');
 
 		@include hover() {
-			background-color: ui-color(selection);
+			background-color: ui-color('selection');
 		}
 	}
 }
@@ -37,7 +37,7 @@
 
 .character-group-list__item__subtitle {
 	font-size: em($ui-text-size - eighth($ui-text-size), $ui-text-size);
-	color: rgba($black, 1/2);
+	color: rgba(black, 1 / 2);
 }
 
 .character-grid {
@@ -49,7 +49,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	margin: -$ui-length;
-	font-family: ui-font-stack(content);
+	font-family: ui-font-stack('content');
 	font-size: em($ui-text-size + half($ui-text-size), $ui-text-size);
 
 	.recent-characters & {
@@ -68,19 +68,19 @@
 		display: block;
 		min-width: 2.5em;
 		padding: triple(quarter($ui-length)) 0;
-		color: ui-color(text);
+		color: ui-color('text');
 		cursor: pointer;
 
 		@include hover() {
 			text-decoration: none;
-			background-color: ui-color(hover);
+			background-color: ui-color('hover');
 		}
 
 		&.selected {
-			background-color: ui-color(selection);
+			background-color: ui-color('selection');
 
 			@include hover() {
-				background-color: ui-color(hover);
+				background-color: ui-color('hover');
 			}
 		}
 	}
@@ -92,7 +92,7 @@
 
 .selected-character__preview {
 	padding: triple(half($ui-length));
-	font-family: ui-font-stack(content);
+	font-family: ui-font-stack('content');
 	font-size: 5em;
 	line-height: 2;
 	text-align: center;
@@ -105,5 +105,5 @@
 }
 
 .selected-character__subtitle {
-	color: ui-color(neutral, dark);
+	color: ui-color('neutral', 'dark');
 }
