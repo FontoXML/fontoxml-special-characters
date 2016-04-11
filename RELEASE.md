@@ -1,8 +1,8 @@
 # fontoxml-special-characters
 
-## next (1.0.2)
+## 1.0.2
 
-Update dependencies to depend on version 2.0.0 of fontoxml-base-flow.
+Update dependencies and manifest.
 
 ## 1.0.1
 
