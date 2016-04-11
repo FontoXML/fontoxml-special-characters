@@ -1,5 +1,9 @@
 # fontoxml-special-characters
 
+## next (1.0.3)
+
+Use correct click attribute to fix ui-special-character-grid button clicks.
+
 ## 1.0.2
 
 Update dependencies and manifest.

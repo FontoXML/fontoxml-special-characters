@@ -7,10 +7,10 @@
 			ui-region-column(
 				size="fixed"
 				ng-repeat="selectableColumn in uiSpecialCharacterGrid.selectableColumns track by $index"
-				ng-init="character = uiSpecialCharacterGrid.getCharacterAtGridPosition(row, $index)"
-				ng-click="uiSpecialCharacterGrid.executeOperation(character)")
+				ng-init="character = uiSpecialCharacterGrid.getCharacterAtGridPosition(row, $index)")
 				ui-region-content
 					ui-button(
+						click="uiSpecialCharacterGrid.executeOperation(character)"
 						label="{{character.html | trustAsHtml}}"
 						label-width="4"
 						tooltip-content="{{character.name}}"
