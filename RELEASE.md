@@ -1,5 +1,9 @@
 # fontoxml-special-characters
 
+## next (1.0.4)
+
+Catch any errors thrown by calling OperationsManager#executeOperation.
+
 ## 1.0.3
 
 Use correct click attribute to fix ui-special-character-grid button clicks.

@@ -40,7 +40,11 @@ define([
 
 		visibleLayerChain.removeAllLayers();
 
-		operationsManager.executeOperation('insert-text', { text: characterToString(character) });
+		operationsManager
+			.executeOperation('insert-text', { text: characterToString(character) })
+			.catch(function () {
+				// Always catch rejection to prevent console warnings, OperationsManager handles actual errors.
+			});
 	};
 
 	return function createGridSizeSelectorDirective () {
