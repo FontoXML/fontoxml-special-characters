@@ -3,6 +3,7 @@
 ## next (1.0.4)
 
 Catch any errors thrown by calling OperationsManager#executeOperation.
+Fix scss syntax issues for compatibility with the latest libsass release.
 
 ## 1.0.3
 

@@ -64,7 +64,6 @@
 	user-select: none;
 
 	> a {
-		@extend %selectable;
 		display: block;
 		min-width: 2.5em;
 		padding: triple(quarter($ui-length)) 0;
