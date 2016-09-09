@@ -1,5 +1,9 @@
 # fontoxml-special-characters
 
+## 1.1.0
+
+Change terminology from Special characters to Symbols.
+
 ## 1.0.4
 
 Catch any errors thrown by calling OperationsManager#executeOperation.

@@ -3,8 +3,8 @@ ui-modal(
 	on-enter-key="selectedCharacters.length > 0 && apply()"
 	on-escape-key="cancel()")
 	ui-modal-header(
-		title="Insert special character"
-		subtitle="Select the character you’d like to insert into your document."
+		title="Insert symbol"
+		subtitle="Select the symbol you’d like to insert into your document."
 		icon="keyboard-o")
 
 	ui-modal-body
@@ -63,13 +63,13 @@ ui-modal(
 
 			ui-region-column(style="flex-basis: 50%")
 				ui-panel
-					ui-panel-header(title="Characters")
+					ui-panel-header(title="Symbols")
 
 					ui-panel-toolbar
 						input.form-control(
 							ui-autofocus
 							type="text"
-							placeholder="Filter labels and characters…"
+							placeholder="Filter labels and symbols"
 							ng-model="search.filter")
 
 					ui-panel-body

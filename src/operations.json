@@ -1,7 +1,7 @@
 {
 	"special-character-insert": {
-		"label": "Special character",
-		"description": "Insert a character that can not be easily inserted using your keyboard.",
+		"label": "Symbol",
+		"description": "Insert a symbol that can not be easily inserted using your keyboard.",
 		"icon": "keyboard-o",
 		"steps": [
 			{
@@ -20,8 +20,8 @@
 		]
 	},
 	"default-special-character-insert": {
-		"label": "Special character",
-		"description": "Insert a character that can not be easily inserted using your keyboard.",
+		"label": "Symbol",
+		"description": "Insert a symbol that can not be easily inserted using your keyboard.",
 		"icon": "keyboard-o",
 		"steps": {
 			"type": "operation/special-character-insert",
