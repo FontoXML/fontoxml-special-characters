@@ -2,7 +2,7 @@
 
 ## 1.1.0
 
-Change terminology from Special characters to Symbols.
+Change terminology from "Special characters" to "Symbols".
 
 ## 1.0.4
 
