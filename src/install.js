@@ -3,8 +3,8 @@ define([
 
 	'./specialCharactersManager',
 
-	'./ui/createSpecialCharacterGridDirective',
-	'./ui/SpecialCharacterModalController',
+	'./ui/FxSpecialCharacterModal.jsx',
+	'./ui/FxSpecialCharacterModalController',
 
 	'json!./character-sets/defaultCharacterSet.json'
 ], function (
@@ -12,16 +12,17 @@ define([
 
 	specialCharactersManager,
 
-	createSpecialCharacterGridDirective,
-	SpecialCharacterModalController,
+	FxSpecialCharacterModal,
+	FxSpecialCharacterModalController,
 
 	defaultCharacterSetJson
 	) {
 	'use strict';
 
 	return function install () {
-		uiManager.addDirective('uiSpecialCharacterGrid', createSpecialCharacterGridDirective);
-		uiManager.addController('SpecialCharacterModalController', SpecialCharacterModalController);
+		uiManager.addController('FxSpecialCharacterModalController', FxSpecialCharacterModalController);
+
+		uiManager.registerReactComponent('FxSpecialCharacterModal', FxSpecialCharacterModal);
 
 		specialCharactersManager.addCharacterSet('default', defaultCharacterSetJson);
 	};

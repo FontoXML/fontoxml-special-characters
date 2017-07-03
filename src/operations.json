@@ -3,12 +3,14 @@
 		"label": "t__Symbol",
 		"description": "t__Insert a symbol that can not be easily inserted using your keyboard.",
 		"icon": "keyboard-o",
+		"initialData":{
+			"modalIcon": "keyboard-o"
+		},
 		"steps": [
 			{
-				"type": "modal/SpecialCharacter",
+				"type": "modal/FxSpecialCharacter",
 				"options": {
-					"templateUrl": "fontoxml-special-characters/ui/special-character-modal-template.html",
-					"windowClass": "modal-md"
+					"templateUrl": "fontoxml-special-characters/ui/fx-special-character-modal-template.html"
 				},
 				"data": {
 					"characterSet": "{{characterSet}}"
