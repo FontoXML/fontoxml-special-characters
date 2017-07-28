@@ -7,9 +7,6 @@ const gridItemContentStyles = { height: '1.875rem' };
 const gridPaddingSize = { horizontal: 'l', bottom: 'l' };
 
 class FxSymbols extends Component {
-	// TODO: do not fuck angular again after angular has been fucked out of existence in the whole code base
-	state = { fuAngular: false };
-
 	handleRenderGridItem = ({ isDisabled, isInvalid, isSelected, item, key, onClick, onDoubleClick, size }) => (
 		<GridItem
 			isDisabled={ isDisabled || !item.name }
@@ -33,29 +30,22 @@ class FxSymbols extends Component {
 
 	render () {
 		const { onSymbolClick, onSymbolDoubleClick, selectedSymbols, symbols } = this.props;
-		const { fuAngular } = this.state;
 
 		return (
 			<Flex flex='1'>
-				{ fuAngular && (
-					<VirtualGrid
-						estimatedRowHeight={ 48 }
-						items={ symbols }
-						itemSize='s'
-						onItemClick={ onSymbolClick }
-						onItemDoubleClick={ onSymbolDoubleClick }
-						paddingSize={ gridPaddingSize }
-						renderItem={ this.handleRenderGridItem }
-						selectedItems={ selectedSymbols }
-						spaceSize='m'
-					/>
-				) }
+				<VirtualGrid
+					estimatedRowHeight={ 48 }
+					items={ symbols }
+					itemSize='s'
+					onItemClick={ onSymbolClick }
+					onItemDoubleClick={ onSymbolDoubleClick }
+					paddingSize={ gridPaddingSize }
+					renderItem={ this.handleRenderGridItem }
+					selectedItems={ selectedSymbols }
+					spaceSize='m'
+				/>
 			</Flex>
 		);
-	}
-
-	componentDidMount () {
-		requestAnimationFrame(() => this.setState({ fuAngular: true }));
 	}
 }
 
