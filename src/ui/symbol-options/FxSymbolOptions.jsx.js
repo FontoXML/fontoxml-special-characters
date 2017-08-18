@@ -6,40 +6,46 @@ import FxSymbolOption from './FxSymbolOption.jsx';
 
 const listPaddingSize = { bottom: 'm', horizontal: 'm' };
 
-const handleRenderItem = ({ isDisabled, isInvalid, isSelected, item: option, key, onClick }) => (
+const handleRenderItem = ({ isDisabled, isSelected, item: option, key, onClick }) =>
 	<FxSymbolOption
-		isDisabled={ isDisabled }
-		isInvalid={ isInvalid }
-		isSelected={ isSelected }
-		key={ key }
-		onClick={ onClick }
-		option={ option }
-	/>
-);
+		isDisabled={isDisabled}
+		isSelected={isSelected}
+		key={key}
+		onClick={onClick}
+		option={option}
+	/>;
 
-const FxSymbolOptions = ({ clearButtonLabel, flex, headingLabel, onClearClick, onOptionClick, options, selectedOption }) => (
-	<Flex flex={ flex } flexDirection='column'>
-		<Flex alignItems='center' flex='none' paddingSize='m' spaceSize='l'>
-			<Heading colorName='text-muted-color' level='4'>{ headingLabel }</Heading>
+const FxSymbolOptions = ({
+	clearButtonLabel,
+	flex,
+	headingLabel,
+	onClearClick,
+	onOptionClick,
+	options,
+	selectedOption
+}) =>
+	<Flex flex={flex} flexDirection="column">
+		<Flex alignItems="center" flex="none" paddingSize="m" spaceSize="l">
+			<Heading colorName="text-muted-color" level="4">{headingLabel}</Heading>
 
-			{ clearButtonLabel && onClearClick && selectedOption && (
+			{clearButtonLabel &&
+				onClearClick &&
+				selectedOption &&
 				<TextLink
-					icon='times-circle'
+					icon="times-circle"
 					isInline
-					label={ clearButtonLabel }
-					onClick={ onClearClick }
-				/>
-			) }
+					label={clearButtonLabel}
+					onClick={onClearClick}
+				/>}
 		</Flex>
 
 		<List
-			items={ options }
-			onItemClick={ onOptionClick }
-			paddingSize={ listPaddingSize }
-			selectedItem={ selectedOption }
-			renderItem={ handleRenderItem }
+			items={options}
+			onItemClick={onOptionClick}
+			paddingSize={listPaddingSize}
+			selectedItem={selectedOption}
+			renderItem={handleRenderItem}
 		/>
-	</Flex>
-);
+	</Flex>;
 
 export default FxSymbolOptions;

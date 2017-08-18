@@ -8,10 +8,7 @@
 		},
 		"steps": [
 			{
-				"type": "modal/FxSpecialCharacter",
-				"options": {
-					"templateUrl": "fontoxml-special-characters/ui/fx-special-character-modal-template.html"
-				},
+				"type": "modal/SpecialCharacterModal",
 				"data": {
 					"characterSet": "{{characterSet}}"
 				}

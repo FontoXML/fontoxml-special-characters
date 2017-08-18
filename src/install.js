@@ -1,14 +1,14 @@
 define([
 	'fontoxml-modular-ui/uiManager',
 
-	'./ui/FxSpecialCharacterModal.jsx',
+	'./ui/SpecialCharacterModal.jsx',
 	'./specialCharactersManager',
 
 	'json!./character-sets/defaultCharacterSet.json'
 ], function (
 	uiManager,
 
-	FxSpecialCharacterModal,
+	SpecialCharacterModal,
 	specialCharactersManager,
 
 	defaultCharacterSetJson
@@ -16,7 +16,7 @@ define([
 	'use strict';
 
 	return function install () {
-		uiManager.registerReactComponent('FxSpecialCharacterModal', FxSpecialCharacterModal);
+		uiManager.registerReactComponent('SpecialCharacterModal', SpecialCharacterModal);
 
 		specialCharactersManager.addCharacterSet('default', defaultCharacterSetJson);
 	};
