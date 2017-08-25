@@ -1,7 +1,6 @@
 {
 	"dependencies": {
 		"fontoxml-base-flow": "^3.0.0",
-		"fontoxml-local-storage": "^1.0.0",
 		"fontoxml-modular-ui": "^2.0.0",
 		"fontoxml-operations": "^1.7.0"
 	}

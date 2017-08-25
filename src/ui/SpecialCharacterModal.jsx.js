@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import localStorageService from 'fontoxml-local-storage/localStorageService';
 import t from 'fontoxml-localization/t';
 
 import characterToString from '../api/characterToString';
@@ -95,10 +94,12 @@ class SpecialCharacterModal extends Component {
 		this.props.data.characterSet +
 		'|';
 
-	allSymbols = specialCharactersManager.getCharacterSet(this.props.data.characterSet).map(symbol => ({
-		...symbol,
-		value: symbol.id
-	}));
+	allSymbols = specialCharactersManager
+		.getCharacterSet(this.props.data.characterSet)
+		.map(symbol => ({
+			...symbol,
+			value: symbol.id
+		}));
 	filterOptionsForAllSymbols = createFilterOptionsFromSymbols(this.allSymbols);
 
 	recentSymbols = [];
@@ -112,11 +113,10 @@ class SpecialCharacterModal extends Component {
 	};
 
 	componentDidMount() {
-		if (localStorageService.hasData(this.storagePrefix + 'storedRecentCharacters')) {
+		const data = window.localStorage.getItem(this.storagePrefix + 'storedRecentCharacters');
+		if (data) {
 			try {
-				this.recentSymbols = JSON.parse(
-					localStorageService.getData(this.storagePrefix + 'storedRecentCharacters')
-				);
+				this.recentSymbols = JSON.parse(data);
 				this.filterOptionsForRecentSymbols = createFilterOptionsFromSymbols(
 					this.recentSymbols
 				);
@@ -124,13 +124,8 @@ class SpecialCharacterModal extends Component {
 				if (this.recentSymbols.length > 0) {
 					this.setState({ activeTab: 'recent' });
 				}
-			} catch (_error) {
-				console.error(
-					'Error during JSON parsing of ' +
-						'localStorageService.getData(' +
-						this.storagePrefix +
-						'storedRecentCharacters")'
-				);
+			} catch (error) {
+				console.error(`Can not parse recent characters, got "${data}"`, error);
 			}
 		}
 	}
@@ -286,7 +281,7 @@ class SpecialCharacterModal extends Component {
 		this.recentSymbols.unshift(selectedSymbol);
 		this.recentSymbols = this.recentSymbols.slice(0, 50);
 
-		localStorageService.setData(
+		window.localStorage.setItem(
 			this.storagePrefix + 'storedRecentCharacters',
 			JSON.stringify(this.recentSymbols)
 		);
