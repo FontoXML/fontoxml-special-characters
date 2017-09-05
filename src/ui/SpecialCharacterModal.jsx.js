@@ -94,12 +94,7 @@ class SpecialCharacterModal extends Component {
 		this.props.data.characterSet +
 		'|';
 
-	allSymbols = specialCharactersManager
-		.getCharacterSet(this.props.data.characterSet)
-		.map(symbol => ({
-			...symbol,
-			value: symbol.id
-		}));
+	allSymbols = specialCharactersManager.getCharacterSet(this.props.data.characterSet);
 	filterOptionsForAllSymbols = createFilterOptionsFromSymbols(this.allSymbols);
 
 	recentSymbols = [];
