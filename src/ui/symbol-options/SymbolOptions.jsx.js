@@ -2,20 +2,21 @@ import React from 'react';
 
 import { Flex, Heading, List, TextLink } from 'fontoxml-vendor-fds/components';
 
-import FxSymbolOption from './FxSymbolOption.jsx';
+import SymbolOption from './SymbolOption.jsx';
 
 const listPaddingSize = { bottom: 'm', horizontal: 'm' };
 
-const handleRenderItem = ({ isDisabled, isSelected, item: option, key, onClick }) =>
-	<FxSymbolOption
+const handleRenderItem = ({ isDisabled, isSelected, item: option, key, onClick }) => (
+	<SymbolOption
 		isDisabled={isDisabled}
 		isSelected={isSelected}
 		key={key}
 		onClick={onClick}
 		option={option}
-	/>;
+	/>
+);
 
-const FxSymbolOptions = ({
+const SymbolOptions = ({
 	clearButtonLabel,
 	flex,
 	headingLabel,
@@ -23,20 +24,23 @@ const FxSymbolOptions = ({
 	onOptionClick,
 	options,
 	selectedOption
-}) =>
+}) => (
 	<Flex flex={flex} flexDirection="column">
 		<Flex alignItems="center" flex="none" paddingSize="m" spaceSize="l">
-			<Heading colorName="text-muted-color" level="4">{headingLabel}</Heading>
+			<Heading colorName="text-muted-color" level="4">
+				{headingLabel}
+			</Heading>
 
 			{clearButtonLabel &&
-				onClearClick &&
-				selectedOption &&
+			onClearClick &&
+			selectedOption && (
 				<TextLink
 					icon="times-circle"
 					isInline
 					label={clearButtonLabel}
 					onClick={onClearClick}
-				/>}
+				/>
+			)}
 		</Flex>
 
 		<List
@@ -46,6 +50,7 @@ const FxSymbolOptions = ({
 			selectedItem={selectedOption}
 			renderItem={handleRenderItem}
 		/>
-	</Flex>;
+	</Flex>
+);
 
-export default FxSymbolOptions;
+export default SymbolOptions;

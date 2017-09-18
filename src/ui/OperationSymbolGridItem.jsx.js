@@ -5,7 +5,7 @@ import withOperationState from 'fontoxml-fx/withOperationState.jsx';
 
 import { Flex, GridItem, UnicodeSymbol } from 'fontoxml-vendor-fds/components';
 
-class FxOperationSymbolGridItem extends Component {
+class OperationSymbolGridItem extends Component {
 	static defaultProps = {
 		onClick: _event => {},
 		operationData: {},
@@ -47,15 +47,15 @@ class FxOperationSymbolGridItem extends Component {
 					justifyContent="center"
 					spaceSize="s"
 				>
-					{character.codePoints.map((codePoint, index) =>
+					{character.codePoints.map((codePoint, index) => (
 						<UnicodeSymbol code={codePoint} key={index} size="s" />
-					)}
+					))}
 				</Flex>
 			</GridItem>
 		);
 	}
 }
 
-FxOperationSymbolGridItem = withOperationState()(FxOperationSymbolGridItem);
+OperationSymbolGridItem = withOperationState()(OperationSymbolGridItem);
 
-export default FxOperationSymbolGridItem;
+export default OperationSymbolGridItem;

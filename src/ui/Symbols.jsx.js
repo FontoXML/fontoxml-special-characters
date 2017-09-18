@@ -6,8 +6,16 @@ const gridItemContentStyles = { height: '1.875rem' };
 
 const gridPaddingSize = { horizontal: 'l', bottom: 'l' };
 
-class FxSymbols extends Component {
-	handleRenderGridItem = ({ isDisabled, isSelected, item, key, onClick, onDoubleClick, size }) =>
+class Symbols extends Component {
+	handleRenderGridItem = ({
+		isDisabled,
+		isSelected,
+		item,
+		key,
+		onClick,
+		onDoubleClick,
+		size
+	}) => (
 		<GridItem
 			isDisabled={isDisabled || !item.name}
 			isSelected={isSelected}
@@ -17,18 +25,20 @@ class FxSymbols extends Component {
 			size={size}
 			type="unicode-symbol"
 		>
-			{item.name &&
+			{item.name && (
 				<Flex
 					alignItems="center"
 					applyCss={gridItemContentStyles}
 					justifyContent="center"
 					spaceSize="s"
 				>
-					{item.codePoints.map((codePoint, key) =>
+					{item.codePoints.map((codePoint, key) => (
 						<UnicodeSymbol code={codePoint} key={key} size="m" />
-					)}
-				</Flex>}
-		</GridItem>;
+					))}
+				</Flex>
+			)}
+		</GridItem>
+	);
 
 	render() {
 		const { onSymbolClick, onSymbolDoubleClick, selectedSymbols, symbols } = this.props;
@@ -51,4 +61,4 @@ class FxSymbols extends Component {
 	}
 }
 
-export default FxSymbols;
+export default Symbols;

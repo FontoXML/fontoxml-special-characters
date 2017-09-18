@@ -4,7 +4,7 @@ import { Flex, Heading, Text, UnicodeSymbol } from 'fontoxml-vendor-fds/componen
 
 const previewStyles = { width: '100%' };
 
-const FxSymbolPreview = ({ symbol }) =>
+const SymbolPreview = ({ symbol }) => (
 	<Flex
 		alignItems="center"
 		applyCss={previewStyles}
@@ -15,16 +15,17 @@ const FxSymbolPreview = ({ symbol }) =>
 		spaceSize="m"
 	>
 		<Flex inline={true} spaceSize="s">
-			{symbol.codePoints.map((codePoint, key) =>
+			{symbol.codePoints.map((codePoint, key) => (
 				<UnicodeSymbol align="center" code={codePoint} key={key} size="l" />
-			)}
+			))}
 		</Flex>
 
-		<Heading align="center" level="4" isBold>{symbol.name}</Heading>
+		<Heading align="center" level="4" isBold>
+			{symbol.name}
+		</Heading>
 
-		<Text align="center">
-			{symbol.codePoints.join(', ')}
-		</Text>
-	</Flex>;
+		<Text align="center">{symbol.codePoints.join(', ')}</Text>
+	</Flex>
+);
 
-export default FxSymbolPreview;
+export default SymbolPreview;

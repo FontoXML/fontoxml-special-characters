@@ -4,9 +4,9 @@ import React, { Component } from 'react';
 import t from 'fontoxml-localization/t';
 
 import characterToString from '../api/characterToString';
-import FxSymbolOptions from './symbol-options/FxSymbolOptions.jsx';
-import FxSymbolPreview from './FxSymbolPreview.jsx';
-import FxSymbols from './FxSymbols.jsx';
+import SymbolOptions from './symbol-options/SymbolOptions.jsx';
+import SymbolPreview from './SymbolPreview.jsx';
+import Symbols from './Symbols.jsx';
 import specialCharactersManager from '../specialCharactersManager';
 
 import {
@@ -60,12 +60,14 @@ function createFilterOptionsFromSymbols(symbols) {
 		});
 	});
 
-	return Object.keys(labelsByName).map(labelName => labelsByName[labelName]).sort((a, b) => {
-		if (a.characterRangeStart === b.characterRangeStart) {
-			return 0;
-		}
-		return a.characterRangeStart < b.characterRangeStart ? -1 : 1;
-	});
+	return Object.keys(labelsByName)
+		.map(labelName => labelsByName[labelName])
+		.sort((a, b) => {
+			if (a.characterRangeStart === b.characterRangeStart) {
+				return 0;
+			}
+			return a.characterRangeStart < b.characterRangeStart ? -1 : 1;
+		});
 }
 
 const messages = {
@@ -310,12 +312,13 @@ class SpecialCharacterModal extends Component {
 								onClick={this.handleRecentTabButtonClick}
 							/>
 
-							{activeTab === 'search' &&
+							{activeTab === 'search' && (
 								<TabButton
 									isActive={true}
 									label="Search"
 									onClick={this.handleSearchTabButtonClick}
-								/>}
+								/>
+							)}
 						</TabButtons>
 
 						<Block applyCss={searchInputContainerStyles}>
@@ -327,10 +330,10 @@ class SpecialCharacterModal extends Component {
 						</Block>
 					</ModalBodyToolbar>
 
-					{filteredDisplayedSymbols.length > 0 &&
+					{filteredDisplayedSymbols.length > 0 && (
 						<ModalContent>
 							<ModalContent flex="0 0 240px" flexDirection="column" spaceSize="l">
-								<FxSymbolOptions
+								<SymbolOptions
 									clearButtonLabel={filterSymbolOptionsClearButtonLabel}
 									flex="1"
 									headingLabel={filterSymbolOptionsHeadingLabel}
@@ -349,7 +352,7 @@ class SpecialCharacterModal extends Component {
 									)}
 								</Flex>
 
-								<FxSymbols
+								<Symbols
 									onSymbolClick={this.handleSymbolClick}
 									onSymbolDoubleClick={this.handleSymbolDoubleClick}
 									selectedSymbols={selectedSymbols}
@@ -357,24 +360,29 @@ class SpecialCharacterModal extends Component {
 								/>
 							</ModalContent>
 
-							{selectedSymbols.length > 0 &&
+							{selectedSymbols.length > 0 && (
 								<ModalContent flex="0 0 240px" flexDirection="column">
-									<FxSymbolPreview symbol={selectedSymbols[0]} />
-								</ModalContent>}
-						</ModalContent>}
+									<SymbolPreview symbol={selectedSymbols[0]} />
+								</ModalContent>
+							)}
+						</ModalContent>
+					)}
 
-					{filteredDisplayedSymbols.length === 0 &&
+					{filteredDisplayedSymbols.length === 0 && (
 						<ModalContent alignItems="center" justifyContent="center">
 							<StateMessage
 								message={this.determineEmptyStateMessage()}
 								title={
-									activeTab === 'recent'
-										? noRecentResultsStateMessageTitle
-										: noSearchResultsStateMessageTitle
+									activeTab === 'recent' ? (
+										noRecentResultsStateMessageTitle
+									) : (
+										noSearchResultsStateMessageTitle
+									)
 								}
 								visual="meh-o"
 							/>
-						</ModalContent>}
+						</ModalContent>
+					)}
 				</ModalBody>
 
 				<ModalFooter>

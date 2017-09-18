@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Label, ListItem } from 'fontoxml-vendor-fds/components';
 
-class FxSymbolOption extends Component {
+class SymbolOption extends Component {
 	handleClick = () => this.props.onClick(this.props.option);
 
 	render() {
@@ -19,4 +19,4 @@ class FxSymbolOption extends Component {
 	}
 }
 
-export default FxSymbolOption;
+export default SymbolOption;

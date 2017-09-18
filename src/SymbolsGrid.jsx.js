@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 
 import { Grid } from 'fontoxml-vendor-fds/components';
 
-import FxOperationSymbolGridItem from './ui/FxOperationSymbolGridItem.jsx';
+import OperationSymbolGridItem from './ui/OperationSymbolGridItem.jsx';
 import specialCharactersManager from './specialCharactersManager';
 
-class FxSymbolsGrid extends Component {
+class SymbolsGrid extends Component {
 	static defaultProps = {
 		columns: 8,
 		onItemClick: _event => {}
@@ -42,7 +42,7 @@ class FxSymbolsGrid extends Component {
 			.join('');
 
 		return (
-			<FxOperationSymbolGridItem
+			<OperationSymbolGridItem
 				character={item}
 				key={key}
 				onClick={onClick}
@@ -68,4 +68,4 @@ class FxSymbolsGrid extends Component {
 	}
 }
 
-export default FxSymbolsGrid;
+export default SymbolsGrid;
