@@ -234,14 +234,17 @@ class SpecialCharacterModal extends Component {
 		if (searchInputValue) {
 			return (
 				<Label align="center" colorName="text-muted-color">
-					{symbolsLength} results for “{searchInputValue}”
+					{t('{SYMBOLS_LENGTH} results for “{SEARCH_INPUT_VALUE}”', {
+						SYMBOLS_LENGTH: symbolsLength,
+						SEARCH_INPUT_VALUE: searchInputValue
+					})}
 				</Label>
 			);
 		}
 
 		return (
 			<Label align="center" colorName="text-muted-color">
-				{symbolsLength} symbols
+				{(t('{SYMBOLS_LENGTH} symbols'), { SYMBOLS_LENGTH: symbolsLength })}
 			</Label>
 		);
 	}
@@ -302,20 +305,20 @@ class SpecialCharacterModal extends Component {
 						<TabButtons>
 							<TabButton
 								isActive={activeTab === 'all'}
-								label="All symbols"
+								label={t('All symbols')}
 								onClick={this.handleAllTabButtonClick}
 							/>
 
 							<TabButton
 								isActive={activeTab === 'recent'}
-								label="Recently used"
+								label={t('Recently used')}
 								onClick={this.handleRecentTabButtonClick}
 							/>
 
 							{activeTab === 'search' && (
 								<TabButton
 									isActive={true}
-									label="Search"
+									label={t('Search')}
 									onClick={this.handleSearchTabButtonClick}
 								/>
 							)}
