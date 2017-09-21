@@ -244,7 +244,7 @@ class SpecialCharacterModal extends Component {
 
 		return (
 			<Label align="center" colorName="text-muted-color">
-				{(t('{SYMBOLS_LENGTH} symbols'), { SYMBOLS_LENGTH: symbolsLength })}
+				{(t('{SYMBOLS_LENGTH} symbols', { SYMBOLS_LENGTH: symbolsLength }))}
 			</Label>
 		);
 	}
