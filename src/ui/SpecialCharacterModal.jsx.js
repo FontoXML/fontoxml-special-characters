@@ -200,6 +200,39 @@ class SpecialCharacterModal extends Component {
 		);
 	}
 
+	handleSubmitButtonClick = () => {
+		const selectedSymbol = this.state.selectedSymbols[0];
+
+		const indexInRecentSymbols = this.recentSymbols.findIndex(
+			recentSymbol => recentSymbol.id === selectedSymbol.id
+		);
+		if (indexInRecentSymbols !== -1) {
+			this.recentSymbols.splice(indexInRecentSymbols, 1);
+		}
+		this.recentSymbols.unshift(selectedSymbol);
+		this.recentSymbols = this.recentSymbols.slice(0, 50);
+
+		window.localStorage.setItem(
+			this.storagePrefix + 'storedRecentCharacters',
+			JSON.stringify(this.recentSymbols)
+		);
+
+		this.props.submitModal({ text: characterToString(selectedSymbol) });
+	};
+
+	handleKeyDown = event => {
+		switch (event.key) {
+			case 'Escape':
+				this.props.cancelModal();
+				break;
+			case 'Enter':
+				if (this.state.selectedSymbols.length !== 0) {
+					this.handleSubmitButtonClick();
+				}
+				break;
+		}
+	};
+
 	handleAllTabButtonClick = () => {
 		this.setState({
 			activeTab: 'all',
@@ -244,7 +277,7 @@ class SpecialCharacterModal extends Component {
 
 		return (
 			<Label align="center" colorName="text-muted-color">
-				{(t('{SYMBOLS_LENGTH} symbols', { SYMBOLS_LENGTH: symbolsLength }))}
+				{t('{SYMBOLS_LENGTH} symbols', { SYMBOLS_LENGTH: symbolsLength })}
 			</Label>
 		);
 	}
@@ -269,26 +302,6 @@ class SpecialCharacterModal extends Component {
 		);
 	}
 
-	handleSubmitButtonClick = () => {
-		const selectedSymbol = this.state.selectedSymbols[0];
-
-		const indexInRecentSymbols = this.recentSymbols.findIndex(
-			recentSymbol => recentSymbol.id === selectedSymbol.id
-		);
-		if (indexInRecentSymbols !== -1) {
-			this.recentSymbols.splice(indexInRecentSymbols, 1);
-		}
-		this.recentSymbols.unshift(selectedSymbol);
-		this.recentSymbols = this.recentSymbols.slice(0, 50);
-
-		window.localStorage.setItem(
-			this.storagePrefix + 'storedRecentCharacters',
-			JSON.stringify(this.recentSymbols)
-		);
-
-		this.props.submitModal({ text: characterToString(selectedSymbol) });
-	};
-
 	render() {
 		const { activeTab, searchInputValue, selectedFilterOption, selectedSymbols } = this.state;
 
@@ -297,7 +310,7 @@ class SpecialCharacterModal extends Component {
 		const filterOptions = this.determineFilterOptions(displayedSymbols);
 
 		return (
-			<Modal isFullHeight size="m">
+			<Modal isFullHeight size="m" onKeyDown={this.handleKeyDown}>
 				<ModalHeader icon={this.props.data.modalIcon} title={messages.modalTitle} />
 
 				<ModalBody paddingSize="l" spaceSize="l">
