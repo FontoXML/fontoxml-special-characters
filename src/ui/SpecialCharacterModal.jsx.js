@@ -1,14 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import t from 'fontoxml-localization/t';
-
-import characterToString from '../api/characterToString';
-import SymbolOptions from './symbol-options/SymbolOptions.jsx';
-import SymbolPreview from './SymbolPreview.jsx';
-import Symbols from './Symbols.jsx';
-import specialCharactersManager from '../specialCharactersManager';
-
 import {
 	Block,
 	Button,
@@ -24,7 +16,14 @@ import {
 	StateMessage,
 	TabButtons,
 	TabButton
-} from 'fontoxml-vendor-fds/components';
+} from 'fds/components';
+import t from 'fontoxml-localization/t';
+
+import characterToString from '../api/characterToString';
+import SymbolOptions from './symbol-options/SymbolOptions.jsx';
+import SymbolPreview from './SymbolPreview.jsx';
+import Symbols from './Symbols.jsx';
+import specialCharactersManager from '../specialCharactersManager';
 
 const filterSymbolOptionsClearButtonLabel = t('Clear');
 const filterSymbolOptionsHeadingLabel = t('Filter by subset');

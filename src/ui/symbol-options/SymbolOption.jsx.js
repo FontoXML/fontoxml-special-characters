@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Label, ListItem } from 'fontoxml-vendor-fds/components';
+import { Label, ListItem } from 'fds/components';
 
 class SymbolOption extends Component {
 	handleClick = () => this.props.onClick(this.props.option);

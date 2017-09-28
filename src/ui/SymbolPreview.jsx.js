@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Flex, Heading, Text, UnicodeSymbol } from 'fontoxml-vendor-fds/components';
+import { Flex, Heading, Text, UnicodeSymbol } from 'fds/components';
 
 const previewStyles = { width: '100%' };
 

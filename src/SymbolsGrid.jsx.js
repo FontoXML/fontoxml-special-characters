@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import { Grid } from 'fontoxml-vendor-fds/components';
+import { Grid } from 'fds/components';
 
 import OperationSymbolGridItem from './ui/OperationSymbolGridItem.jsx';
 import specialCharactersManager from './specialCharactersManager';

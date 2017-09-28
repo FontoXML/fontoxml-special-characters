@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Flex, GridItem, UnicodeSymbol, VirtualGrid } from 'fontoxml-vendor-fds/components';
+import { Flex, GridItem, UnicodeSymbol, VirtualGrid } from 'fds/components';
 
 const gridItemContentStyles = { height: '1.875rem' };
 

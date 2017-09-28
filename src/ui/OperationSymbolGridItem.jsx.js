@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
+import { Flex, GridItem, UnicodeSymbol } from 'fds/components';
 import withOperationState from 'fontoxml-fx/withOperationState.jsx';
-
-import { Flex, GridItem, UnicodeSymbol } from 'fontoxml-vendor-fds/components';
 
 class OperationSymbolGridItem extends Component {
 	static defaultProps = {

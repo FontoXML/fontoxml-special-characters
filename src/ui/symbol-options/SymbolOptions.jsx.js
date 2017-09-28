@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Flex, Heading, List, TextLink } from 'fontoxml-vendor-fds/components';
+import { Flex, Heading, List, TextLink } from 'fds/components';
 
 import SymbolOption from './SymbolOption.jsx';
 
