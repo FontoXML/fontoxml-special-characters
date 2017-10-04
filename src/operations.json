@@ -1,5 +1,22 @@
 {
 	"special-character-insert": {
+		"__documentation": {
+			"summary": [
+				"Open a modal to allow users to insert a special character from the specified special character set",
+				"at the current cursor position."
+			],
+			"fontosdk": true,
+			"params": [
+				{
+					"name": "characterSet",
+					"type": "string",
+					"description": [
+						"The name of the character set to present in the modal for the user to choose a special",
+						"character from."
+					]
+				}
+			]
+		},
 		"label": "t__Symbol",
 		"description": "t__Insert a symbol that can not be easily inserted using your keyboard.",
 		"icon": "keyboard-o",
@@ -19,6 +36,13 @@
 		]
 	},
 	"default-special-character-insert": {
+		"__documentation": {
+			"summary": [
+				"Opens a modal to allow users to insert a special character from the default special character set",
+				"included in the platform at the current cursor position."
+			],
+			"fontosdk": true
+		},
 		"label": "t__Symbol",
 		"description": "t__Insert a symbol that can not be easily inserted using your keyboard.",
 		"icon": "keyboard-o",
