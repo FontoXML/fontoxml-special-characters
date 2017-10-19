@@ -7,6 +7,7 @@ define([
 	 * Enables registration of custom character sets to be displayed in the “Insert special character” modal.
 	 *
 	 * @fontosdk
+	 * @category add-on/fontoxml-special-characters
 	 */
 	function SpecialCharactersManager () {
 		this._characterSetByName = Object.create(null);

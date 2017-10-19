@@ -1,65 +1,83 @@
-#fontoxml-special-characters
+category: add-on/fontoxml-special-characters
+
+# Special characters (fontoxml-special-characters)
+
+This add-on provides a way to easily insert characters that may not be available using the normal keyboard.
 
 ## To integrate this package:
 
 * Add this package as an add-on
-* Create a toolbar button to the "default-special-character-insert" operation.
+* Create a toolbar button to the {@link default-special-character-insert} operation.
 
 ## To enable quickly inserting one of a preconfigured set of characters
-You can use the `ui-special-character-grid` directive (configured with a character set, no more than a couple of tens).
+You can use the {@link SymbolsGrid} UI component (configured with a character set, no more than a couple of tens).
 
 ```
-ui-drop(
-	icon="keyboard-o"
-	label="Special character")
-	ui-special-character-grid(
-		columns="8"
-		character-set="quick-access")
+function renderDrop({ closeDrop, referenceRect }) {
+	return (
+		<Drop minWidth={referenceRect.width}>
+			<SymbolsGrid
+				characterSet="quick-access-characters"
+				columns={6}
+				onItemClick={closeDrop}
+			/>
+		</Drop>
+	);
+}
 
-	ui-menu-item(label="More special characters")
-		fonto-operation(name="...")
-```
-
-Since the preconfigured set of character is a selection of special characters it is recommended to keep a button in
-order to open the full special characters modal near. This ui-menu-item should be added (to the same ui-drop)
-seperately. If this characterset is a superset of the quick-access selection, a label like "More special characters" is
-recommended.
-
-## To customize the character set:
-
-* Generate a .json file as described below
-* Create an sxModule which depends on this package.
-* In the sxModule, import the specialCharactersManager and call addCharacterSet, passing the parsed JSON:
-```
-specialCharactersManager.addCharacterSet('emoji', JSON.parse(emojiCharacterSetJSON));
-```
-* In the *same* sxModule, define an operation with a single step specifying the character set:
-```
-"steps": {
-	"type": "operation/special-character-insert",
-	"data": {
-		"characterSet": "emoji"
-	}
+export default function MyQuickAccessSymbolsDropButton () {
+	return (
+		<MastheadDropButton
+			icon="keyboard-o"
+			label="Symbol"
+			renderDrop={renderDrop}
+		/>
+	);
 }
 ```
 
-## about prune-unsupported-characters.js
-prune-unsupported-characters.js takes your specialCharacters.json and scrapes a list of supported code points for a
-given font from kreativekorps.com. It then regenerates and overwrites specialCharacters.json to exclude all code points
-not found in the font. In a nutshell; it serves to prune missing characters from the special characters modal.
+As this reduced set of characters will be a subset of the full set of special characters, it is recommended to also
+include a button in order to open the full special characters modal nearby. This can be done, for instance, by grouping
+the grid together with a {@link FxOperationMastheadMenuItem} in a {@link Menu}, with a label such as "More special
+characters".
 
-To use:
+## Additional character sets
+
+This add-on provides a single "default" character set containing a large set of symbols. Additional character sets
+may be defined by creating a package that depends on this add-on. In this package's install.js, use the
+{@link SpecialCharactersManager#addCharacterset} method to register your character set.
+
 ```
-node prune-unsupported-characters.js [path to specialCharacters.json] [font name]
+define([
+	'fontoxml-special-characters/specialCharactersManager',
+
+	'json!./emoji-character-set.json'
+], function (
+	specialCharactersManager,
+
+	emojiCharacterSet
+) {
+	'use strict';
+
+	return function install () {
+		specialCharactersManager.addCharacterSet('emoji', emojiCharacterSet);
+	};
+});
 ```
 
-For example
+And then include a {@link SymbolsGrid} to directly access its characters, and / or define an operation to open the modal
+for this character set using the {@link special-character-insert} operation.
+
+
 ```
-node prune-unsupported-characters.js /path/to/specialCharacters.json
-node prune-unsupported-characters.js /path/to/code2001Characters.json Code2001
+"emoji-character-insert": {
+	"label": "Insert emoji",
+	"icon": "smile-o",
+	"steps": {
+		"type": "operation/special-character-insert",
+		"data": {
+			"characterSet": "emoji"
+		}
+	}
+}
 ```
-
-`[font name]` defaults to "Code2000"
-
-prune-unsupported-characters.js overwrites the specified .json file if it exists. Use git to revert unwanted results.
-

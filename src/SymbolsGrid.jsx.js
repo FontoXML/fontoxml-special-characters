@@ -6,6 +6,12 @@ import { Grid } from 'fds/components';
 import OperationSymbolGridItem from './ui/OperationSymbolGridItem.jsx';
 import specialCharactersManager from './specialCharactersManager';
 
+/**
+ * Renders a grid of buttons for each of the characters in the specified character set.
+ *
+ * @fontosdk
+ * @category add-on/fontoxml-special-characters
+ */
 class SymbolsGrid extends Component {
 	static defaultProps = {
 		columns: 8,
@@ -13,8 +19,23 @@ class SymbolsGrid extends Component {
 	};
 
 	static propTypes = {
-		characterSet: PropTypes.string,
+		/**
+		 * The name of the character set to display, as used in {@link SpecialCharactersManager#addCharacterSet}.
+		 */
+		characterSet: PropTypes.string.isRequired,
+
+		/**
+		 * The number of columns to use in the grid.
+		 */
 		columns: PropTypes.number,
+
+		/**
+		 * Function to be called when an item in the grid is clicked.
+		 *
+		 * This can be used, for example, to close the {@link Drop} containing the grid when a character is inserted.
+		 *
+		 * @type {FX~OnItemClickCallback}
+		 */
 		onItemClick: PropTypes.func
 	};
 

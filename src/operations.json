@@ -6,6 +6,7 @@
 				"at the current cursor position."
 			],
 			"fontosdk": true,
+			"category": "add-on/fontoxml-special-characters",
 			"params": [
 				{
 					"name": "characterSet",
@@ -41,7 +42,8 @@
 				"Opens a modal to allow users to insert a special character from the default special character set",
 				"included in the platform at the current cursor position."
 			],
-			"fontosdk": true
+			"fontosdk": true,
+			"category": "add-on/fontoxml-special-characters"
 		},
 		"label": "t__Symbol",
 		"description": "t__Insert a symbol that can not be easily inserted using your keyboard.",
