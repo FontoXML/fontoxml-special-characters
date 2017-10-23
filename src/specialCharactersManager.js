@@ -43,8 +43,8 @@ define([
 	return new SpecialCharactersManager();
 
 	/**
-	 * A character set should be provided to {@link SpecialCharactersManager#addCharacterSet} as an array of objects,
-	 * each containing properties describing a character in the set.
+	 * A character set should be provided to {@link SpecialCharactersManager#addCharacterSet} as an
+	 * array of objects, each containing properties describing a character in the set.
 	 *
 	 * A fragment of an example character set is given below:
 	 *
@@ -65,8 +65,9 @@ define([
 	 * ]
 	 * ```
 	 *
-	 * @typedef  {Object}  CharacterSetEntry
-	 * @fontosdk
+	 * @typedef   {Object}  CharacterSetEntry
+	 *
+	 * @fontosdk  members
 	 *
 	 * @property  {string}    id          Unique identifier for the character
 	 * @property  {string}    name        Descriptive name for the character, displayed in the modal
