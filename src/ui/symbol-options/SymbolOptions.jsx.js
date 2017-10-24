@@ -6,9 +6,9 @@ import SymbolOption from './SymbolOption.jsx';
 
 const listPaddingSize = { bottom: 'm', horizontal: 'm' };
 
-const handleRenderItem = ({ isDisabled, isSelected, item: option, key, onClick }) => (
+const handleRenderItem = ({ isSelected, item: option, key, onClick }) => (
 	<SymbolOption
-		isDisabled={isDisabled}
+		isDisabled={option.isDisabled}
 		isSelected={isSelected}
 		key={key}
 		onClick={onClick}
@@ -32,15 +32,15 @@ const SymbolOptions = ({
 			</Heading>
 
 			{clearButtonLabel &&
-			onClearClick &&
-			selectedOption && (
-				<TextLink
-					icon="times-circle"
-					isInline
-					label={clearButtonLabel}
-					onClick={onClearClick}
-				/>
-			)}
+				onClearClick &&
+				selectedOption && (
+					<TextLink
+						icon="times-circle"
+						isInline
+						label={clearButtonLabel}
+						onClick={onClearClick}
+					/>
+				)}
 		</Flex>
 
 		<List
