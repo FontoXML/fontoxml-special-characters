@@ -7,17 +7,9 @@ const gridItemContentStyles = { height: '1.875rem' };
 const gridPaddingSize = { horizontal: 'l', bottom: 'l' };
 
 class Symbols extends Component {
-	handleRenderGridItem = ({
-		isDisabled,
-		isSelected,
-		item,
-		key,
-		onClick,
-		onDoubleClick,
-		size
-	}) => (
+	handleRenderGridItem = ({ isSelected, item, key, onClick, onDoubleClick, size }) => (
 		<GridItem
-			isDisabled={isDisabled || !item.name}
+			isDisabled={item.isDisabled || !item.name}
 			isSelected={isSelected}
 			key={key}
 			onClick={onClick}
