@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import { Flex, GridItem, UnicodeSymbol } from 'fds/components';
-import withOperationState from 'fontoxml-fx/withOperationState.jsx';
+import Operation from 'fontoxml-fx/Operation.jsx';
 
 class OperationSymbolGridItem extends Component {
 	static defaultProps = {
@@ -22,39 +22,37 @@ class OperationSymbolGridItem extends Component {
 		size: PropTypes.oneOf(['xs', 's', 'm', 'l'])
 	};
 
-	handleClick = () => {
-		// from withOperationState()
-		this.props.handleClick();
-		// own optional prop
-		this.props.onClick();
-	};
-
 	render() {
-		const { character, operationState, size } = this.props;
+		const { character, onClick, operationData, operationName, size } = this.props;
 
 		return (
-			<GridItem
-				isDisabled={!operationState.enabled}
-				onClick={this.handleClick}
-				tooltipContent={character.name}
-				size={size}
-				type="unicode-symbol"
-			>
-				<Flex
-					alignItems="center"
-					applyCss={{ height: '0.875rem' }}
-					justifyContent="center"
-					spaceSize="s"
-				>
-					{character.codePoints.map((codePoint, index) => (
-						<UnicodeSymbol code={codePoint} key={index} size="s" />
-					))}
-				</Flex>
-			</GridItem>
+			<Operation operationData={operationData} operationName={operationName}>
+				{({ operationState, executeOperation }) => (
+					<GridItem
+						isDisabled={!operationState.enabled}
+						onClick={event => {
+							executeOperation();
+							onClick(event);
+						}}
+						tooltipContent={character.name}
+						size={size}
+						type="unicode-symbol"
+					>
+						<Flex
+							alignItems="center"
+							applyCss={{ height: '0.875rem' }}
+							justifyContent="center"
+							spaceSize="s"
+						>
+							{character.codePoints.map((codePoint, index) => (
+								<UnicodeSymbol code={codePoint} key={index} size="s" />
+							))}
+						</Flex>
+					</GridItem>
+				)}
+			</Operation>
 		);
 	}
 }
-
-OperationSymbolGridItem = withOperationState()(OperationSymbolGridItem);
 
 export default OperationSymbolGridItem;
