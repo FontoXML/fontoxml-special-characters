@@ -90,6 +90,8 @@ class SpecialCharacterModal extends Component {
 		submitModal: PropTypes.func.isRequired
 	};
 
+	searchInputRef = null;
+
 	storagePrefix = window.location.host +
 		'|fontoxml-special-symbols|' +
 		this.props.data.characterSet +
@@ -109,6 +111,8 @@ class SpecialCharacterModal extends Component {
 	};
 
 	componentDidMount() {
+		this.searchInputRef.focus();
+
 		const data = window.localStorage.getItem(this.storagePrefix + 'storedRecentCharacters');
 		if (data) {
 			try {
@@ -235,7 +239,6 @@ class SpecialCharacterModal extends Component {
 	handleAllTabButtonClick = () => {
 		this.setState({
 			activeTab: 'all',
-			searchInputValue: '',
 			selectedFilterOption: null
 		});
 	};
@@ -243,13 +246,18 @@ class SpecialCharacterModal extends Component {
 	handleRecentTabButtonClick = () => {
 		this.setState({
 			activeTab: 'recent',
-			searchInputValue: '',
 			selectedFilterOption: null
 		});
 	};
 
-	// TODO: focus SearchInput when possible in FDS with focus behavior.
-	handleSearchTabButtonClick = () => this.setState({ activeTab: 'search' });
+	handleSearchTabButtonClick = () => {
+		this.searchInputRef.focus();
+
+		this.setState({
+			activeTab: 'search',
+			selectedFilterOption: null
+		});
+	};
 
 	handleSearchInputChange = searchInputValue => {
 		this.setState({
@@ -258,12 +266,13 @@ class SpecialCharacterModal extends Component {
 			selectedFilterOption: null
 		});
 	};
+	handleSearchInputRef = searchInputRef => (this.searchInputRef = searchInputRef);
 
 	handleFilterClearClick = () => this.setState({ selectedFilterOption: null });
 	handleFilterOptionClick = selectedFilterOption => this.setState({ selectedFilterOption });
 
-	renderResultsCounter(symbolsLength, searchInputValue) {
-		if (searchInputValue) {
+	renderResultsCounter(symbolsLength, searchInputValue, activeTab) {
+		if (activeTab === 'search') {
 			return (
 				<Label align="center" colorName="text-muted-color">
 					{t('{SYMBOLS_LENGTH} results for “{SEARCH_INPUT_VALUE}”', {
@@ -327,9 +336,9 @@ class SpecialCharacterModal extends Component {
 								onClick={this.handleRecentTabButtonClick}
 							/>
 
-							{activeTab === 'search' && (
+							{searchInputValue !== '' && (
 								<TabButton
-									isActive={true}
+									isActive={activeTab === 'search'}
 									label={t('Search')}
 									onClick={this.handleSearchTabButtonClick}
 								/>
@@ -340,6 +349,7 @@ class SpecialCharacterModal extends Component {
 							<SearchInput
 								onChange={this.handleSearchInputChange}
 								placeholder={searchInputPlaceholder}
+								ref={this.handleSearchInputRef}
 								value={searchInputValue}
 							/>
 						</Block>
@@ -362,8 +372,9 @@ class SpecialCharacterModal extends Component {
 							<ModalContent flex="1" flexDirection="column">
 								<Flex justifyContent="center" paddingSize="m">
 									{this.renderResultsCounter(
-										displayedSymbols.length,
-										searchInputValue
+										filteredDisplayedSymbols.length,
+										searchInputValue,
+										activeTab
 									)}
 								</Flex>
 
@@ -388,11 +399,9 @@ class SpecialCharacterModal extends Component {
 							<StateMessage
 								message={this.determineEmptyStateMessage()}
 								title={
-									activeTab === 'recent' ? (
-										noRecentResultsStateMessageTitle
-									) : (
-										noSearchResultsStateMessageTitle
-									)
+									activeTab === 'recent'
+										? noRecentResultsStateMessageTitle
+										: noSearchResultsStateMessageTitle
 								}
 								visual="meh-o"
 							/>
