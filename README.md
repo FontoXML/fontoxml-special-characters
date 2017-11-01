@@ -1,6 +1,8 @@
+---
 category: add-on/fontoxml-special-characters
+---
 
-# Special characters (fontoxml-special-characters)
+# Special characters
 
 This add-on provides a way to easily insert characters that may not be available using the normal keyboard.
 
