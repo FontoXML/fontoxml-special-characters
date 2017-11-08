@@ -14,9 +14,9 @@ const SymbolPreview = ({ symbol }) => (
 		paddingSize="m"
 		spaceSize="m"
 	>
-		<Flex inline={true} spaceSize="s">
+		<Flex alignItems="center" spaceSize="s">
 			{symbol.codePoints.map((codePoint, key) => (
-				<UnicodeSymbol align="center" code={codePoint} key={key} size="l" />
+				<UnicodeSymbol code={codePoint} key={key} size="l" />
 			))}
 		</Flex>
 
