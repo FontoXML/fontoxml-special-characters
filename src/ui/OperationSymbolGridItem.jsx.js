@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import { Flex, GridItem, UnicodeSymbol } from 'fds/components';
-import Operation from 'fontoxml-fx/Operation.jsx';
+import FxOperation from 'fontoxml-fx/FxOperation.jsx';
 
 class OperationSymbolGridItem extends Component {
 	static defaultProps = {
@@ -26,7 +26,7 @@ class OperationSymbolGridItem extends Component {
 		const { character, onClick, operationData, operationName, size } = this.props;
 
 		return (
-			<Operation operationData={operationData} operationName={operationName}>
+			<FxOperation operationData={operationData} operationName={operationName}>
 				{({ operationState, executeOperation }) => (
 					<GridItem
 						isDisabled={!operationState.enabled}
@@ -50,7 +50,7 @@ class OperationSymbolGridItem extends Component {
 						</Flex>
 					</GridItem>
 				)}
-			</Operation>
+			</FxOperation>
 		);
 	}
 }
