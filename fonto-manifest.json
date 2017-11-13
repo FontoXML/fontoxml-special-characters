@@ -1,8 +1,9 @@
 {
 	"dependencies": {
-		"fontoxml-base-flow": "^3.0.0",
-		"fontoxml-fx": "^1.0.0",
-		"fontoxml-modular-ui": "^2.0.0",
-		"fontoxml-operations": "^1.7.0"
-	}
+		"fontoxml-base-flow": "^4.0.0",
+		"fontoxml-fx": "^2.0.0",
+		"fontoxml-modular-ui": "^3.0.0",
+		"fontoxml-operations": "^2.0.0"
+	},
+	"role": "add-on"
 }
