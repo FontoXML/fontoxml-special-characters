@@ -29,6 +29,7 @@ class OperationSymbolGridItem extends Component {
 			<FxOperation operationData={operationData} operationName={operationName}>
 				{({ operationState, executeOperation }) => (
 					<GridItem
+						cursor="pointer"
 						isDisabled={!operationState.enabled}
 						onClick={event => {
 							executeOperation();
