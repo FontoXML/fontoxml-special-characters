@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import { Grid } from 'fds/components';
+import { Flex, Grid, GridItem, UnicodeSymbol } from 'fds/components';
 
-import OperationSymbolGridItem from './ui/OperationSymbolGridItem.jsx';
+import FxOperation from 'fontoxml-fx/FxOperation.jsx';
+
 import specialCharactersManager from './specialCharactersManager';
 
 /**
@@ -57,34 +58,53 @@ class SymbolsGrid extends Component {
 		}
 	}
 
-	renderSymbolItem = ({ item, itemSize, key, onClick }) => {
-		const text = item.codePoints
-			.map(codePoint => String.fromCodePoint(parseInt(codePoint.substr(2), 16)))
-			.join('');
-
-		return (
-			<OperationSymbolGridItem
-				character={item}
-				key={key}
-				onClick={onClick}
-				operationData={{ text }}
-				operationName="insert-text"
-				size={itemSize}
-			/>
-		);
-	};
-
 	render() {
 		return (
-			<Grid
-				items={this.state.characters}
-				itemSize="xs"
-				maxColumns={this.props.columns}
-				onItemClick={this.props.onItemClick}
-				paddingSize="s"
-				renderItem={this.renderSymbolItem}
-				spaceSize="s"
-			/>
+			<FxOperation operationData={{ text: ' ' }} operationName="insert-text">
+				{({ operationState, executeOperation }) => (
+					<Grid
+						items={this.state.characters}
+						itemSize="xs"
+						maxColumns={this.props.columns}
+						onItemClick={this.props.onItemClick}
+						paddingSize="s"
+						renderItem={({ item, itemSize, key, onClick }) => {
+							const text = item.codePoints
+								.map(codePoint =>
+									String.fromCodePoint(parseInt(codePoint.substr(2), 16))
+								)
+								.join('');
+
+							return (
+								<GridItem
+									key={key}
+									cursor="pointer"
+									isDisabled={!operationState.enabled}
+									onClick={event => {
+										executeOperation({ text });
+										onClick(event);
+									}}
+									tooltipContent={item.name}
+									size={itemSize}
+									type="unicode-symbol"
+								>
+									<Flex
+										alignItems="center"
+										applyCss={{ height: '0.875rem' }}
+										justifyContent="center"
+										spaceSize="s"
+									>
+										{item.codePoints.map((codePoint, index) => (
+											<UnicodeSymbol code={codePoint} key={index} size="s" />
+										))}
+									</Flex>
+								</GridItem>
+							);
+						}}
+						spaceSize="s"
+					/>
+				)}
+			</FxOperation>
 		);
 	}
 }
