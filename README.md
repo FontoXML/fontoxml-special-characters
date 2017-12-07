@@ -29,7 +29,7 @@ function renderDrop({ closeDrop, referenceRect }) {
 
 export default function MyQuickAccessSymbolsDropButton () {
 	return (
-		<MastheadDropButton
+		<ButtonWithDrop
 			icon="keyboard-o"
 			label="Symbol"
 			renderDrop={renderDrop}
@@ -40,7 +40,7 @@ export default function MyQuickAccessSymbolsDropButton () {
 
 As this reduced set of characters will be a subset of the full set of special characters, it is recommended to also
 include a button in order to open the full special characters modal nearby. This can be done, for instance, by grouping
-the grid together with a {@link FxOperationMastheadMenuItem} in a {@link Menu}, with a label such as "More special
+the grid together with a {@link FxOperationMenuItem} in a {@link Menu}, with a label such as "More special
 characters".
 
 ## Additional character sets
