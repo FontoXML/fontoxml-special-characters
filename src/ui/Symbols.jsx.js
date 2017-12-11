@@ -2,11 +2,25 @@ import React, { Component } from 'react';
 
 import { Flex, GridItem, UnicodeSymbol, VirtualGrid } from 'fds/components';
 
-const gridItemContentStyles = { height: '1.875rem' };
-
 const gridPaddingSize = { horizontal: 'l', bottom: 'l' };
 
 class Symbols extends Component {
+	renderCodePoints = codePoints => {
+		const unicodeSymbols = codePoints.map((codePoint, key) => (
+			<UnicodeSymbol code={codePoint} key={key} size="m" />
+		));
+
+		if (codePoints.length > 1) {
+			return (
+				<Flex alignItems="center" justifyContent="center" spaceHorizontalSize="s">
+					{unicodeSymbols}
+				</Flex>
+			);
+		}
+
+		return unicodeSymbols;
+	};
+
 	handleRenderGridItem = ({ isSelected, item, key, onClick, onDoubleClick, size }) => (
 		<GridItem
 			isDisabled={item.isDisabled || !item.name}
@@ -17,18 +31,7 @@ class Symbols extends Component {
 			size={size}
 			type="unicode-symbol"
 		>
-			{item.name && (
-				<Flex
-					alignItems="center"
-					applyCss={gridItemContentStyles}
-					justifyContent="center"
-					spaceSize="s"
-				>
-					{item.codePoints.map((codePoint, key) => (
-						<UnicodeSymbol code={codePoint} key={key} size="m" />
-					))}
-				</Flex>
-			)}
+			{item.name && this.renderCodePoints(item.codePoints)}
 		</GridItem>
 	);
 
@@ -47,6 +50,7 @@ class Symbols extends Component {
 					renderItem={this.handleRenderGridItem}
 					selectedItems={selectedSymbols}
 					spaceSize="m"
+					virtualBufferFactor={4}
 				/>
 			</Flex>
 		);
