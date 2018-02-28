@@ -1,4 +1,41 @@
 {
+	"open-special-character-modal": {
+		"__documentation": {
+			"summary": [
+				"Open a modal to allow the user to select a special character."
+			],
+			"fontosdk": true,
+			"category": "add-on/fontoxml-special-characters",
+			"params": [
+				{
+					"name": "characterSet",
+					"type": "string",
+					"description": [
+						"The name of the character set to present in the modal for the user to choose a special",
+						"character from."
+					]
+				}
+			],
+			"returns": [
+				{
+					"name": "text",
+					"type": "string",
+					"description": "The selected character."
+				}
+			]
+		},
+		"initialData": {
+			"modalIcon": "keyboard-o"
+		},
+		"steps": [
+			{
+				"type": "modal/SpecialCharacterModal",
+				"data": {
+					"characterSet": "{{characterSet}}"
+				}
+			}
+		]
+	},
 	"special-character-insert": {
 		"__documentation": {
 			"summary": [
@@ -21,15 +58,9 @@
 		"label": "t__Symbol",
 		"description": "t__Insert a symbol that can not be easily inserted using your keyboard.",
 		"icon": "keyboard-o",
-		"initialData":{
-			"modalIcon": "keyboard-o"
-		},
 		"steps": [
 			{
-				"type": "modal/SpecialCharacterModal",
-				"data": {
-					"characterSet": "{{characterSet}}"
-				}
+				"type": "operation/open-special-character-modal"
 			},
 			{
 				"type": "operation/insert-text"
