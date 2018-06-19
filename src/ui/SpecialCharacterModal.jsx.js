@@ -107,7 +107,7 @@ class SpecialCharacterModal extends Component {
 		activeTab: 'all',
 		searchInputValue: '',
 		selectedFilterOption: null,
-		selectedSymbols: []
+		selectedSymbol: null
 	};
 
 	componentDidMount() {
@@ -204,7 +204,7 @@ class SpecialCharacterModal extends Component {
 	}
 
 	handleSubmitButtonClick = () => {
-		const selectedSymbol = this.state.selectedSymbols[0];
+		const { selectedSymbol } = this.state;
 
 		const indexInRecentSymbols = this.recentSymbols.findIndex(
 			recentSymbol => recentSymbol.id === selectedSymbol.id
@@ -229,7 +229,7 @@ class SpecialCharacterModal extends Component {
 				this.props.cancelModal();
 				break;
 			case 'Enter':
-				if (this.state.selectedSymbols.length !== 0) {
+				if (this.state.selectedSymbol !== null) {
 					this.handleSubmitButtonClick();
 				}
 				break;
@@ -290,9 +290,9 @@ class SpecialCharacterModal extends Component {
 		);
 	}
 
-	handleSymbolClick = selectedSymbol => this.setState({ selectedSymbols: [selectedSymbol] });
+	handleSymbolClick = selectedSymbol => this.setState({ selectedSymbol });
 	handleSymbolDoubleClick = selectedSymbol => {
-		this.setState({ selectedSymbols: [selectedSymbol] }, this.handleSubmitButtonClick);
+		this.setState({ selectedSymbol }, this.handleSubmitButtonClick);
 	};
 
 	determineEmptyStateMessage() {
@@ -311,7 +311,7 @@ class SpecialCharacterModal extends Component {
 	}
 
 	render() {
-		const { activeTab, searchInputValue, selectedFilterOption, selectedSymbols } = this.state;
+		const { activeTab, searchInputValue, selectedFilterOption, selectedSymbol } = this.state;
 
 		const displayedSymbols = this.determineDisplayedSymbols();
 		const filteredDisplayedSymbols = this.determineFilteredDisplayedSymbols(displayedSymbols);
@@ -381,14 +381,14 @@ class SpecialCharacterModal extends Component {
 								<Symbols
 									onSymbolClick={this.handleSymbolClick}
 									onSymbolDoubleClick={this.handleSymbolDoubleClick}
-									selectedSymbols={selectedSymbols}
+									selectedSymbol={selectedSymbol}
 									symbols={filteredDisplayedSymbols}
 								/>
 							</ModalContent>
 
-							{selectedSymbols.length > 0 && (
+							{selectedSymbol !== null && (
 								<ModalContent flex="0 0 240px" flexDirection="column">
-									<SymbolPreview symbol={selectedSymbols[0]} />
+									<SymbolPreview symbol={selectedSymbol} />
 								</ModalContent>
 							)}
 						</ModalContent>
@@ -413,7 +413,7 @@ class SpecialCharacterModal extends Component {
 					<Button label={messages.cancelButtonLabel} onClick={this.props.cancelModal} />
 
 					<Button
-						isDisabled={selectedSymbols.length === 0}
+						isDisabled={selectedSymbol === null}
 						label={messages.submitButtonLabel}
 						onClick={this.handleSubmitButtonClick}
 						type="primary"

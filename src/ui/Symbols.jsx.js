@@ -21,10 +21,10 @@ class Symbols extends Component {
 		return unicodeSymbols;
 	};
 
-	handleRenderGridItem = ({ isSelected, item, key, onClick, onDoubleClick, size }) => (
+	handleRenderGridItem = ({ item, key, onClick, onDoubleClick, size }) => (
 		<GridItem
 			isDisabled={item.isDisabled || !item.name}
-			isSelected={isSelected}
+			isSelected={item === this.props.selectedSymbol}
 			key={key}
 			onClick={onClick}
 			onDoubleClick={onDoubleClick}
@@ -36,7 +36,7 @@ class Symbols extends Component {
 	);
 
 	render() {
-		const { onSymbolClick, onSymbolDoubleClick, selectedSymbols, symbols } = this.props;
+		const { onSymbolClick, onSymbolDoubleClick, selectedSymbol, symbols } = this.props;
 
 		return (
 			<Flex flex="1">
@@ -48,7 +48,7 @@ class Symbols extends Component {
 					onItemDoubleClick={onSymbolDoubleClick}
 					paddingSize={gridPaddingSize}
 					renderItem={this.handleRenderGridItem}
-					selectedItems={selectedSymbols}
+					idToScrollIntoView={selectedSymbol ? selectedSymbol.id : null}
 					spaceSize="m"
 					virtualBufferFactor={4}
 				/>
