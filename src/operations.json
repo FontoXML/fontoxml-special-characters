@@ -58,6 +58,12 @@
 		"label": "t__Symbol",
 		"description": "t__Insert a symbol that can not be easily inserted using your keyboard.",
 		"icon": "keyboard-o",
+		"getStateSteps": {
+			"type": "operation/insert-text",
+			"data": {
+				"text": "a"
+			}
+		},
 		"steps": [
 			{
 				"type": "operation/open-special-character-modal"
