@@ -17,13 +17,13 @@ import {
 	TabButtons,
 	TabButton
 } from 'fds/components';
-import t from 'fontoxml-localization/t';
+import t from 'fontoxml-localization/src/t.js';
 
-import characterToString from '../api/characterToString';
+import characterToString from '../api/characterToString.js';
 import SymbolOptions from './symbol-options/SymbolOptions.jsx';
 import SymbolPreview from './SymbolPreview.jsx';
 import Symbols from './Symbols.jsx';
-import specialCharactersManager from '../specialCharactersManager';
+import specialCharactersManager from '../specialCharactersManager.js';
 
 const filterSymbolOptionsClearButtonLabel = t('Clear');
 const filterSymbolOptionsHeadingLabel = t('Filter by subset');
@@ -92,10 +92,8 @@ class SpecialCharacterModal extends Component {
 
 	searchInputRef = null;
 
-	storagePrefix = window.location.host +
-		'|fontoxml-special-symbols|' +
-		this.props.data.characterSet +
-		'|';
+	storagePrefix =
+		window.location.host + '|fontoxml-special-symbols|' + this.props.data.characterSet + '|';
 
 	allSymbols = specialCharactersManager.getCharacterSet(this.props.data.characterSet);
 	filterOptionsForAllSymbols = createFilterOptionsFromSymbols(this.allSymbols);

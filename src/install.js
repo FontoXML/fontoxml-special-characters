@@ -1,23 +1,10 @@
-define([
-	'fontoxml-modular-ui/uiManager',
+import uiManager from 'fontoxml-modular-ui/src/uiManager.js';
+import SpecialCharacterModal from './ui/SpecialCharacterModal.jsx';
+import specialCharactersManager from './specialCharactersManager.js';
+import defaultCharacterSetJson from './character-sets/defaultCharacterSet.json';
 
-	'./ui/SpecialCharacterModal.jsx',
-	'./specialCharactersManager',
+export default function install() {
+	uiManager.registerReactComponent('SpecialCharacterModal', SpecialCharacterModal);
 
-	'json!./character-sets/defaultCharacterSet.json'
-], function (
-	uiManager,
-
-	SpecialCharacterModal,
-	specialCharactersManager,
-
-	defaultCharacterSetJson
-) {
-	'use strict';
-
-	return function install () {
-		uiManager.registerReactComponent('SpecialCharacterModal', SpecialCharacterModal);
-
-		specialCharactersManager.addCharacterSet('default', defaultCharacterSetJson);
-	};
-});
+	specialCharactersManager.addCharacterSet('default', defaultCharacterSetJson);
+}

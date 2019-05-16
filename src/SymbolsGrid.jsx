@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 
 import { Flex, Grid, GridItem, UnicodeSymbol } from 'fds/components';
 
-import FxOperation from 'fontoxml-fx/FxOperation.jsx';
+import FxOperation from 'fontoxml-fx/src/FxOperation.jsx';
 
-import specialCharactersManager from './specialCharactersManager';
+import specialCharactersManager from './specialCharactersManager.js';
 
 /**
  * Renders a grid of buttons for each of the characters in the specified character set.

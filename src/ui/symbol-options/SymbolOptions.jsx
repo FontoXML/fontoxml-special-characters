@@ -31,16 +31,14 @@ const SymbolOptions = ({
 				{headingLabel}
 			</Heading>
 
-			{clearButtonLabel &&
-				onClearClick &&
-				selectedOption && (
-					<TextLink
-						icon="times-circle"
-						isInline
-						label={clearButtonLabel}
-						onClick={onClearClick}
-					/>
-				)}
+			{clearButtonLabel && onClearClick && selectedOption && (
+				<TextLink
+					icon="times-circle"
+					isInline
+					label={clearButtonLabel}
+					onClick={onClearClick}
+				/>
+			)}
 		</Flex>
 
 		<List
