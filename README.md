@@ -14,7 +14,7 @@ This add-on provides a way to easily insert characters that may not be available
 ## To enable quickly inserting one of a preconfigured set of characters
 You can use the {@link SymbolsGrid} UI component (configured with a character set, no more than a couple of tens).
 
-```
+```javascript
 function renderDrop({ closeDrop, referenceRect }) {
 	return (
 		<Drop minWidth={referenceRect.width}>
@@ -49,36 +49,28 @@ This add-on provides a single "default" character set containing a large set of 
 may be defined by creating a package that depends on this add-on. In this package's install.js, use the
 {@link SpecialCharactersManager#addCharacterset} method to register your character set.
 
-```
-define([
-	'fontoxml-special-characters/specialCharactersManager',
+```javascript
+import specialCharactersManager from 'fontoxml-special-characters/src/specialCharactersManager.js';
+import emojiCharacterSet from './emoji-character-set.json';
 
-	'json!./emoji-character-set.json'
-], function (
-	specialCharactersManager,
-
-	emojiCharacterSet
-) {
-	'use strict';
-
-	return function install () {
-		specialCharactersManager.addCharacterSet('emoji', emojiCharacterSet);
-	};
-});
+export default function install() {
+	specialCharactersManager.addCharacterSet('emoji', emojiCharacterSet);
+}
 ```
 
 And then include a {@link SymbolsGrid} to directly access its characters, and / or define an operation to open the modal
 for this character set using the {@link special-character-insert} operation.
 
-
-```
-"emoji-character-insert": {
-	"label": "Insert emoji",
-	"icon": "smile-o",
-	"steps": {
-		"type": "operation/special-character-insert",
-		"data": {
-			"characterSet": "emoji"
+```json
+{
+	"emoji-character-insert": {
+		"label": "Insert emoji",
+		"icon": "smile-o",
+		"steps": {
+			"type": "operation/special-character-insert",
+			"data": {
+				"characterSet": "emoji"
+			}
 		}
 	}
 }
