@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 
 import { Flex, Grid, GridItem, UnicodeSymbol } from 'fds/components';
-import { useHasChanged } from 'fds/system.js';
+import { useHasChanged } from 'fds/system';
 
 import FxOperation from 'fontoxml-fx/src/FxOperation.jsx';
 
