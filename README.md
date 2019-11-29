@@ -15,9 +15,9 @@ This add-on provides a way to easily insert characters that may not be available
 You can use the {@link SymbolsGrid} UI component (configured with a character set, no more than a couple of tens).
 
 ```javascript
-function renderDrop({ closeDrop, referenceRect }) {
+function renderDrop({ closeDrop }) {
 	return (
-		<Drop minWidth={referenceRect.width}>
+		<Drop>
 			<SymbolsGrid
 				characterSet="quick-access-characters"
 				columns={6}
