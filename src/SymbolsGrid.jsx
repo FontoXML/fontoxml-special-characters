@@ -14,6 +14,7 @@ const defaultOperationData = { text: ' ' };
  * Renders a grid of buttons for each of the characters in the specified character set.
  *
  * @fontosdk
+ * @react
  * @category add-on/fontoxml-special-characters
  */
 function SymbolsGrid({ characterSet, columns, onItemClick }) {
