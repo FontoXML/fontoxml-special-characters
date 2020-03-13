@@ -47,14 +47,15 @@ characters".
 
 This add-on provides a single "default" character set containing a large set of symbols. Additional character sets
 may be defined by creating a package that depends on this add-on. In this package's install.js, use the
-{@link SpecialCharactersManager#addCharacterset} method to register your character set.
+{@link SpecialCharactersManager#addCharacterSetPath} method to register your character set. Place the character set
+JSON file in "src/assets/character-sets/" inside the package, which must contain an Array of {@link CharacterSetEntry}
+objects.
 
 ```javascript
 import specialCharactersManager from 'fontoxml-special-characters/src/specialCharactersManager.js';
-import emojiCharacterSet from './emoji-character-set.json';
 
 export default function install() {
-	specialCharactersManager.addCharacterSet('emoji', emojiCharacterSet);
+	specialCharactersManager.addCharacterSetPath('emoji', 'assets/character-sets/emoji-character-set.json');
 }
 ```
 

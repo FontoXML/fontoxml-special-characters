@@ -13,6 +13,7 @@ import {
 	ModalFooter,
 	ModalHeader,
 	SearchInput,
+	SpinnerIcon,
 	StateMessage,
 	TabButtons,
 	TabButton
@@ -95,21 +96,22 @@ class SpecialCharacterModal extends Component {
 	storagePrefix =
 		window.location.host + '|fontoxml-special-symbols|' + this.props.data.characterSet + '|';
 
-	allSymbols = specialCharactersManager.getCharacterSet(this.props.data.characterSet);
-	filterOptionsForAllSymbols = createFilterOptionsFromSymbols(this.allSymbols);
-
 	recentSymbols = [];
 	filterOptionsForRecentSymbols = [];
 
 	state = {
 		activeTab: 'all',
+		allSymbols: null,
+		filterOptionsForAllSymbols: null,
+		hasErrors: false,
+		isLoading: true,
 		searchInputValue: '',
 		selectedFilterOption: null,
 		selectedSymbol: null
 	};
 
 	componentDidMount() {
-		this.searchInputRef.focus();
+		this._ismounted = true;
 
 		const data = window.localStorage.getItem(this.storagePrefix + 'storedRecentCharacters');
 		if (data) {
@@ -126,6 +128,35 @@ class SpecialCharacterModal extends Component {
 				console.error(`Can not parse recent characters, got "${data}"`, error);
 			}
 		}
+		specialCharactersManager
+			.getCharacterSet(this.props.data.characterSet)
+			.then(charSet => {
+				if (this._ismounted) {
+					this.setState(
+						{
+							isLoading: false,
+							allSymbols: charSet,
+							filterOptionsForAllSymbols: createFilterOptionsFromSymbols(charSet)
+						},
+						() => {
+							this.searchInputRef.focus();
+						}
+					);
+				}
+			})
+			.catch(error => {
+				console.error(error);
+				if (this._ismounted) {
+					this.setState({
+						isLoading: false,
+						hasErrors: true
+					});
+				}
+			});
+	}
+
+	componentWillUnmount() {
+		this._ismounted = false;
 	}
 
 	filterSymbolsForSelectedFilterOption(symbols) {
@@ -143,13 +174,13 @@ class SpecialCharacterModal extends Component {
 		const { activeTab, searchInputValue } = this.state;
 
 		if (activeTab === 'all') {
-			return this.filterSymbolsForSelectedFilterOption(this.allSymbols);
+			return this.filterSymbolsForSelectedFilterOption(this.state.allSymbols);
 		} else if (activeTab === 'recent') {
 			return this.filterSymbolsForSelectedFilterOption(this.recentSymbols);
 		}
 
 		// search
-		return this.allSymbols.filter(
+		return this.state.allSymbols.filter(
 			symbol =>
 				// match on the name
 				symbol.name.toLowerCase().includes(searchInputValue.toLowerCase()) ||
@@ -180,7 +211,7 @@ class SpecialCharacterModal extends Component {
 		const { activeTab } = this.state;
 
 		if (activeTab === 'all') {
-			return this.filterOptionsForAllSymbols;
+			return this.state.filterOptionsForAllSymbols;
 		} else if (activeTab === 'recent') {
 			return this.filterOptionsForRecentSymbols;
 		}
@@ -196,7 +227,7 @@ class SpecialCharacterModal extends Component {
 			return labels;
 		}, []);
 
-		return this.filterOptionsForAllSymbols.filter(filterOption =>
+		return this.state.filterOptionsForAllSymbols.filter(filterOption =>
 			displayedSymbolsLabels.includes(filterOption.label)
 		);
 	}
@@ -310,100 +341,124 @@ class SpecialCharacterModal extends Component {
 
 	render() {
 		const { activeTab, searchInputValue, selectedFilterOption, selectedSymbol } = this.state;
+		let displayedSymbols, filteredDisplayedSymbols, filterOptions;
 
-		const displayedSymbols = this.determineDisplayedSymbols();
-		const filteredDisplayedSymbols = this.determineFilteredDisplayedSymbols(displayedSymbols);
-		const filterOptions = this.determineFilterOptions(displayedSymbols);
+		if (this.state.allSymbols) {
+			displayedSymbols = this.determineDisplayedSymbols();
+			filteredDisplayedSymbols = this.determineFilteredDisplayedSymbols(displayedSymbols);
+			filterOptions = this.determineFilterOptions(displayedSymbols);
+		}
 
 		return (
 			<Modal isFullHeight size="m" onKeyDown={this.handleKeyDown}>
 				<ModalHeader icon={this.props.data.modalIcon} title={messages.modalTitle} />
 
 				<ModalBody paddingSize="l" spaceSize="l">
-					<ModalBodyToolbar justifyContent="space-between">
-						<TabButtons>
-							<TabButton
-								isActive={activeTab === 'all'}
-								label={t('All symbols')}
-								onClick={this.handleAllTabButtonClick}
-							/>
-
-							<TabButton
-								isActive={activeTab === 'recent'}
-								label={t('Recently used')}
-								onClick={this.handleRecentTabButtonClick}
-							/>
-
-							{searchInputValue !== '' && (
+					{!this.state.isLoading && !this.state.hasErrors && (
+						<ModalBodyToolbar justifyContent="space-between">
+							<TabButtons>
 								<TabButton
-									isActive={activeTab === 'search'}
-									label={t('Search')}
-									onClick={this.handleSearchTabButtonClick}
+									isActive={activeTab === 'all'}
+									label={t('All symbols')}
+									onClick={this.handleAllTabButtonClick}
 								/>
-							)}
-						</TabButtons>
 
-						<Block applyCss={searchInputContainerStyles}>
-							<SearchInput
-								onChange={this.handleSearchInputChange}
-								placeholder={searchInputPlaceholder}
-								ref={this.handleSearchInputRef}
-								value={searchInputValue}
-							/>
-						</Block>
-					</ModalBodyToolbar>
-
-					{filteredDisplayedSymbols.length > 0 && (
-						<ModalContent>
-							<ModalContent flex="0 0 240px" flexDirection="column" spaceSize="l">
-								<SymbolOptions
-									clearButtonLabel={filterSymbolOptionsClearButtonLabel}
-									flex="1"
-									headingLabel={filterSymbolOptionsHeadingLabel}
-									onClearClick={this.handleFilterClearClick}
-									onOptionClick={this.handleFilterOptionClick}
-									options={filterOptions}
-									selectedOption={selectedFilterOption}
+								<TabButton
+									isActive={activeTab === 'recent'}
+									label={t('Recently used')}
+									onClick={this.handleRecentTabButtonClick}
 								/>
-							</ModalContent>
 
-							<ModalContent flex="1" flexDirection="column">
-								<Flex justifyContent="center" paddingSize="m">
-									{this.renderResultsCounter(
-										filteredDisplayedSymbols.length,
-										searchInputValue,
-										activeTab
-									)}
-								</Flex>
+								{searchInputValue !== '' && (
+									<TabButton
+										isActive={activeTab === 'search'}
+										label={t('Search')}
+										onClick={this.handleSearchTabButtonClick}
+									/>
+								)}
+							</TabButtons>
 
-								<Symbols
-									onSymbolClick={this.handleSymbolClick}
-									onSymbolDoubleClick={this.handleSymbolDoubleClick}
-									selectedSymbol={selectedSymbol}
-									symbols={filteredDisplayedSymbols}
+							<Block applyCss={searchInputContainerStyles}>
+								<SearchInput
+									onChange={this.handleSearchInputChange}
+									placeholder={searchInputPlaceholder}
+									ref={this.handleSearchInputRef}
+									value={searchInputValue}
 								/>
-							</ModalContent>
+							</Block>
+						</ModalBodyToolbar>
+					)}
 
-							{selectedSymbol !== null && (
-								<ModalContent flex="0 0 240px" flexDirection="column">
-									<SymbolPreview symbol={selectedSymbol} />
-								</ModalContent>
-							)}
+					{this.state.isLoading && (
+						<ModalContent justifyContent="center" alignItems="center">
+							<StateMessage title={t('Loading symbols…')} visual={<SpinnerIcon />} />
 						</ModalContent>
 					)}
 
-					{filteredDisplayedSymbols.length === 0 && (
-						<ModalContent alignItems="center" justifyContent="center">
-							<StateMessage
-								message={this.determineEmptyStateMessage()}
-								title={
-									activeTab === 'recent'
-										? noRecentResultsStateMessageTitle
-										: noSearchResultsStateMessageTitle
-								}
-								visual="meh-o"
-							/>
-						</ModalContent>
+					{!this.state.isLoading &&
+						!this.state.hasErrors &&
+						filteredDisplayedSymbols.length > 0 && (
+							<ModalContent>
+								<ModalContent flex="0 0 240px" flexDirection="column" spaceSize="l">
+									<SymbolOptions
+										clearButtonLabel={filterSymbolOptionsClearButtonLabel}
+										flex="1"
+										headingLabel={filterSymbolOptionsHeadingLabel}
+										onClearClick={this.handleFilterClearClick}
+										onOptionClick={this.handleFilterOptionClick}
+										options={filterOptions}
+										selectedOption={selectedFilterOption}
+									/>
+								</ModalContent>
+
+								<ModalContent flex="1" flexDirection="column">
+									<Flex justifyContent="center" paddingSize="m">
+										{this.renderResultsCounter(
+											filteredDisplayedSymbols.length,
+											searchInputValue,
+											activeTab
+										)}
+									</Flex>
+
+									<Symbols
+										onSymbolClick={this.handleSymbolClick}
+										onSymbolDoubleClick={this.handleSymbolDoubleClick}
+										selectedSymbol={selectedSymbol}
+										symbols={filteredDisplayedSymbols}
+									/>
+								</ModalContent>
+
+								{selectedSymbol !== null && (
+									<ModalContent flex="0 0 240px" flexDirection="column">
+										<SymbolPreview symbol={selectedSymbol} />
+									</ModalContent>
+								)}
+							</ModalContent>
+						)}
+
+					{!this.state.isLoading &&
+						!this.state.hasErrors &&
+						filteredDisplayedSymbols.length === 0 && (
+							<ModalContent alignItems="center" justifyContent="center">
+								<StateMessage
+									message={this.determineEmptyStateMessage()}
+									title={
+										activeTab === 'recent'
+											? noRecentResultsStateMessageTitle
+											: noSearchResultsStateMessageTitle
+									}
+									visual="meh-o"
+								/>
+							</ModalContent>
+						)}
+
+					{!this.state.isLoading && this.state.hasErrors && (
+						<StateMessage
+							title="Could not retrieve symbols"
+							message="Please contact your support team or try again later."
+							connotation="error"
+							visual="times"
+						/>
 					)}
 				</ModalBody>
 
