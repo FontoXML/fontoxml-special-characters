@@ -7,7 +7,12 @@ const gridPaddingSize = { horizontal: 'l', bottom: 'l' };
 class Symbols extends Component {
 	renderCodePoints = codePoints => {
 		const unicodeSymbols = codePoints.map((codePoint, key) => (
-			<UnicodeSymbol code={codePoint} key={key} size="m" />
+			<UnicodeSymbol
+				code={codePoint}
+				key={key}
+				primaryFontFamily={this.props.primaryFontFamily}
+				size="m"
+			/>
 		));
 
 		if (codePoints.length > 1) {

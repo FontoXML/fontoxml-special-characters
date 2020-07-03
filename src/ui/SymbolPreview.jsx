@@ -4,7 +4,7 @@ import { Flex, Heading, Text, UnicodeSymbol } from 'fds/components';
 
 const previewStyles = { width: '100%' };
 
-const SymbolPreview = ({ symbol }) => (
+const SymbolPreview = ({ primaryFontFamily, symbol }) => (
 	<Flex
 		alignItems="center"
 		applyCss={previewStyles}
@@ -16,7 +16,12 @@ const SymbolPreview = ({ symbol }) => (
 	>
 		<Flex alignItems="center" spaceSize="s">
 			{symbol.codePoints.map((codePoint, key) => (
-				<UnicodeSymbol code={codePoint} key={key} size="l" />
+				<UnicodeSymbol
+					code={codePoint}
+					key={key}
+					primaryFontFamily={primaryFontFamily}
+					size="l"
+				/>
 			))}
 		</Flex>
 

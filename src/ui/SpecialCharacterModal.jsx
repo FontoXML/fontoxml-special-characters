@@ -86,7 +86,8 @@ class SpecialCharacterModal extends Component {
 		cancelModal: PropTypes.func.isRequired,
 		data: PropTypes.shape({
 			characterSet: PropTypes.string.isRequired,
-			modalIcon: PropTypes.string.isRequired
+			modalIcon: PropTypes.string.isRequired,
+			primaryFontFamily: PropTypes.string
 		}).isRequired,
 		submitModal: PropTypes.func.isRequired
 	};
@@ -423,6 +424,7 @@ class SpecialCharacterModal extends Component {
 									<Symbols
 										onSymbolClick={this.handleSymbolClick}
 										onSymbolDoubleClick={this.handleSymbolDoubleClick}
+										primaryFontFamily={this.props.data.primaryFontFamily}
 										selectedSymbol={selectedSymbol}
 										symbols={filteredDisplayedSymbols}
 									/>
@@ -430,7 +432,10 @@ class SpecialCharacterModal extends Component {
 
 								{selectedSymbol !== null && (
 									<ModalContent flex="0 0 240px" flexDirection="column">
-										<SymbolPreview symbol={selectedSymbol} />
+										<SymbolPreview
+											primaryFontFamily={this.props.data.primaryFontFamily}
+											symbol={selectedSymbol}
+										/>
 									</ModalContent>
 								)}
 							</ModalContent>

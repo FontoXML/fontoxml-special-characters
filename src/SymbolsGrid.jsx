@@ -200,7 +200,27 @@ SymbolsGrid.propTypes = {
 	 *
 	 * @type {FX~OnItemClickCallback}
 	 */
-	onItemClick: PropTypes.func
+	onItemClick: PropTypes.func,
+
+	/**
+	 * A CSS font-family string that will be prepended to the default FDS 'content' font-family to
+	 * render the Unicode symbols.
+	 * (The default 'content' font-family is: Merriweather, Georgia, 'Times New Roman', Times,
+	 * BravuraRegular, BravuraTextRegular, Code2000Regular, Code2001Regular, serif).
+	 * Note: when the browser renders a character (of a Unicode symbol) it uses the first font in
+	 * the font-family string that has a glyph for that character. So by prepending a custom font
+	 * name, that font gets the first chance to provide a glyph and render the character.
+	 *
+	 * This can be used to render certain unicode icons you use commonly in your publications with
+	 * your own custom (publication) font.
+	 * This is usually set when using a custom (publication) font for certain/all parts of your
+	 * document in the editor (via the {@link registerFontStack} API and related fontStack CVK
+	 * option).
+	 *
+	 * Setting the same font-family for both the CVK content and the special characters UI ensures
+	 * users do not get confused by having the same symbol render differently in different places.
+	 */
+	primaryFontFamily: PropTypes.string
 };
 
 export default SymbolsGrid;
