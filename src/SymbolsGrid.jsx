@@ -33,7 +33,7 @@ const defaultOperationData = { text: ' ' };
  * @react
  * @category add-on/fontoxml-special-characters
  */
-function SymbolsGrid({ characterSet, columns, onItemClick }) {
+function SymbolsGrid({ characterSet, columns, onItemClick, primaryFontFamily }) {
 	const isMounted = useRef(false);
 
 	const [isLoading, setIsLoading] = useState(true);
@@ -166,7 +166,12 @@ function SymbolsGrid({ characterSet, columns, onItemClick }) {
 							spaceSize="s"
 						>
 							{item.codePoints.map((codePoint, index) => (
-								<UnicodeSymbol code={codePoint} key={index} size="s" />
+								<UnicodeSymbol
+									code={codePoint}
+									key={index}
+									size="s"
+									primaryFontFamily={primaryFontFamily}
+								/>
 							))}
 						</Flex>
 					</GridItem>
