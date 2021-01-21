@@ -1,3 +1,9 @@
+const KEY_NAME =
+	window.location.host +
+	'|fontoxml-special-symbols|' +
+	'recently-used-characters' +
+	'-XqtFs2523dDYdsTeBGTDfc';
+
 /**
  * Enables registration of custom character sets to be displayed in the “Insert special character” modal.
  * Registration can be done using the addCharacterSetPath method. While we also provide a method for
@@ -7,68 +13,114 @@
  * @fontosdk
  * @category add-on/fontoxml-special-characters
  */
-function SpecialCharactersManager() {
-	this._characterSetByName = Object.create(null);
-	this._characterSetPathByName = Object.create(null);
-}
-
-/**
- * Register the specified characterSet for use by the special-character-insert operation under the specified name.
- *
- * @fontosdk
- *
- * @param  {string}    name
- * @param  {CharacterSetEntry[]}  characterSet
- */
-SpecialCharactersManager.prototype.addCharacterSet = function(name, characterSet) {
-	this._characterSetByName[name] = Promise.resolve(characterSet);
-};
-
-/**
- * Register the specified file path used to fetch the characterSet under the specified name.
- * Character sets should be placed in (a subfolder of) the assets folder. An example of this would be
- * 'assets/character-sets/characterSet.json'. The character set should contain an Array of
- * {@link CharacterSetEntry} objects.
- *
- * @fontosdk
- *
- * @param  {string}  name
- * @param  {string}  characterSetPath
- */
-SpecialCharactersManager.prototype.addCharacterSetPath = function(name, characterSetPath) {
-	this._characterSetPathByName[name] = characterSetPath;
-};
-
-/**
- * Retrieve the character set with the given name
- *
- * @param  {string}  name
- *
- * @return  {Promise<CharacterSetEntry[]>}
- */
-SpecialCharactersManager.prototype.getCharacterSet = function(name) {
-	const characterSet = this._characterSetByName[name];
-	const characterSetPath = this._characterSetPathByName[name];
-	if (!characterSet && !characterSetPath) {
-		return Promise.reject(new Error('Character set "' + name + '" does not exist.'));
+class SpecialCharactersManager {
+	constructor() {
+		this._characterSetByName = Object.create(null);
+		this._characterSetPathByName = Object.create(null);
 	}
-	if (characterSet) {
-		return characterSet;
+
+	/**
+	 * Register the specified characterSet for use by the special-character-insert operation under the specified name.
+	 *
+	 * @fontosdk
+	 *
+	 * @param  {string}    name
+	 * @param  {CharacterSetEntry[]}  characterSet
+	 */
+	addCharacterSet(name, characterSet) {
+		this._characterSetByName[name] = Promise.resolve(characterSet);
 	}
-	this._characterSetByName[name] = fetch(characterSetPath)
-		.then(response => {
-			if (!response.ok) {
+
+	/**
+	 * Register the specified file path used to fetch the characterSet under the specified name.
+	 * Character sets should be placed in (a subfolder of) the assets folder. An example of this would be
+	 * 'assets/character-sets/characterSet.json'. The character set should contain an Array of
+	 * {@link CharacterSetEntry} objects.
+	 *
+	 * @fontosdk
+	 *
+	 * @param  {string}  name
+	 * @param  {string}  characterSetPath
+	 */
+	addCharacterSetPath(name, characterSetPath) {
+		this._characterSetPathByName[name] = characterSetPath;
+	}
+
+	/**
+	 * Retrieve the character set with the given name
+	 *
+	 * @param  {string}  name
+	 *
+	 * @return  {Promise<CharacterSetEntry[]>}
+	 */
+	getCharacterSet(name) {
+		const characterSet = this._characterSetByName[name];
+		const characterSetPath = this._characterSetPathByName[name];
+		if (!characterSet && !characterSetPath) {
+			return Promise.reject(new Error('Character set "' + name + '" does not exist.'));
+		}
+		if (characterSet) {
+			return characterSet;
+		}
+		this._characterSetByName[name] = fetch(characterSetPath)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Failed to fetch character set: "' + name + '".');
+				}
+				const fetchedCharacterSet = response.json();
+				return fetchedCharacterSet;
+			})
+			.catch(_error => {
+				delete this._characterSetByName[name];
 				throw new Error('Failed to fetch character set: "' + name + '".');
+			});
+		return this._characterSetByName[name];
+	}
+
+	/**
+	 * This works synchronously and it is used to get recent symbols.
+	 *
+	 * @return  {CharacterSetEntry[]}  characterEntry
+	 */
+	getRecentSymbols() {
+		const data = window.localStorage.getItem(KEY_NAME);
+		if (data) {
+			try {
+				return JSON.parse(data);
+			} catch (error) {
+				console.error(`Can not parse recent characters, got "${data}"`, error);
 			}
-			const fetchedCharacterSet = response.json();
-			return fetchedCharacterSet;
-		})
-		.catch(_error => {
-			delete this._characterSetByName[name];
-			throw new Error('Failed to fetch character set: "' + name + '".');
-		});
-	return this._characterSetByName[name];
-};
+		}
+		return [];
+	}
+
+	/**
+	 * When a user clicks a character, it is marked as recently used by this method.
+	 *
+	 * @param  {CharacterSetEntry}  characterEntry
+	 */
+	markAsRecentlyUsed(characterEntry) {
+		const characterSet = this.getRecentSymbols() || [];
+		const index = characterSet.findIndex(character => characterEntry.id === character.id);
+
+		if (index > -1) {
+			characterSet.splice(index, 1);
+		}
+
+		characterSet.unshift(characterEntry);
+
+		this.addCharacterSet(this.recentlyUsedCharacterSetName, characterSet);
+		window.localStorage.setItem(KEY_NAME, JSON.stringify(characterSet));
+	}
+
+	/**
+	 * Remove the characterSet together with the key.
+	 *
+	 */
+	cleanStorage() {
+		window.localStorage.removeItem(KEY_NAME);
+	}
+}
 
 export default new SpecialCharactersManager();
 

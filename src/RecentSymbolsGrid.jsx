@@ -1,5 +1,5 @@
+import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { SpinnerIcon, StateMessage, Block } from 'fds/components';
 
 import t from 'fontoxml-localization/src/t.js';
@@ -8,84 +8,72 @@ import onlyResolveLastPromise from 'fontoxml-utils/src/onlyResolveLastPromise.js
 import BaseSymbolsGrid from './ui/BaseSymbolsGrid.jsx';
 import specialCharactersManager from './specialCharactersManager.js';
 
+const setDefaultConfigurationsPromise = () =>
+	onlyResolveLastPromise(async (maxCharacters, characterSetName) => {
+		const recentSymbols = specialCharactersManager.getRecentSymbols();
+
+		if (recentSymbols.length < maxCharacters) {
+			const fallbackCharacterSet = await specialCharactersManager.getCharacterSet(
+				characterSetName
+			);
+
+			if (fallbackCharacterSet) {
+				for (const character of fallbackCharacterSet) {
+					if (recentSymbols.some(e => e.id === character.id)) {
+						continue;
+					}
+					recentSymbols.push(character);
+
+					if (recentSymbols.length >= maxCharacters) {
+						break;
+					}
+				}
+			}
+		}
+
+		return recentSymbols.slice(0, maxCharacters);
+	});
+
 /**
- * Renders a grid of buttons for each of the characters in the specified character set.
- * The character set is loaded lazily but cached centrally during the lifetime of the browser
- * window.
+ * Renders a grid of buttons for the recently used characters. Those characters are cached centrally
+ * during the lifetime of the browser window.
  *
- * If the characterSet is loading, a loading state message is shown.
- * If the characterSet has no symbols, an empty state message is shown.
- * If there is an error during loading/parsing of the characterSet, an error state message is
- * shown and more details on the error are logged to the console.
+ * If you use a character from this grid or the modal opened by {@link open-special-character-modal}
+ * operation, that character is rendered in the beginning of this grid.
+ *
+ * It is possible to specify a fallback character set if any character has not been used yet. Beside
+ * that, a maximum number of characters can be set to render in the grid.
  *
  * @fontosdk
  * @react
  * @category add-on/fontoxml-special-characters
  */
-function SymbolsGrid({ characterSet, columns, onItemClick, primaryFontFamily }) {
-	const isMounted = useRef(false);
-
+function RecentSymbolsGrid({
+	fallbackCharacterSet,
+	columns,
+	maxCharacters,
+	onItemClick,
+	primaryFontFamily
+}) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [characters, setCharacters] = useState(null);
 
-	// Create a special version of the specialCharactersManager.getCharacterSet() function that
-	// only returns the result of the last time it was invoked.
-	// If the useEffect() hook below fires multiple times while earlier getCharacterSet() requests
-	// are in flight, their results are automatically ignored:
-	// only the last promise is resolved.
-	const getCharacterSet = useMemo(
-		() =>
-			onlyResolveLastPromise(async characterSetName => {
-				return specialCharactersManager.getCharacterSet(characterSetName);
-			}),
-		[]
-	);
+	const setDefaultCharacterSet = useMemo(setDefaultConfigurationsPromise, []);
 
 	useEffect(() => {
-		isMounted.current = true;
-
-		return () => {
-			isMounted.current = false;
-		};
-	}, []);
-
-	// This effect is fired after mount and whenever characterSet changes.
-	useEffect(() => {
-		if (!isMounted.current) {
-			return;
-		}
-
-		setError(null);
-		setIsLoading(true);
-
-		getCharacterSet(characterSet)
-			.then(characters => {
-				if (!isMounted.current) {
-					return;
-				}
-
-				if (!Array.isArray(characters)) {
-					return;
-				}
-
-				setCharacters(
-					characters.map((character, index) => ({ id: index, ...character })) || []
-				);
+		setDefaultCharacterSet(maxCharacters, fallbackCharacterSet)
+			.then(chars => {
+				setCharacters(chars);
 				setIsLoading(false);
 			})
 			.catch(err => {
-				if (!isMounted.current) {
-					return;
-				}
-
 				setError(err);
 				setIsLoading(false);
 				console.error(err);
 			});
-	}, [characterSet, getCharacterSet]);
+	}, [setDefaultCharacterSet, maxCharacters, fallbackCharacterSet, setCharacters]);
 
-	// Each StateMessage is wrapped in the same (similar) layout container as rendered by the Grid.
 	if (isLoading) {
 		return (
 			<Block flex="1" applyCss={{ maxHeight: '100%' }}>
@@ -107,14 +95,13 @@ function SymbolsGrid({ characterSet, columns, onItemClick, primaryFontFamily }) 
 		);
 	}
 
-	// This should not happen, why would you configure an empty character set to render?
-	// But maybe someone does something clever with some sort of dynamically populated json for
-	// the character set somehow, so show a nice StateMessage to the user anyway, otherwise they'd
-	// see nothing at all in this case.
 	if (characters.length === 0) {
 		return (
 			<Block flex="1" applyCss={{ maxHeight: '100%' }}>
-				<StateMessage title={t('No symbols found')} visual="meh-o" />
+				<StateMessage
+					title={t('You’ve not used special characters before.')}
+					visual="meh-o"
+				/>
 			</Block>
 		);
 	}
@@ -129,21 +116,29 @@ function SymbolsGrid({ characterSet, columns, onItemClick, primaryFontFamily }) 
 	);
 }
 
-SymbolsGrid.defaultProps = {
+RecentSymbolsGrid.defaultProps = {
 	columns: 8,
+	maxCharacters: 24,
 	onItemClick: _event => {}
 };
 
-SymbolsGrid.propTypes = {
+RecentSymbolsGrid.propTypes = {
 	/**
-	 * The name of the character set to display, as used in {@link SpecialCharactersManager#addCharacterSet}.
+	 * The name of the character set to display, as used in
+	 * {@link SpecialCharactersManager#addCharacterSet}. When there is no recently used symbols
+	 * enough yet, these characters will be shown after the recent symbols.
 	 */
-	characterSet: PropTypes.string.isRequired,
+	fallbackCharacterSet: PropTypes.string,
 
 	/**
 	 * The number of columns to use in the grid.
 	 */
 	columns: PropTypes.number,
+
+	/**
+	 * The maximum number of characters to use in the grid. Recommended to use a multiple of columns.
+	 */
+	maxCharacters: PropTypes.number,
 
 	/**
 	 * Function to be called when an item in the grid is clicked.
@@ -175,4 +170,4 @@ SymbolsGrid.propTypes = {
 	primaryFontFamily: PropTypes.string
 };
 
-export default SymbolsGrid;
+export default RecentSymbolsGrid;

@@ -94,9 +94,6 @@ class SpecialCharacterModal extends Component {
 
 	searchInputRef = null;
 
-	storagePrefix =
-		window.location.host + '|fontoxml-special-symbols|' + this.props.data.characterSet + '|';
-
 	recentSymbols = [];
 	filterOptionsForRecentSymbols = [];
 
@@ -114,21 +111,14 @@ class SpecialCharacterModal extends Component {
 	componentDidMount() {
 		this._ismounted = true;
 
-		const data = window.localStorage.getItem(this.storagePrefix + 'storedRecentCharacters');
-		if (data) {
-			try {
-				this.recentSymbols = JSON.parse(data);
-				this.filterOptionsForRecentSymbols = createFilterOptionsFromSymbols(
-					this.recentSymbols
-				);
+		const recentSymbols = specialCharactersManager.getRecentSymbols();
+		this.recentSymbols = recentSymbols.slice(0, 50);
+		this.filterOptionsForRecentSymbols = createFilterOptionsFromSymbols(this.recentSymbols);
 
-				if (this.recentSymbols.length > 0) {
-					this.setState({ activeTab: 'recent' });
-				}
-			} catch (error) {
-				console.error(`Can not parse recent characters, got "${data}"`, error);
-			}
+		if (this.recentSymbols.length > 0) {
+			this.setState({ activeTab: 'recent' });
 		}
+
 		specialCharactersManager
 			.getCharacterSet(this.props.data.characterSet)
 			.then(charSet => {
@@ -236,19 +226,7 @@ class SpecialCharacterModal extends Component {
 	handleSubmitButtonClick = () => {
 		const { selectedSymbol } = this.state;
 
-		const indexInRecentSymbols = this.recentSymbols.findIndex(
-			recentSymbol => recentSymbol.id === selectedSymbol.id
-		);
-		if (indexInRecentSymbols !== -1) {
-			this.recentSymbols.splice(indexInRecentSymbols, 1);
-		}
-		this.recentSymbols.unshift(selectedSymbol);
-		this.recentSymbols = this.recentSymbols.slice(0, 50);
-
-		window.localStorage.setItem(
-			this.storagePrefix + 'storedRecentCharacters',
-			JSON.stringify(this.recentSymbols)
-		);
+		specialCharactersManager.markAsRecentlyUsed(selectedSymbol);
 
 		this.props.submitModal({ text: characterToString(selectedSymbol) });
 	};
