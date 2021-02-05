@@ -30,7 +30,7 @@ function renderDrop({ closeDrop }) {
 export default function MyQuickAccessSymbolsDropButton () {
 	return (
 		<ButtonWithDrop
-			icon="keyboard-o"
+			icon="omega"
 			label="Symbol"
 			renderDrop={renderDrop}
 		/>
