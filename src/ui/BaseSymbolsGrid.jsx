@@ -37,7 +37,7 @@ function BaseSymbolsGrid({ characters, columns, onItemClick, primaryFontFamily }
 
 							onClick(event);
 						}}
-						tooltipContent={item.name}
+						tooltipContent={item.name ? item.name : null}
 						size={itemSize}
 						type="unicode-symbol"
 					>

@@ -28,7 +28,7 @@ class Symbols extends Component {
 
 	handleRenderGridItem = ({ item, key, onClick, onDoubleClick, size }) => (
 		<GridItem
-			isDisabled={item.isDisabled || !item.name}
+			isDisabled={item.isDisabled || !item.codePoints}
 			isSelected={item === this.props.selectedSymbol}
 			key={key}
 			onClick={onClick}
@@ -36,7 +36,7 @@ class Symbols extends Component {
 			size={size}
 			type="unicode-symbol"
 		>
-			{item.name && this.renderCodePoints(item.codePoints)}
+			{item.codePoints && this.renderCodePoints(item.codePoints)}
 		</GridItem>
 	);
 

@@ -133,16 +133,14 @@ export default new SpecialCharactersManager();
  * ```json
  * [
  *     {
- *         "id": "U+2669",
- *         "name": "Quarter note",
  *         "codePoints": [ "U+2669" ],
- *         "labels": [ "Unicode miscellaneous symbols" ]
+ *         "id": "U+2669"
  *     },
  *     {
- *         "id": "U+266A",
- *         "name": "Eighth note",
  *         "codePoints": [ "U+266A" ],
- *         "labels": [ "Unicode miscellaneous symbols" ]
+ *         "id": "U+266A",
+ *         "labels": [ "Unicode miscellaneous symbols" ],
+ *         "name": "Eighth note"
  *     }
  * ]
  * ```
@@ -151,11 +149,11 @@ export default new SpecialCharactersManager();
  *
  * @fontosdk  members
  *
- * @property  {string}    id          Unique identifier for the character
- * @property  {string}    name        Descriptive name for the character, displayed in the modal
- * @property  {string[]}  codePoints  Unicode code points to insert when the character is inserted into the
+ * @property  {string[]}  codePoints    Unicode code points to insert when the character is inserted into the
  *                                      document, in order, encoded as strings starting with U+ followed by the
  *                                      hexadecimal representation of the code point.
- * @property  {string[]}  labels      List of categories under which the character should appear in the modal, each
- *                                      specified using the descriptive label for the category shown in the modal.
+ * @property  {string}    id            Unique identifier for the character.
+ * @property  {string[]}  [labels]      List of categories under which the character should appear in the modal,
+ *                                      each specified using the descriptive label for the category shown in the modal.
+ * @property  {string}    [name]        Descriptive name for the character, displayed in the modal and as a tooltip content in the grid.
  */

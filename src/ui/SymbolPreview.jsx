@@ -26,7 +26,7 @@ const SymbolPreview = ({ primaryFontFamily, symbol }) => (
 		</Flex>
 
 		<Heading align="center" level="4" isBold>
-			{symbol.name}
+			{symbol.name ? symbol.name : null}
 		</Heading>
 
 		<Text align="center">{symbol.codePoints.join(', ')}</Text>

@@ -34,32 +34,32 @@ const noRecentResultsStateMessageTitle = t('Nothing here yet…');
 // TODO: rewrite to modern code
 function createFilterOptionsFromSymbols(symbols) {
 	const labelsByName = {};
-
-	symbols.forEach(character => {
-		character.labels.forEach(labelName => {
-			if (!labelsByName[labelName]) {
-				labelsByName[labelName] = {
-					label: labelName,
-					count: 0,
-					characterRangeStart: null
-				};
-			}
-
-			const labelInfo = labelsByName[labelName];
-			labelInfo.count += 1;
-
-			character.codePoints.forEach(codePoint => {
-				const weight = parseInt(codePoint.substr(2), 16);
-				if (
-					labelInfo.characterRangeStart === null ||
-					weight < labelInfo.characterRangeStart
-				) {
-					labelInfo.characterRangeStart = weight;
+	if (symbols.labels) {
+		symbols.forEach(character => {
+			character.labels.forEach(labelName => {
+				if (!labelsByName[labelName]) {
+					labelsByName[labelName] = {
+						label: labelName,
+						count: 0,
+						characterRangeStart: null
+					};
 				}
+
+				const labelInfo = labelsByName[labelName];
+				labelInfo.count += 1;
+
+				character.codePoints.forEach(codePoint => {
+					const weight = parseInt(codePoint.substr(2), 16);
+					if (
+						labelInfo.characterRangeStart === null ||
+						weight < labelInfo.characterRangeStart
+					) {
+						labelInfo.characterRangeStart = weight;
+					}
+				});
 			});
 		});
-	});
-
+	}
 	return Object.keys(labelsByName)
 		.map(labelName => labelsByName[labelName])
 		.sort((a, b) => {
@@ -156,8 +156,8 @@ class SpecialCharacterModal extends Component {
 			return symbols;
 		}
 
-		return symbols.filter(symbol =>
-			symbol.labels.includes(this.state.selectedFilterOption.label)
+		return symbols.filter(
+			symbol => symbol.labels && symbol.labels.includes(this.state.selectedFilterOption.label)
 		);
 	}
 
@@ -174,11 +174,13 @@ class SpecialCharacterModal extends Component {
 		return this.state.allSymbols.filter(
 			symbol =>
 				// match on the name
-				symbol.name.toLowerCase().includes(searchInputValue.toLowerCase()) ||
+				(symbol.name &&
+					symbol.name.toLowerCase().includes(searchInputValue.toLowerCase())) ||
 				// match on one of the labels
-				symbol.labels.some(label =>
-					label.toLowerCase().includes(searchInputValue.toLowerCase())
-				) ||
+				(symbol.labels &&
+					symbol.labels.some(label =>
+						label.toLowerCase().includes(searchInputValue.toLowerCase())
+					)) ||
 				// or match on one of the code points
 				symbol.codePoints.some(codePoint =>
 					codePoint.toLowerCase().includes(searchInputValue.toLowerCase())
@@ -193,8 +195,8 @@ class SpecialCharacterModal extends Component {
 			return displayedSymbols;
 		}
 
-		return displayedSymbols.filter(symbol =>
-			symbol.labels.includes(selectedFilterOption.label)
+		return displayedSymbols.filter(
+			symbol => symbol.labels && symbol.labels.includes(selectedFilterOption.label)
 		);
 	}
 
@@ -209,12 +211,13 @@ class SpecialCharacterModal extends Component {
 
 		// displayedSymbols === symbols matching the searchInputValue, @see determineDisplayedSymbols()
 		const displayedSymbolsLabels = displayedSymbols.reduce((labels, symbol) => {
-			symbol.labels.forEach(label => {
-				if (!labels.includes(label)) {
-					labels.push(label);
-				}
-			});
-
+			if (symbol.labels) {
+				symbol.labels.forEach(label => {
+					if (!labels.includes(label)) {
+						labels.push(label);
+					}
+				});
+			}
 			return labels;
 		}, []);
 
