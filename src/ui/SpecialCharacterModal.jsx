@@ -34,32 +34,34 @@ const noRecentResultsStateMessageTitle = t('Nothing here yet…');
 // TODO: rewrite to modern code
 function createFilterOptionsFromSymbols(symbols) {
 	const labelsByName = {};
-	if (symbols.labels) {
-		symbols.forEach(character => {
-			character.labels.forEach(labelName => {
-				if (!labelsByName[labelName]) {
-					labelsByName[labelName] = {
-						label: labelName,
-						count: 0,
-						characterRangeStart: null
-					};
+	symbols.forEach(character => {
+		if (!character.labels) {
+			return;
+		}
+		character.labels.forEach(labelName => {
+			if (!labelsByName[labelName]) {
+				labelsByName[labelName] = {
+					label: labelName,
+					count: 0,
+					characterRangeStart: null
+				};
+			}
+
+			const labelInfo = labelsByName[labelName];
+			labelInfo.count += 1;
+
+			character.codePoints.forEach(codePoint => {
+				const weight = parseInt(codePoint.substr(2), 16);
+				if (
+					labelInfo.characterRangeStart === null ||
+					weight < labelInfo.characterRangeStart
+				) {
+					labelInfo.characterRangeStart = weight;
 				}
-
-				const labelInfo = labelsByName[labelName];
-				labelInfo.count += 1;
-
-				character.codePoints.forEach(codePoint => {
-					const weight = parseInt(codePoint.substr(2), 16);
-					if (
-						labelInfo.characterRangeStart === null ||
-						weight < labelInfo.characterRangeStart
-					) {
-						labelInfo.characterRangeStart = weight;
-					}
-				});
 			});
 		});
-	}
+	});
+
 	return Object.keys(labelsByName)
 		.map(labelName => labelsByName[labelName])
 		.sort((a, b) => {
