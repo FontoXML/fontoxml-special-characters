@@ -1,3 +1,5 @@
+import Notifier from 'fontoxml-utils/src/Notifier.js';
+
 const KEY_NAME =
 	window.location.host +
 	'|fontoxml-special-symbols|' +
@@ -17,6 +19,8 @@ class SpecialCharactersManager {
 	constructor() {
 		this._characterSetByName = Object.create(null);
 		this._characterSetPathByName = Object.create(null);
+
+		this.recentSymbolsChangedNotifier = new Notifier();
 	}
 
 	/**
@@ -111,6 +115,8 @@ class SpecialCharactersManager {
 
 		this.addCharacterSet(this.recentlyUsedCharacterSetName, characterSet);
 		window.localStorage.setItem(KEY_NAME, JSON.stringify(characterSet));
+
+		this.recentSymbolsChangedNotifier.executeCallbacks();
 	}
 
 	/**

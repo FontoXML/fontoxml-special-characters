@@ -4,35 +4,10 @@ import { SpinnerIcon, StateMessage, Block } from 'fds/components';
 
 import t from 'fontoxml-localization/src/t.js';
 import onlyResolveLastPromise from 'fontoxml-utils/src/onlyResolveLastPromise.js';
+import useManagerState from 'fontoxml-fx/src/useManagerState.js';
 
 import BaseSymbolsGrid from './ui/BaseSymbolsGrid.jsx';
 import specialCharactersManager from './specialCharactersManager.js';
-
-const setDefaultConfigurationsPromise = () =>
-	onlyResolveLastPromise(async (maxCharacters, characterSetName) => {
-		const recentSymbols = specialCharactersManager.getRecentSymbols();
-
-		if (recentSymbols.length < maxCharacters) {
-			const fallbackCharacterSet = await specialCharactersManager.getCharacterSet(
-				characterSetName
-			);
-
-			if (fallbackCharacterSet) {
-				for (const character of fallbackCharacterSet) {
-					if (recentSymbols.some(e => e.id === character.id)) {
-						continue;
-					}
-					recentSymbols.push(character);
-
-					if (recentSymbols.length >= maxCharacters) {
-						break;
-					}
-				}
-			}
-		}
-
-		return recentSymbols.slice(0, maxCharacters);
-	});
 
 /**
  * Renders a grid of buttons for the recently used characters. Those characters are cached centrally
@@ -58,11 +33,40 @@ function RecentSymbolsGrid({
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [characters, setCharacters] = useState(null);
+	const recentSymbols = useManagerState(
+		specialCharactersManager.recentSymbolsChangedNotifier,
+		specialCharactersManager.getRecentSymbols
+	);
 
-	const setDefaultCharacterSet = useMemo(setDefaultConfigurationsPromise, []);
+	const setDefaultCharacterSet = useMemo(
+		() =>
+			onlyResolveLastPromise(async () => {
+				if (fallbackCharacterSet && recentSymbols.length < maxCharacters) {
+					const fallbackCharacters = await specialCharactersManager.getCharacterSet(
+						fallbackCharacterSet
+					);
+
+					if (fallbackCharacters) {
+						for (const character of fallbackCharacters) {
+							if (recentSymbols.some(e => e.id === character.id)) {
+								continue;
+							}
+							recentSymbols.push(character);
+
+							if (recentSymbols.length >= maxCharacters) {
+								break;
+							}
+						}
+					}
+				}
+
+				return recentSymbols.slice(0, maxCharacters);
+			}),
+		[fallbackCharacterSet, maxCharacters, recentSymbols]
+	);
 
 	useEffect(() => {
-		setDefaultCharacterSet(maxCharacters, fallbackCharacterSet)
+		setDefaultCharacterSet()
 			.then(chars => {
 				setCharacters(chars);
 				setIsLoading(false);
@@ -72,7 +76,7 @@ function RecentSymbolsGrid({
 				setIsLoading(false);
 				console.error(err);
 			});
-	}, [setDefaultCharacterSet, maxCharacters, fallbackCharacterSet, setCharacters]);
+	}, [setDefaultCharacterSet]);
 
 	if (isLoading) {
 		return (
