@@ -1,5 +1,6 @@
 ---
 category: add-on/fontoxml-special-characters
+fontosdk: true
 ---
 
 # Special characters
