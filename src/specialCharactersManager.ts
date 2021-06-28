@@ -1,11 +1,11 @@
 import Notifier from 'fontoxml-utils/src/Notifier';
+
 import type { CharacterSetEntry } from './types';
 
 const KEY_NAME =
-	window.location.host +
-	'|fontoxml-special-symbols|' +
-	'recently-used-characters' +
-	'-XqtFs2523dDYdsTeBGTDfc';
+	`${window.location.host}|fontoxml-special-symbols|` +
+	`recently-used-characters` +
+	`-XqtFs2523dDYdsTeBGTDfc`;
 
 /**
  * Enables registration of custom character sets to be displayed in the “Insert special character” modal.
@@ -18,7 +18,9 @@ const KEY_NAME =
  */
 class SpecialCharactersManager {
 	_characterSetByName: Object;
+
 	_characterSetPathByName: Object;
+
 	recentSymbolsChangedNotifier: Notifier;
 
 	constructor() {
@@ -36,10 +38,7 @@ class SpecialCharactersManager {
 	 * @param  {string}    name
 	 * @param  {CharacterSetEntry[]}  characterSet
 	 */
-	addCharacterSet(
-		name: string,
-		characterSet: Array<CharacterSetEntry>
-	): void {
+	addCharacterSet(name: string, characterSet: CharacterSetEntry[]): void {
 		this._characterSetByName[name] = Promise.resolve(characterSet);
 	}
 
@@ -65,22 +64,22 @@ class SpecialCharactersManager {
 	 *
 	 * @return  {Promise<CharacterSetEntry[]>}
 	 */
-	getCharacterSet(name: string): Promise<Array<CharacterSetEntry>> {
+	async getCharacterSet(name: string): Promise<CharacterSetEntry[]> {
 		const characterSet = this._characterSetByName[name];
 		const characterSetPath = this._characterSetPathByName[name];
 		if (!characterSet && !characterSetPath) {
 			return Promise.reject(
-				new Error('Character set "' + name + '" does not exist.')
+				new Error(`Character set "${name}" does not exist.`)
 			);
 		}
 		if (characterSet) {
 			return characterSet;
 		}
 		this._characterSetByName[name] = fetch(characterSetPath)
-			.then((response) => {
+			.then(async (response) => {
 				if (!response.ok) {
 					throw new Error(
-						'Failed to fetch character set: "' + name + '".'
+						`Failed to fetch character set: "${name}".`
 					);
 				}
 				const fetchedCharacterSet = response.json();
@@ -88,9 +87,7 @@ class SpecialCharactersManager {
 			})
 			.catch((_error) => {
 				delete this._characterSetByName[name];
-				throw new Error(
-					'Failed to fetch character set: "' + name + '".'
-				);
+				throw new Error(`Failed to fetch character set: "${name}".`);
 			});
 		return this._characterSetByName[name];
 	}
@@ -100,7 +97,7 @@ class SpecialCharactersManager {
 	 *
 	 * @return  {CharacterSetEntry[]}  characterEntry
 	 */
-	getRecentSymbols(): Array<CharacterSetEntry> {
+	getRecentSymbols(): CharacterSetEntry[] {
 		const data = window.localStorage.getItem(KEY_NAME);
 		if (data) {
 			try {

@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import { Block, SpinnerIcon, StateMessage } from 'fds/components';
 import PropTypes from 'prop-types';
-import { SpinnerIcon, StateMessage, Block } from 'fds/components';
+import React, { useEffect, useMemo, useState } from 'react';
 
+import useManagerState from 'fontoxml-fx/src/useManagerState';
 import t from 'fontoxml-localization/src/t';
 import onlyResolveLastPromise from 'fontoxml-utils/src/onlyResolveLastPromise';
-import useManagerState from 'fontoxml-fx/src/useManagerState';
 
-import BaseSymbolsGrid from './ui/BaseSymbolsGrid';
 import specialCharactersManager from './specialCharactersManager';
+import BaseSymbolsGrid from './ui/BaseSymbolsGrid';
 
 /**
  * Renders a grid of buttons for the recently used characters. Those characters are cached centrally

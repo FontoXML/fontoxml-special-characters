@@ -1,6 +1,7 @@
 import uiManager from 'fontoxml-modular-ui/src/uiManager';
-import SpecialCharacterModal from './ui/SpecialCharacterModal';
+
 import specialCharactersManager from './specialCharactersManager';
+import SpecialCharacterModal from './ui/SpecialCharacterModal';
 
 export default function install(): void {
 	uiManager.registerReactComponent(

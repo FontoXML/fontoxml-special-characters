@@ -1,12 +1,11 @@
+import { Flex, Grid, GridItem, UnicodeSymbol } from 'fds/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { Flex, Grid, GridItem, UnicodeSymbol } from 'fds/components';
-
 import useOperation from 'fontoxml-fx/src/useOperation';
 
-import specialCharactersManager from '../specialCharactersManager';
 import characterToString from '../api/characterToString';
+import specialCharactersManager from '../specialCharactersManager';
 
 const defaultOperationData = { text: ' ' };
 

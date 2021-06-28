@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-
 import { Label, ListItem } from 'fds/components';
+import React, { Component } from 'react';
 
 class SymbolOption extends Component {
 	handleClick = () => this.props.onClick(this.props.option);

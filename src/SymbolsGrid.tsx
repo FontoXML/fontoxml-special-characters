@@ -1,12 +1,12 @@
+import { Block, SpinnerIcon, StateMessage } from 'fds/components';
 import PropTypes from 'prop-types';
-import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { SpinnerIcon, StateMessage, Block } from 'fds/components';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import t from 'fontoxml-localization/src/t';
 import onlyResolveLastPromise from 'fontoxml-utils/src/onlyResolveLastPromise';
 
-import BaseSymbolsGrid from './ui/BaseSymbolsGrid';
 import specialCharactersManager from './specialCharactersManager';
+import BaseSymbolsGrid from './ui/BaseSymbolsGrid';
 
 /**
  * Renders a grid of buttons for each of the characters in the specified character set.

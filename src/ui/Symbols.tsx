@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-
 import { Flex, GridItem, UnicodeSymbol, VirtualGrid } from 'fds/components';
+import React, { Component } from 'react';
 
 const gridPaddingSize = { horizontal: 'l', bottom: 'l' };
 

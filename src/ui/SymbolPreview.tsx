@@ -1,6 +1,5 @@
-import React from 'react';
-
 import { Flex, Heading, Text, UnicodeSymbol } from 'fds/components';
+import React from 'react';
 
 const previewStyles = { width: '100%' };
 

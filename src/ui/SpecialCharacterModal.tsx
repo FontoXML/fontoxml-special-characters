@@ -1,6 +1,3 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 import {
 	Block,
 	Button,
@@ -15,16 +12,19 @@ import {
 	SearchInput,
 	SpinnerIcon,
 	StateMessage,
-	TabButtons,
 	TabButton,
+	TabButtons,
 } from 'fds/components';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+
 import t from 'fontoxml-localization/src/t';
 
 import characterToString from '../api/characterToString';
+import specialCharactersManager from '../specialCharactersManager';
 import SymbolOptions from './symbol-options/SymbolOptions';
 import SymbolPreview from './SymbolPreview';
 import Symbols from './Symbols';
-import specialCharactersManager from '../specialCharactersManager';
 
 const filterSymbolOptionsClearButtonLabel = t('Clear');
 const filterSymbolOptionsHeadingLabel = t('Filter by subset');
@@ -98,6 +98,7 @@ class SpecialCharacterModal extends Component {
 	searchInputRef = null;
 
 	recentSymbols = [];
+
 	filterOptionsForRecentSymbols = [];
 
 	state = {
@@ -176,7 +177,8 @@ class SpecialCharacterModal extends Component {
 			return this.filterSymbolsForSelectedFilterOption(
 				this.state.allSymbols
 			);
-		} else if (activeTab === 'recent') {
+		}
+		if (activeTab === 'recent') {
 			return this.filterSymbolsForSelectedFilterOption(
 				this.recentSymbols
 			);
@@ -225,7 +227,8 @@ class SpecialCharacterModal extends Component {
 
 		if (activeTab === 'all') {
 			return this.state.filterOptionsForAllSymbols;
-		} else if (activeTab === 'recent') {
+		}
+		if (activeTab === 'recent') {
 			return this.filterOptionsForRecentSymbols;
 		}
 
@@ -300,13 +303,17 @@ class SpecialCharacterModal extends Component {
 			selectedFilterOption: null,
 		});
 	};
+
 	handleSearchInputRef = (searchInputRef) =>
 		(this.searchInputRef = searchInputRef);
 
-	handleFilterClearClick = () =>
+	handleFilterClearClick = () => {
 		this.setState({ selectedFilterOption: null });
-	handleFilterOptionClick = (selectedFilterOption) =>
+	};
+
+	handleFilterOptionClick = (selectedFilterOption) => {
 		this.setState({ selectedFilterOption });
+	};
 
 	renderResultsCounter(symbolsLength, searchInputValue, activeTab) {
 		if (activeTab === 'search') {
@@ -329,7 +336,10 @@ class SpecialCharacterModal extends Component {
 		);
 	}
 
-	handleSymbolClick = (selectedSymbol) => this.setState({ selectedSymbol });
+	handleSymbolClick = (selectedSymbol) => {
+		this.setState({ selectedSymbol });
+	};
+
 	handleSymbolDoubleClick = (selectedSymbol) => {
 		this.setState({ selectedSymbol }, this.handleSubmitButtonClick);
 	};
@@ -356,7 +366,9 @@ class SpecialCharacterModal extends Component {
 			selectedFilterOption,
 			selectedSymbol,
 		} = this.state;
-		let displayedSymbols, filteredDisplayedSymbols, filterOptions;
+		let displayedSymbols;
+		let filteredDisplayedSymbols;
+		let filterOptions;
 
 		if (this.state.allSymbols) {
 			displayedSymbols = this.determineDisplayedSymbols();

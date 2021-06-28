@@ -1,6 +1,5 @@
-import React from 'react';
-
 import { Flex, Heading, List, TextLink } from 'fds/components';
+import React from 'react';
 
 import SymbolOption from './SymbolOption';
 
