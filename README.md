@@ -9,10 +9,11 @@ This add-on provides a way to easily insert characters that may not be available
 
 ## To integrate this package:
 
-* Add this package as an add-on
-* Create a toolbar button to the {@link default-special-character-insert} operation.
+-   Add this package as an add-on
+-   Create a toolbar button to the {@link default-special-character-insert} operation.
 
 ## To enable quickly inserting one of a preconfigured set of characters
+
 You can use the {@link SymbolsGrid} UI component (configured with a character set, no more than a couple of tens).
 
 ```javascript
@@ -28,13 +29,9 @@ function renderDrop({ closeDrop }) {
 	);
 }
 
-export default function MyQuickAccessSymbolsDropButton () {
+export default function MyQuickAccessSymbolsDropButton() {
 	return (
-		<ButtonWithDrop
-			icon="omega"
-			label="Symbol"
-			renderDrop={renderDrop}
-		/>
+		<ButtonWithDrop icon="omega" label="Symbol" renderDrop={renderDrop} />
 	);
 }
 ```
@@ -56,7 +53,10 @@ objects.
 import specialCharactersManager from 'fontoxml-special-characters/src/specialCharactersManager.js';
 
 export default function install() {
-	specialCharactersManager.addCharacterSetPath('emoji', 'assets/character-sets/emoji-character-set.json');
+	specialCharactersManager.addCharacterSetPath(
+		'emoji',
+		'assets/character-sets/emoji-character-set.json'
+	);
 }
 ```
 
