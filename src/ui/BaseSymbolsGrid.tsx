@@ -3,15 +3,23 @@ import React from 'react';
 
 import { Flex, Grid, GridItem, UnicodeSymbol } from 'fds/components';
 
-import useOperation from 'fontoxml-fx/src/useOperation.js';
+import useOperation from 'fontoxml-fx/src/useOperation';
 
-import specialCharactersManager from '../specialCharactersManager.js';
-import characterToString from '../api/characterToString.js';
+import specialCharactersManager from '../specialCharactersManager';
+import characterToString from '../api/characterToString';
 
 const defaultOperationData = { text: ' ' };
 
-function BaseSymbolsGrid({ characters, columns, onItemClick, primaryFontFamily }) {
-	const { executeOperation, operationState } = useOperation('insert-text', defaultOperationData);
+function BaseSymbolsGrid({
+	characters,
+	columns,
+	onItemClick,
+	primaryFontFamily,
+}) {
+	const { executeOperation, operationState } = useOperation(
+		'insert-text',
+		defaultOperationData
+	);
 
 	return (
 		<Grid
@@ -28,7 +36,7 @@ function BaseSymbolsGrid({ characters, columns, onItemClick, primaryFontFamily }
 						key={key}
 						cursor="pointer"
 						isDisabled={!operationState.enabled}
-						onClick={event => {
+						onClick={(event) => {
 							specialCharactersManager.markAsRecentlyUsed(item);
 
 							// This is undocumented behavior of useOperation's executeOperation().
@@ -66,7 +74,7 @@ function BaseSymbolsGrid({ characters, columns, onItemClick, primaryFontFamily }
 
 BaseSymbolsGrid.defaultProps = {
 	columns: 8,
-	onItemClick: _event => {}
+	onItemClick: (_event) => {},
 };
 
 BaseSymbolsGrid.propTypes = {
@@ -108,7 +116,7 @@ BaseSymbolsGrid.propTypes = {
 	 * Setting the same font-family for both the CVK content and the special characters UI ensures
 	 * users do not get confused by having the same symbol render differently in different places.
 	 */
-	primaryFontFamily: PropTypes.string
+	primaryFontFamily: PropTypes.string,
 };
 
 export default BaseSymbolsGrid;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Flex, Heading, List, TextLink } from 'fds/components';
 
-import SymbolOption from './SymbolOption.jsx';
+import SymbolOption from './SymbolOption';
 
 const listPaddingSize = { bottom: 'm', horizontal: 'm' };
 
@@ -23,7 +23,7 @@ const SymbolOptions = ({
 	onClearClick,
 	onOptionClick,
 	options,
-	selectedOption
+	selectedOption,
 }) => (
 	<Flex flex={flex} flexDirection="column">
 		<Flex alignItems="center" flex="none" paddingSize="m" spaceSize="l">

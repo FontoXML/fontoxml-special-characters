@@ -5,7 +5,7 @@ import { Flex, GridItem, UnicodeSymbol, VirtualGrid } from 'fds/components';
 const gridPaddingSize = { horizontal: 'l', bottom: 'l' };
 
 class Symbols extends Component {
-	renderCodePoints = codePoints => {
+	renderCodePoints = (codePoints) => {
 		const unicodeSymbols = codePoints.map((codePoint, key) => (
 			<UnicodeSymbol
 				code={codePoint}
@@ -17,7 +17,11 @@ class Symbols extends Component {
 
 		if (codePoints.length > 1) {
 			return (
-				<Flex alignItems="center" justifyContent="center" spaceHorizontalSize="s">
+				<Flex
+					alignItems="center"
+					justifyContent="center"
+					spaceHorizontalSize="s"
+				>
 					{unicodeSymbols}
 				</Flex>
 			);
@@ -41,7 +45,8 @@ class Symbols extends Component {
 	);
 
 	render() {
-		const { onSymbolClick, onSymbolDoubleClick, selectedSymbol, symbols } = this.props;
+		const { onSymbolClick, onSymbolDoubleClick, selectedSymbol, symbols } =
+			this.props;
 
 		return (
 			<Flex flex="1">
@@ -53,7 +58,9 @@ class Symbols extends Component {
 					onItemDoubleClick={onSymbolDoubleClick}
 					paddingSize={gridPaddingSize}
 					renderItem={this.handleRenderGridItem}
-					idToScrollIntoView={selectedSymbol ? selectedSymbol.id : null}
+					idToScrollIntoView={
+						selectedSymbol ? selectedSymbol.id : null
+					}
 					spaceSize="m"
 					virtualBufferFactor={4}
 				/>

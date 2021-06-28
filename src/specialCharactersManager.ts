@@ -1,4 +1,5 @@
-import Notifier from 'fontoxml-utils/src/Notifier.js';
+import Notifier from 'fontoxml-utils/src/Notifier';
+import type { CharacterSetEntry } from './types';
 
 const KEY_NAME =
 	window.location.host +
@@ -16,6 +17,10 @@ const KEY_NAME =
  * @category add-on/fontoxml-special-characters
  */
 class SpecialCharactersManager {
+	_characterSetByName: Object;
+	_characterSetPathByName: Object;
+	recentSymbolsChangedNotifier: Notifier;
+
 	constructor() {
 		this._characterSetByName = Object.create(null);
 		this._characterSetPathByName = Object.create(null);
@@ -31,7 +36,10 @@ class SpecialCharactersManager {
 	 * @param  {string}    name
 	 * @param  {CharacterSetEntry[]}  characterSet
 	 */
-	addCharacterSet(name, characterSet) {
+	addCharacterSet(
+		name: string,
+		characterSet: Array<CharacterSetEntry>
+	): void {
 		this._characterSetByName[name] = Promise.resolve(characterSet);
 	}
 
@@ -46,7 +54,7 @@ class SpecialCharactersManager {
 	 * @param  {string}  name
 	 * @param  {string}  characterSetPath
 	 */
-	addCharacterSetPath(name, characterSetPath) {
+	addCharacterSetPath(name: string, characterSetPath: string): void {
 		this._characterSetPathByName[name] = characterSetPath;
 	}
 
@@ -57,26 +65,32 @@ class SpecialCharactersManager {
 	 *
 	 * @return  {Promise<CharacterSetEntry[]>}
 	 */
-	getCharacterSet(name) {
+	getCharacterSet(name: string): Promise<Array<CharacterSetEntry>> {
 		const characterSet = this._characterSetByName[name];
 		const characterSetPath = this._characterSetPathByName[name];
 		if (!characterSet && !characterSetPath) {
-			return Promise.reject(new Error('Character set "' + name + '" does not exist.'));
+			return Promise.reject(
+				new Error('Character set "' + name + '" does not exist.')
+			);
 		}
 		if (characterSet) {
 			return characterSet;
 		}
 		this._characterSetByName[name] = fetch(characterSetPath)
-			.then(response => {
+			.then((response) => {
 				if (!response.ok) {
-					throw new Error('Failed to fetch character set: "' + name + '".');
+					throw new Error(
+						'Failed to fetch character set: "' + name + '".'
+					);
 				}
 				const fetchedCharacterSet = response.json();
 				return fetchedCharacterSet;
 			})
-			.catch(_error => {
+			.catch((_error) => {
 				delete this._characterSetByName[name];
-				throw new Error('Failed to fetch character set: "' + name + '".');
+				throw new Error(
+					'Failed to fetch character set: "' + name + '".'
+				);
 			});
 		return this._characterSetByName[name];
 	}
@@ -86,13 +100,16 @@ class SpecialCharactersManager {
 	 *
 	 * @return  {CharacterSetEntry[]}  characterEntry
 	 */
-	getRecentSymbols() {
+	getRecentSymbols(): Array<CharacterSetEntry> {
 		const data = window.localStorage.getItem(KEY_NAME);
 		if (data) {
 			try {
 				return JSON.parse(data);
 			} catch (error) {
-				console.error(`Can not parse recent characters, got "${data}"`, error);
+				console.error(
+					`Can not parse recent characters, got "${data}"`,
+					error
+				);
 			}
 		}
 		return [];
@@ -103,9 +120,11 @@ class SpecialCharactersManager {
 	 *
 	 * @param  {CharacterSetEntry}  characterEntry
 	 */
-	markAsRecentlyUsed(characterEntry) {
+	markAsRecentlyUsed(characterEntry: CharacterSetEntry): void {
 		const characterSet = this.getRecentSymbols() || [];
-		const index = characterSet.findIndex(character => characterEntry.id === character.id);
+		const index = characterSet.findIndex(
+			(character) => characterEntry.id === character.id
+		);
 
 		if (index > -1) {
 			characterSet.splice(index, 1);
@@ -123,43 +142,9 @@ class SpecialCharactersManager {
 	 * Remove the characterSet together with the key.
 	 *
 	 */
-	cleanStorage() {
+	cleanStorage(): void {
 		window.localStorage.removeItem(KEY_NAME);
 	}
 }
 
 export default new SpecialCharactersManager();
-
-/**
- * A character set should be provided to {@link SpecialCharactersManager#addCharacterSet} as an
- * array of objects, each containing properties describing a character in the set.
- *
- * A fragment of an example character set is given below:
- *
- * ```json
- * [
- *     {
- *         "codePoints": [ "U+2669" ],
- *         "id": "U+2669"
- *     },
- *     {
- *         "codePoints": [ "U+266A" ],
- *         "id": "U+266A",
- *         "labels": [ "Unicode miscellaneous symbols" ],
- *         "name": "Eighth note"
- *     }
- * ]
- * ```
- *
- * @typedef   {Object}  CharacterSetEntry
- *
- * @fontosdk  members
- *
- * @property  {string[]}  codePoints    Unicode code points to insert when the character is inserted into the
- *                                      document, in order, encoded as strings starting with U+ followed by the
- *                                      hexadecimal representation of the code point.
- * @property  {string}    id            Unique identifier for the character.
- * @property  {string[]}  [labels]      List of categories under which the character should appear in the modal,
- *                                      each specified using the descriptive label for the category shown in the modal.
- * @property  {string}    [name]        Descriptive name for the character, displayed in the modal and as a tooltip content in the grid.
- */

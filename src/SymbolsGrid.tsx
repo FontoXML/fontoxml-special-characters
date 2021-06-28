@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { SpinnerIcon, StateMessage, Block } from 'fds/components';
 
-import t from 'fontoxml-localization/src/t.js';
-import onlyResolveLastPromise from 'fontoxml-utils/src/onlyResolveLastPromise.js';
+import t from 'fontoxml-localization/src/t';
+import onlyResolveLastPromise from 'fontoxml-utils/src/onlyResolveLastPromise';
 
-import BaseSymbolsGrid from './ui/BaseSymbolsGrid.jsx';
-import specialCharactersManager from './specialCharactersManager.js';
+import BaseSymbolsGrid from './ui/BaseSymbolsGrid';
+import specialCharactersManager from './specialCharactersManager';
 
 /**
  * Renders a grid of buttons for each of the characters in the specified character set.
@@ -22,7 +22,12 @@ import specialCharactersManager from './specialCharactersManager.js';
  * @react
  * @category add-on/fontoxml-special-characters
  */
-function SymbolsGrid({ characterSet, columns, onItemClick, primaryFontFamily }) {
+function SymbolsGrid({
+	characterSet,
+	columns,
+	onItemClick,
+	primaryFontFamily,
+}) {
 	const isMounted = useRef(false);
 
 	const [isLoading, setIsLoading] = useState(true);
@@ -36,8 +41,10 @@ function SymbolsGrid({ characterSet, columns, onItemClick, primaryFontFamily }) 
 	// only the last promise is resolved.
 	const getCharacterSet = useMemo(
 		() =>
-			onlyResolveLastPromise(async characterSetName => {
-				return specialCharactersManager.getCharacterSet(characterSetName);
+			onlyResolveLastPromise(async (characterSetName) => {
+				return specialCharactersManager.getCharacterSet(
+					characterSetName
+				);
 			}),
 		[]
 	);
@@ -60,7 +67,7 @@ function SymbolsGrid({ characterSet, columns, onItemClick, primaryFontFamily }) 
 		setIsLoading(true);
 
 		getCharacterSet(characterSet)
-			.then(characters => {
+			.then((characters) => {
 				if (!isMounted.current) {
 					return;
 				}
@@ -70,11 +77,14 @@ function SymbolsGrid({ characterSet, columns, onItemClick, primaryFontFamily }) 
 				}
 
 				setCharacters(
-					characters.map((character, index) => ({ id: index, ...character })) || []
+					characters.map((character, index) => ({
+						id: index,
+						...character,
+					})) || []
 				);
 				setIsLoading(false);
 			})
-			.catch(err => {
+			.catch((err) => {
 				if (!isMounted.current) {
 					return;
 				}
@@ -89,7 +99,10 @@ function SymbolsGrid({ characterSet, columns, onItemClick, primaryFontFamily }) 
 	if (isLoading) {
 		return (
 			<Block flex="1" applyCss={{ maxHeight: '100%' }}>
-				<StateMessage title={t('Loading symbols…')} visual={<SpinnerIcon />} />
+				<StateMessage
+					title={t('Loading symbols…')}
+					visual={<SpinnerIcon />}
+				/>
 			</Block>
 		);
 	}
@@ -99,7 +112,9 @@ function SymbolsGrid({ characterSet, columns, onItemClick, primaryFontFamily }) 
 			<Block flex="1" applyCss={{ maxHeight: '100%' }}>
 				<StateMessage
 					title={t('Could not retrieve symbols')}
-					message={t('Please contact your support team or try again later.')}
+					message={t(
+						'Please contact your support team or try again later.'
+					)}
 					connotation="error"
 					visual="times"
 				/>
@@ -131,7 +146,7 @@ function SymbolsGrid({ characterSet, columns, onItemClick, primaryFontFamily }) 
 
 SymbolsGrid.defaultProps = {
 	columns: 8,
-	onItemClick: _event => {}
+	onItemClick: (_event) => {},
 };
 
 SymbolsGrid.propTypes = {
@@ -172,7 +187,7 @@ SymbolsGrid.propTypes = {
 	 * Setting the same font-family for both the CVK content and the special characters UI ensures
 	 * users do not get confused by having the same symbol render differently in different places.
 	 */
-	primaryFontFamily: PropTypes.string
+	primaryFontFamily: PropTypes.string,
 };
 
 export default SymbolsGrid;

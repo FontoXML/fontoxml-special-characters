@@ -2,12 +2,12 @@ import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { SpinnerIcon, StateMessage, Block } from 'fds/components';
 
-import t from 'fontoxml-localization/src/t.js';
-import onlyResolveLastPromise from 'fontoxml-utils/src/onlyResolveLastPromise.js';
-import useManagerState from 'fontoxml-fx/src/useManagerState.js';
+import t from 'fontoxml-localization/src/t';
+import onlyResolveLastPromise from 'fontoxml-utils/src/onlyResolveLastPromise';
+import useManagerState from 'fontoxml-fx/src/useManagerState';
 
-import BaseSymbolsGrid from './ui/BaseSymbolsGrid.jsx';
-import specialCharactersManager from './specialCharactersManager.js';
+import BaseSymbolsGrid from './ui/BaseSymbolsGrid';
+import specialCharactersManager from './specialCharactersManager';
 
 /**
  * Renders a grid of buttons for the recently used characters. Those characters are cached centrally
@@ -28,7 +28,7 @@ function RecentSymbolsGrid({
 	columns,
 	maxCharacters,
 	onItemClick,
-	primaryFontFamily
+	primaryFontFamily,
 }) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
@@ -41,14 +41,20 @@ function RecentSymbolsGrid({
 	const setDefaultCharacterSet = useMemo(
 		() =>
 			onlyResolveLastPromise(async () => {
-				if (fallbackCharacterSet && recentSymbols.length < maxCharacters) {
-					const fallbackCharacters = await specialCharactersManager.getCharacterSet(
-						fallbackCharacterSet
-					);
+				if (
+					fallbackCharacterSet &&
+					recentSymbols.length < maxCharacters
+				) {
+					const fallbackCharacters =
+						await specialCharactersManager.getCharacterSet(
+							fallbackCharacterSet
+						);
 
 					if (fallbackCharacters) {
 						for (const character of fallbackCharacters) {
-							if (recentSymbols.some(e => e.id === character.id)) {
+							if (
+								recentSymbols.some((e) => e.id === character.id)
+							) {
 								continue;
 							}
 							recentSymbols.push(character);
@@ -67,11 +73,11 @@ function RecentSymbolsGrid({
 
 	useEffect(() => {
 		setDefaultCharacterSet()
-			.then(chars => {
+			.then((chars) => {
 				setCharacters(chars);
 				setIsLoading(false);
 			})
-			.catch(err => {
+			.catch((err) => {
 				setError(err);
 				setIsLoading(false);
 				console.error(err);
@@ -81,7 +87,10 @@ function RecentSymbolsGrid({
 	if (isLoading) {
 		return (
 			<Block flex="1" applyCss={{ maxHeight: '100%' }}>
-				<StateMessage title={t('Loading symbols…')} visual={<SpinnerIcon />} />
+				<StateMessage
+					title={t('Loading symbols…')}
+					visual={<SpinnerIcon />}
+				/>
 			</Block>
 		);
 	}
@@ -91,7 +100,9 @@ function RecentSymbolsGrid({
 			<Block flex="1" applyCss={{ maxHeight: '100%' }}>
 				<StateMessage
 					title={t('Could not retrieve symbols')}
-					message={t('Please contact your support team or try again later.')}
+					message={t(
+						'Please contact your support team or try again later.'
+					)}
 					connotation="error"
 					visual="times"
 				/>
@@ -123,7 +134,7 @@ function RecentSymbolsGrid({
 RecentSymbolsGrid.defaultProps = {
 	columns: 8,
 	maxCharacters: 24,
-	onItemClick: _event => {}
+	onItemClick: (_event) => {},
 };
 
 RecentSymbolsGrid.propTypes = {
@@ -171,7 +182,7 @@ RecentSymbolsGrid.propTypes = {
 	 * Setting the same font-family for both the CVK content and the special characters UI ensures
 	 * users do not get confused by having the same symbol render differently in different places.
 	 */
-	primaryFontFamily: PropTypes.string
+	primaryFontFamily: PropTypes.string,
 };
 
 export default RecentSymbolsGrid;

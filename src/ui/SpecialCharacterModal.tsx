@@ -16,15 +16,15 @@ import {
 	SpinnerIcon,
 	StateMessage,
 	TabButtons,
-	TabButton
+	TabButton,
 } from 'fds/components';
-import t from 'fontoxml-localization/src/t.js';
+import t from 'fontoxml-localization/src/t';
 
-import characterToString from '../api/characterToString.js';
-import SymbolOptions from './symbol-options/SymbolOptions.jsx';
-import SymbolPreview from './SymbolPreview.jsx';
-import Symbols from './Symbols.jsx';
-import specialCharactersManager from '../specialCharactersManager.js';
+import characterToString from '../api/characterToString';
+import SymbolOptions from './symbol-options/SymbolOptions';
+import SymbolPreview from './SymbolPreview';
+import Symbols from './Symbols';
+import specialCharactersManager from '../specialCharactersManager';
 
 const filterSymbolOptionsClearButtonLabel = t('Clear');
 const filterSymbolOptionsHeadingLabel = t('Filter by subset');
@@ -34,23 +34,23 @@ const noRecentResultsStateMessageTitle = t('Nothing here yet…');
 // TODO: rewrite to modern code
 function createFilterOptionsFromSymbols(symbols) {
 	const labelsByName = {};
-	symbols.forEach(character => {
+	symbols.forEach((character) => {
 		if (!character.labels) {
 			return;
 		}
-		character.labels.forEach(labelName => {
+		character.labels.forEach((labelName) => {
 			if (!labelsByName[labelName]) {
 				labelsByName[labelName] = {
 					label: labelName,
 					count: 0,
-					characterRangeStart: null
+					characterRangeStart: null,
 				};
 			}
 
 			const labelInfo = labelsByName[labelName];
 			labelInfo.count += 1;
 
-			character.codePoints.forEach(codePoint => {
+			character.codePoints.forEach((codePoint) => {
 				const weight = parseInt(codePoint.substr(2), 16);
 				if (
 					labelInfo.characterRangeStart === null ||
@@ -63,7 +63,7 @@ function createFilterOptionsFromSymbols(symbols) {
 	});
 
 	return Object.keys(labelsByName)
-		.map(labelName => labelsByName[labelName])
+		.map((labelName) => labelsByName[labelName])
 		.sort((a, b) => {
 			if (a.characterRangeStart === b.characterRangeStart) {
 				return 0;
@@ -77,7 +77,8 @@ const messages = {
 	cancelButtonLabel: t('Cancel'),
 	submitButtonLabel: t('Insert'),
 	noResultsLabel: t('(no results)'),
-	resultsCounterLabel: counter => t('({COUNTER} results)', { COUNTER: counter })
+	resultsCounterLabel: (counter) =>
+		t('({COUNTER} results)', { COUNTER: counter }),
 };
 
 const searchInputContainerStyles = { maxWidth: '20rem', width: '100%' };
@@ -89,9 +90,9 @@ class SpecialCharacterModal extends Component {
 		data: PropTypes.shape({
 			characterSet: PropTypes.string.isRequired,
 			modalIcon: PropTypes.string.isRequired,
-			primaryFontFamily: PropTypes.string
+			primaryFontFamily: PropTypes.string,
 		}).isRequired,
-		submitModal: PropTypes.func.isRequired
+		submitModal: PropTypes.func.isRequired,
 	};
 
 	searchInputRef = null;
@@ -107,7 +108,7 @@ class SpecialCharacterModal extends Component {
 		isLoading: true,
 		searchInputValue: '',
 		selectedFilterOption: null,
-		selectedSymbol: null
+		selectedSymbol: null,
 	};
 
 	componentDidMount() {
@@ -115,7 +116,9 @@ class SpecialCharacterModal extends Component {
 
 		const recentSymbols = specialCharactersManager.getRecentSymbols();
 		this.recentSymbols = recentSymbols.slice(0, 50);
-		this.filterOptionsForRecentSymbols = createFilterOptionsFromSymbols(this.recentSymbols);
+		this.filterOptionsForRecentSymbols = createFilterOptionsFromSymbols(
+			this.recentSymbols
+		);
 
 		if (this.recentSymbols.length > 0) {
 			this.setState({ activeTab: 'recent' });
@@ -123,13 +126,14 @@ class SpecialCharacterModal extends Component {
 
 		specialCharactersManager
 			.getCharacterSet(this.props.data.characterSet)
-			.then(charSet => {
+			.then((charSet) => {
 				if (this._ismounted) {
 					this.setState(
 						{
 							isLoading: false,
 							allSymbols: charSet,
-							filterOptionsForAllSymbols: createFilterOptionsFromSymbols(charSet)
+							filterOptionsForAllSymbols:
+								createFilterOptionsFromSymbols(charSet),
 						},
 						() => {
 							this.searchInputRef.focus();
@@ -137,12 +141,12 @@ class SpecialCharacterModal extends Component {
 					);
 				}
 			})
-			.catch(error => {
+			.catch((error) => {
 				console.error(error);
 				if (this._ismounted) {
 					this.setState({
 						isLoading: false,
-						hasErrors: true
+						hasErrors: true,
 					});
 				}
 			});
@@ -159,7 +163,9 @@ class SpecialCharacterModal extends Component {
 		}
 
 		return symbols.filter(
-			symbol => symbol.labels && symbol.labels.includes(this.state.selectedFilterOption.label)
+			(symbol) =>
+				symbol.labels &&
+				symbol.labels.includes(this.state.selectedFilterOption.label)
 		);
 	}
 
@@ -167,25 +173,35 @@ class SpecialCharacterModal extends Component {
 		const { activeTab, searchInputValue } = this.state;
 
 		if (activeTab === 'all') {
-			return this.filterSymbolsForSelectedFilterOption(this.state.allSymbols);
+			return this.filterSymbolsForSelectedFilterOption(
+				this.state.allSymbols
+			);
 		} else if (activeTab === 'recent') {
-			return this.filterSymbolsForSelectedFilterOption(this.recentSymbols);
+			return this.filterSymbolsForSelectedFilterOption(
+				this.recentSymbols
+			);
 		}
 
 		// search
 		return this.state.allSymbols.filter(
-			symbol =>
+			(symbol) =>
 				// match on the name
 				(symbol.name &&
-					symbol.name.toLowerCase().includes(searchInputValue.toLowerCase())) ||
+					symbol.name
+						.toLowerCase()
+						.includes(searchInputValue.toLowerCase())) ||
 				// match on one of the labels
 				(symbol.labels &&
-					symbol.labels.some(label =>
-						label.toLowerCase().includes(searchInputValue.toLowerCase())
+					symbol.labels.some((label) =>
+						label
+							.toLowerCase()
+							.includes(searchInputValue.toLowerCase())
 					)) ||
 				// or match on one of the code points
-				symbol.codePoints.some(codePoint =>
-					codePoint.toLowerCase().includes(searchInputValue.toLowerCase())
+				symbol.codePoints.some((codePoint) =>
+					codePoint
+						.toLowerCase()
+						.includes(searchInputValue.toLowerCase())
 				)
 		);
 	}
@@ -198,7 +214,9 @@ class SpecialCharacterModal extends Component {
 		}
 
 		return displayedSymbols.filter(
-			symbol => symbol.labels && symbol.labels.includes(selectedFilterOption.label)
+			(symbol) =>
+				symbol.labels &&
+				symbol.labels.includes(selectedFilterOption.label)
 		);
 	}
 
@@ -212,18 +230,21 @@ class SpecialCharacterModal extends Component {
 		}
 
 		// displayedSymbols === symbols matching the searchInputValue, @see determineDisplayedSymbols()
-		const displayedSymbolsLabels = displayedSymbols.reduce((labels, symbol) => {
-			if (symbol.labels) {
-				symbol.labels.forEach(label => {
-					if (!labels.includes(label)) {
-						labels.push(label);
-					}
-				});
-			}
-			return labels;
-		}, []);
+		const displayedSymbolsLabels = displayedSymbols.reduce(
+			(labels, symbol) => {
+				if (symbol.labels) {
+					symbol.labels.forEach((label) => {
+						if (!labels.includes(label)) {
+							labels.push(label);
+						}
+					});
+				}
+				return labels;
+			},
+			[]
+		);
 
-		return this.state.filterOptionsForAllSymbols.filter(filterOption =>
+		return this.state.filterOptionsForAllSymbols.filter((filterOption) =>
 			displayedSymbolsLabels.includes(filterOption.label)
 		);
 	}
@@ -236,7 +257,7 @@ class SpecialCharacterModal extends Component {
 		this.props.submitModal({ text: characterToString(selectedSymbol) });
 	};
 
-	handleKeyDown = event => {
+	handleKeyDown = (event) => {
 		switch (event.key) {
 			case 'Escape':
 				this.props.cancelModal();
@@ -252,14 +273,14 @@ class SpecialCharacterModal extends Component {
 	handleAllTabButtonClick = () => {
 		this.setState({
 			activeTab: 'all',
-			selectedFilterOption: null
+			selectedFilterOption: null,
 		});
 	};
 
 	handleRecentTabButtonClick = () => {
 		this.setState({
 			activeTab: 'recent',
-			selectedFilterOption: null
+			selectedFilterOption: null,
 		});
 	};
 
@@ -268,21 +289,24 @@ class SpecialCharacterModal extends Component {
 
 		this.setState({
 			activeTab: 'search',
-			selectedFilterOption: null
+			selectedFilterOption: null,
 		});
 	};
 
-	handleSearchInputChange = searchInputValue => {
+	handleSearchInputChange = (searchInputValue) => {
 		this.setState({
 			activeTab: searchInputValue !== '' ? 'search' : 'all',
 			searchInputValue,
-			selectedFilterOption: null
+			selectedFilterOption: null,
 		});
 	};
-	handleSearchInputRef = searchInputRef => (this.searchInputRef = searchInputRef);
+	handleSearchInputRef = (searchInputRef) =>
+		(this.searchInputRef = searchInputRef);
 
-	handleFilterClearClick = () => this.setState({ selectedFilterOption: null });
-	handleFilterOptionClick = selectedFilterOption => this.setState({ selectedFilterOption });
+	handleFilterClearClick = () =>
+		this.setState({ selectedFilterOption: null });
+	handleFilterOptionClick = (selectedFilterOption) =>
+		this.setState({ selectedFilterOption });
 
 	renderResultsCounter(symbolsLength, searchInputValue, activeTab) {
 		if (activeTab === 'search') {
@@ -290,7 +314,7 @@ class SpecialCharacterModal extends Component {
 				<Label align="center" colorName="text-muted-color">
 					{t('{SYMBOLS_LENGTH} results for “{SEARCH_INPUT_VALUE}”', {
 						SYMBOLS_LENGTH: symbolsLength,
-						SEARCH_INPUT_VALUE: searchInputValue
+						SEARCH_INPUT_VALUE: searchInputValue,
 					})}
 				</Label>
 			);
@@ -298,13 +322,15 @@ class SpecialCharacterModal extends Component {
 
 		return (
 			<Label align="center" colorName="text-muted-color">
-				{t('{SYMBOLS_LENGTH} symbols', { SYMBOLS_LENGTH: symbolsLength })}
+				{t('{SYMBOLS_LENGTH} symbols', {
+					SYMBOLS_LENGTH: symbolsLength,
+				})}
 			</Label>
 		);
 	}
 
-	handleSymbolClick = selectedSymbol => this.setState({ selectedSymbol });
-	handleSymbolDoubleClick = selectedSymbol => {
+	handleSymbolClick = (selectedSymbol) => this.setState({ selectedSymbol });
+	handleSymbolDoubleClick = (selectedSymbol) => {
 		this.setState({ selectedSymbol }, this.handleSubmitButtonClick);
 	};
 
@@ -324,18 +350,27 @@ class SpecialCharacterModal extends Component {
 	}
 
 	render() {
-		const { activeTab, searchInputValue, selectedFilterOption, selectedSymbol } = this.state;
+		const {
+			activeTab,
+			searchInputValue,
+			selectedFilterOption,
+			selectedSymbol,
+		} = this.state;
 		let displayedSymbols, filteredDisplayedSymbols, filterOptions;
 
 		if (this.state.allSymbols) {
 			displayedSymbols = this.determineDisplayedSymbols();
-			filteredDisplayedSymbols = this.determineFilteredDisplayedSymbols(displayedSymbols);
+			filteredDisplayedSymbols =
+				this.determineFilteredDisplayedSymbols(displayedSymbols);
 			filterOptions = this.determineFilterOptions(displayedSymbols);
 		}
 
 		return (
 			<Modal isFullHeight size="m" onKeyDown={this.handleKeyDown}>
-				<ModalHeader icon={this.props.data.modalIcon} title={messages.modalTitle} />
+				<ModalHeader
+					icon={this.props.data.modalIcon}
+					title={messages.modalTitle}
+				/>
 
 				<ModalBody paddingSize="l" spaceSize="l">
 					{!this.state.isLoading && !this.state.hasErrors && (
@@ -357,7 +392,9 @@ class SpecialCharacterModal extends Component {
 									<TabButton
 										isActive={activeTab === 'search'}
 										label={t('Search')}
-										onClick={this.handleSearchTabButtonClick}
+										onClick={
+											this.handleSearchTabButtonClick
+										}
 									/>
 								)}
 							</TabButtons>
@@ -374,8 +411,14 @@ class SpecialCharacterModal extends Component {
 					)}
 
 					{this.state.isLoading && (
-						<ModalContent justifyContent="center" alignItems="center">
-							<StateMessage title={t('Loading symbols…')} visual={<SpinnerIcon />} />
+						<ModalContent
+							justifyContent="center"
+							alignItems="center"
+						>
+							<StateMessage
+								title={t('Loading symbols…')}
+								visual={<SpinnerIcon />}
+							/>
 						</ModalContent>
 					)}
 
@@ -383,20 +426,35 @@ class SpecialCharacterModal extends Component {
 						!this.state.hasErrors &&
 						filteredDisplayedSymbols.length > 0 && (
 							<ModalContent>
-								<ModalContent flex="0 0 240px" flexDirection="column" spaceSize="l">
+								<ModalContent
+									flex="0 0 240px"
+									flexDirection="column"
+									spaceSize="l"
+								>
 									<SymbolOptions
-										clearButtonLabel={filterSymbolOptionsClearButtonLabel}
+										clearButtonLabel={
+											filterSymbolOptionsClearButtonLabel
+										}
 										flex="1"
-										headingLabel={filterSymbolOptionsHeadingLabel}
-										onClearClick={this.handleFilterClearClick}
-										onOptionClick={this.handleFilterOptionClick}
+										headingLabel={
+											filterSymbolOptionsHeadingLabel
+										}
+										onClearClick={
+											this.handleFilterClearClick
+										}
+										onOptionClick={
+											this.handleFilterOptionClick
+										}
 										options={filterOptions}
 										selectedOption={selectedFilterOption}
 									/>
 								</ModalContent>
 
 								<ModalContent flex="1" flexDirection="column">
-									<Flex justifyContent="center" paddingSize="m">
+									<Flex
+										justifyContent="center"
+										paddingSize="m"
+									>
 										{this.renderResultsCounter(
 											filteredDisplayedSymbols.length,
 											searchInputValue,
@@ -406,17 +464,27 @@ class SpecialCharacterModal extends Component {
 
 									<Symbols
 										onSymbolClick={this.handleSymbolClick}
-										onSymbolDoubleClick={this.handleSymbolDoubleClick}
-										primaryFontFamily={this.props.data.primaryFontFamily}
+										onSymbolDoubleClick={
+											this.handleSymbolDoubleClick
+										}
+										primaryFontFamily={
+											this.props.data.primaryFontFamily
+										}
 										selectedSymbol={selectedSymbol}
 										symbols={filteredDisplayedSymbols}
 									/>
 								</ModalContent>
 
 								{selectedSymbol !== null && (
-									<ModalContent flex="0 0 240px" flexDirection="column">
+									<ModalContent
+										flex="0 0 240px"
+										flexDirection="column"
+									>
 										<SymbolPreview
-											primaryFontFamily={this.props.data.primaryFontFamily}
+											primaryFontFamily={
+												this.props.data
+													.primaryFontFamily
+											}
 											symbol={selectedSymbol}
 										/>
 									</ModalContent>
@@ -427,7 +495,10 @@ class SpecialCharacterModal extends Component {
 					{!this.state.isLoading &&
 						!this.state.hasErrors &&
 						filteredDisplayedSymbols.length === 0 && (
-							<ModalContent alignItems="center" justifyContent="center">
+							<ModalContent
+								alignItems="center"
+								justifyContent="center"
+							>
 								<StateMessage
 									message={this.determineEmptyStateMessage()}
 									title={
@@ -451,7 +522,10 @@ class SpecialCharacterModal extends Component {
 				</ModalBody>
 
 				<ModalFooter>
-					<Button label={messages.cancelButtonLabel} onClick={this.props.cancelModal} />
+					<Button
+						label={messages.cancelButtonLabel}
+						onClick={this.props.cancelModal}
+					/>
 
 					<Button
 						isDisabled={selectedSymbol === null}
