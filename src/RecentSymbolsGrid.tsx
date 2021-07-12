@@ -1,5 +1,4 @@
 import { Block, SpinnerIcon, StateMessage } from 'fds/components';
-import PropTypes from 'prop-types';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import useManagerState from 'fontoxml-fx/src/useManagerState';
@@ -8,6 +7,14 @@ import onlyResolveLastPromise from 'fontoxml-utils/src/onlyResolveLastPromise';
 
 import specialCharactersManager from './specialCharactersManager';
 import BaseSymbolsGrid from './ui/BaseSymbolsGrid';
+
+type Props = {
+	fallbackCharacterSet?: string;
+	columns?: number;
+	maxCharacters?: number;
+	onItemClick?(...args: unknown[]): unknown;
+	primaryFontFamily?: string;
+};
 
 /**
  * Renders a grid of buttons for the recently used characters. Those characters are cached centrally
@@ -29,7 +36,7 @@ function RecentSymbolsGrid({
 	maxCharacters,
 	onItemClick,
 	primaryFontFamily,
-}) {
+}: Props) {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [characters, setCharacters] = useState(null);
@@ -135,54 +142,6 @@ RecentSymbolsGrid.defaultProps = {
 	columns: 8,
 	maxCharacters: 24,
 	onItemClick: (_event) => {},
-};
-
-RecentSymbolsGrid.propTypes = {
-	/**
-	 * The name of the character set to display, as used in
-	 * {@link SpecialCharactersManager#addCharacterSet}. When there is no recently used symbols
-	 * enough yet, these characters will be shown after the recent symbols.
-	 */
-	fallbackCharacterSet: PropTypes.string,
-
-	/**
-	 * The number of columns to use in the grid.
-	 */
-	columns: PropTypes.number,
-
-	/**
-	 * The maximum number of characters to use in the grid. Recommended to use a multiple of columns.
-	 */
-	maxCharacters: PropTypes.number,
-
-	/**
-	 * Function to be called when an item in the grid is clicked.
-	 *
-	 * This can be used, for example, to close the {@link Drop} containing the grid when a character is inserted.
-	 *
-	 * @type {FX~OnItemClickCallback}
-	 */
-	onItemClick: PropTypes.func,
-
-	/**
-	 * A CSS font-family string that will be prepended to the default FDS 'content' font-family to
-	 * render the Unicode symbols.
-	 * (The default 'content' font-family is: Merriweather, Georgia, 'Times New Roman', Times,
-	 * BravuraRegular, BravuraTextRegular, Code2000Regular, Code2001Regular, serif).
-	 * Note: when the browser renders a character (of a Unicode symbol) it uses the first font in
-	 * the font-family string that has a glyph for that character. So by prepending a custom font
-	 * name, that font gets the first chance to provide a glyph and render the character.
-	 *
-	 * This can be used to render certain unicode icons you use commonly in your publications with
-	 * your own custom (publication) font.
-	 * This is usually set when using a custom (publication) font for certain/all parts of your
-	 * document in the editor (via the {@link registerFontStack} API and related fontStack CVK
-	 * option).
-	 *
-	 * Setting the same font-family for both the CVK content and the special characters UI ensures
-	 * users do not get confused by having the same symbol render differently in different places.
-	 */
-	primaryFontFamily: PropTypes.string,
 };
 
 export default RecentSymbolsGrid;

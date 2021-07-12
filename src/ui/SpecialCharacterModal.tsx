@@ -15,7 +15,6 @@ import {
 	TabButton,
 	TabButtons,
 } from 'fds/components';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import t from 'fontoxml-localization/src/t';
@@ -84,17 +83,17 @@ const messages = {
 const searchInputContainerStyles = { maxWidth: '20rem', width: '100%' };
 const searchInputPlaceholder = t('Search by name or codepoint');
 
-class SpecialCharacterModal extends Component {
-	static propTypes = {
-		cancelModal: PropTypes.func.isRequired,
-		data: PropTypes.shape({
-			characterSet: PropTypes.string.isRequired,
-			modalIcon: PropTypes.string.isRequired,
-			primaryFontFamily: PropTypes.string,
-		}).isRequired,
-		submitModal: PropTypes.func.isRequired,
+type Props = {
+	cancelModal(...args: unknown[]): unknown;
+	data: {
+		characterSet: string;
+		modalIcon: string;
+		primaryFontFamily?: string;
 	};
+	submitModal(...args: unknown[]): unknown;
+};
 
+class SpecialCharacterModal extends Component<Props> {
 	searchInputRef = null;
 
 	recentSymbols = [];
