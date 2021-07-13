@@ -30,7 +30,7 @@ type Props = {
 	 *
 	 * {@inheritDoc fontoxml-fx#OnItemClickCallback}
 	 */
-	onItemClick?(...args: unknown[]): unknown;
+	onItemClick?:(...args: unknown[]): unknown;
 	/**
 	 * A CSS font-family string that will be prepended to the default FDS 'content' font-family to
 	 * render the Unicode symbols.
