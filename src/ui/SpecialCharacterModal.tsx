@@ -17,6 +17,7 @@ import {
 } from 'fds/components';
 import React, { Component } from 'react';
 
+import type { ModalProps } from 'fontoxml-fx/src/types';
 import t from 'fontoxml-localization/src/t';
 
 import characterToString from '../api/characterToString';
@@ -83,17 +84,13 @@ const messages = {
 const searchInputContainerStyles = { maxWidth: '20rem', width: '100%' };
 const searchInputPlaceholder = t('Search by name or codepoint');
 
-type Props = {
-	cancelModal(...args: unknown[]): unknown;
-	data: {
+class SpecialCharacterModal extends Component<
+	ModalProps<{
 		characterSet: string;
 		modalIcon: string;
 		primaryFontFamily?: string;
-	};
-	submitModal(...args: unknown[]): unknown;
-};
-
-class SpecialCharacterModal extends Component<Props> {
+	}>
+> {
 	searchInputRef = null;
 
 	recentSymbols = [];
