@@ -32,8 +32,20 @@
  * @property  {string}    [name]        Descriptive name for the character, displayed in the modal and as a tooltip content in the grid.
  */
 export type CharacterSetEntry = {
+	/**
+	 * @fontosdk
+	 */
 	codePoints: string[];
+	/**
+	 * @fontosdk
+	 */
 	id: string;
+	/**
+	 * @fontosdk
+	 */
 	labels?: string[];
+	/**
+	 * @fontosdk
+	 */
 	name?: string;
 };
