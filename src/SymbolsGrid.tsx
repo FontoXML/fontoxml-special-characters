@@ -1,4 +1,5 @@
 import { Block, SpinnerIcon, StateMessage } from 'fds/components';
+import type { FC } from 'react';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import t from 'fontoxml-localization/src/t';
@@ -7,13 +8,31 @@ import onlyResolveLastPromise from 'fontoxml-utils/src/onlyResolveLastPromise';
 import specialCharactersManager from './specialCharactersManager';
 import BaseSymbolsGrid from './ui/BaseSymbolsGrid';
 
-type Props = {
+/**
+ * Renders a grid of buttons for each of the characters in the specified character set.
+ * The character set is loaded lazily but cached centrally during the lifetime of the browser
+ * window.
+ *
+ * If the characterSet is loading, a loading state message is shown.
+ * If the characterSet has no symbols, an empty state message is shown.
+ * If there is an error during loading/parsing of the characterSet, an error state message is
+ * shown and more details on the error are logged to the console.
+ *
+ * @fontosdk
+ * @react
+ * @category add-on/fontoxml-special-characters
+ */
+const SymbolsGrid: FC<{
 	/**
 	 * The name of the character set to display, as used in {@link SpecialCharactersManager#addCharacterSet}.
+	 *
+	 * @fontosdk
 	 */
 	characterSet: string;
 	/**
 	 * The number of columns to use in the grid.
+	 *
+	 * @fontosdk
 	 */
 	columns?: number;
 	/**
@@ -22,6 +41,8 @@ type Props = {
 	 * This can be used, for example, to close the {@link Drop} containing the grid when a character is inserted.
 	 *
 	 * {@inheritDoc fontoxml-fx#OnItemClickCallback}
+	 *
+	 * @fontosdk
 	 */
 	onItemClick?(...args: unknown[]): unknown;
 	/**
@@ -41,30 +62,11 @@ type Props = {
 	 *
 	 * Setting the same font-family for both the CVK content and the special characters UI ensures
 	 * users do not get confused by having the same symbol render differently in different places.
+	 *
+	 * @fontosdk
 	 */
 	primaryFontFamily?: string;
-};
-
-/**
- * Renders a grid of buttons for each of the characters in the specified character set.
- * The character set is loaded lazily but cached centrally during the lifetime of the browser
- * window.
- *
- * If the characterSet is loading, a loading state message is shown.
- * If the characterSet has no symbols, an empty state message is shown.
- * If there is an error during loading/parsing of the characterSet, an error state message is
- * shown and more details on the error are logged to the console.
- *
- * @fontosdk
- * @react
- * @category add-on/fontoxml-special-characters
- */
-function SymbolsGrid({
-	characterSet,
-	columns,
-	onItemClick,
-	primaryFontFamily,
-}: Props) {
+}> = ({ characterSet, columns, onItemClick, primaryFontFamily }) => {
 	const isMounted = useRef(false);
 
 	const [isLoading, setIsLoading] = useState(true);
@@ -179,7 +181,7 @@ function SymbolsGrid({
 			primaryFontFamily={primaryFontFamily}
 		/>
 	);
-}
+};
 
 SymbolsGrid.defaultProps = {
 	columns: 8,

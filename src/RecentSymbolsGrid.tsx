@@ -1,4 +1,5 @@
 import { Block, SpinnerIcon, StateMessage } from 'fds/components';
+import type { FC } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import useManagerState from 'fontoxml-fx/src/useManagerState';
@@ -8,19 +9,39 @@ import onlyResolveLastPromise from 'fontoxml-utils/src/onlyResolveLastPromise';
 import specialCharactersManager from './specialCharactersManager';
 import BaseSymbolsGrid from './ui/BaseSymbolsGrid';
 
-type Props = {
+/**
+ * Renders a grid of buttons for the recently used characters. Those characters are cached centrally
+ * during the lifetime of the browser window.
+ *
+ * If you use a character from this grid or the modal opened by {@link open-special-character-modal}
+ * operation, that character is rendered in the beginning of this grid.
+ *
+ * It is possible to specify a fallback character set if any character has not been used yet. Beside
+ * that, a maximum number of characters can be set to render in the grid.
+ *
+ * @fontosdk
+ * @react
+ * @category add-on/fontoxml-special-characters
+ */
+const RecentSymbolsGrid: FC<{
 	/**
 	 * The name of the character set to display, as used in
 	 * {@link SpecialCharactersManager#addCharacterSet}. When there is no recently used symbols
 	 * enough yet, these characters will be shown after the recent symbols.
+	 *
+	 * @fontosdk
 	 */
 	fallbackCharacterSet?: string;
 	/**
 	 * The number of columns to use in the grid.
+	 *
+	 * @fontosdk
 	 */
 	columns?: number;
 	/**
 	 * The maximum number of characters to use in the grid. Recommended to use a multiple of columns.
+	 *
+	 * @fontosdk
 	 */
 	maxCharacters?: number;
 	/**
@@ -29,6 +50,8 @@ type Props = {
 	 * This can be used, for example, to close the {@link Drop} containing the grid when a character is inserted.
 	 *
 	 * {@inheritDoc fontoxml-fx#OnItemClickCallback}
+	 *
+	 * @fontosdk
 	 */
 	onItemClick?(...args: unknown[]): unknown;
 	/**
@@ -48,31 +71,17 @@ type Props = {
 	 *
 	 * Setting the same font-family for both the CVK content and the special characters UI ensures
 	 * users do not get confused by having the same symbol render differently in different places.
+	 *
+	 * @fontosdk
 	 */
 	primaryFontFamily?: string;
-};
-
-/**
- * Renders a grid of buttons for the recently used characters. Those characters are cached centrally
- * during the lifetime of the browser window.
- *
- * If you use a character from this grid or the modal opened by {@link open-special-character-modal}
- * operation, that character is rendered in the beginning of this grid.
- *
- * It is possible to specify a fallback character set if any character has not been used yet. Beside
- * that, a maximum number of characters can be set to render in the grid.
- *
- * @fontosdk
- * @react
- * @category add-on/fontoxml-special-characters
- */
-function RecentSymbolsGrid({
+}> = ({
 	fallbackCharacterSet,
 	columns,
 	maxCharacters,
 	onItemClick,
 	primaryFontFamily,
-}: Props) {
+}) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [characters, setCharacters] = useState(null);
@@ -172,7 +181,7 @@ function RecentSymbolsGrid({
 			primaryFontFamily={primaryFontFamily}
 		/>
 	);
-}
+};
 
 RecentSymbolsGrid.defaultProps = {
 	columns: 8,
