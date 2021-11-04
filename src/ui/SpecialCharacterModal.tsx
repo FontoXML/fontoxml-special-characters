@@ -521,8 +521,10 @@ class SpecialCharacterModal extends Component<
 
 					{!this.state.isLoading && this.state.hasErrors && (
 						<StateMessage
-							title="Could not retrieve symbols"
-							message="Please contact your support team or try again later."
+							title={t('Could not retrieve symbols')}
+							message={t(
+								'Please contact your support team or try again later.'
+							)}
 							connotation="error"
 							visual="times"
 						/>
