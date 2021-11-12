@@ -50,7 +50,7 @@ JSON file in "src/assets/character-sets/" inside the package, which must contain
 objects.
 
 ```javascript
-import specialCharactersManager from 'fontoxml-special-characters/src/specialCharactersManager.js';
+import specialCharactersManager from 'fontoxml-special-characters/src/specialCharactersManager';
 
 export default function install() {
 	specialCharactersManager.addCharacterSetPath(
