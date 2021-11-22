@@ -40,7 +40,7 @@ const SymbolsGrid: FC<{
 	 *
 	 * This can be used, for example, to close the {@link Drop} containing the grid when a character is inserted.
 	 *
-	 * {@inheritDoc fontoxml-fx#OnItemClickCallback}
+	 * {@inheritDoc fds/types#OnItemClickCallback}
 	 *
 	 * @fontosdk
 	 */
