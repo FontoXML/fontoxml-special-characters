@@ -19,7 +19,7 @@ import BaseSymbolsGrid from './ui/BaseSymbolsGrid';
  * It is possible to specify a fallback character set if any character has not been used yet. Beside
  * that, a maximum number of characters can be set to render in the grid.
  *
- * @fontosdk
+ * @fontosdk importable
  * @react
  * @category add-on/fontoxml-special-characters
  */

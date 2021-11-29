@@ -144,4 +144,8 @@ class SpecialCharactersManager {
 	}
 }
 
+/**
+ * @fontosdk importable
+ * @category manager
+ */
 export default new SpecialCharactersManager();

@@ -18,7 +18,7 @@ import BaseSymbolsGrid from './ui/BaseSymbolsGrid';
  * If there is an error during loading/parsing of the characterSet, an error state message is
  * shown and more details on the error are logged to the console.
  *
- * @fontosdk
+ * @fontosdk importable
  * @react
  * @category add-on/fontoxml-special-characters
  */
