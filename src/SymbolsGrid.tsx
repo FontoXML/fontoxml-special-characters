@@ -9,36 +9,40 @@ import specialCharactersManager from './specialCharactersManager';
 import BaseSymbolsGrid from './ui/BaseSymbolsGrid';
 
 /**
- * Renders a grid of buttons for each of the characters in the specified character set.
- * The character set is loaded lazily but cached centrally during the lifetime of the browser
- * window.
+ * @remarks
+ * Renders a grid of buttons for each of the characters in the specified character
+ * set. The character set is loaded lazily but cached centrally during the lifetime
+ * of the browser window.
  *
- * If the characterSet is loading, a loading state message is shown.
- * If the characterSet has no symbols, an empty state message is shown.
- * If there is an error during loading/parsing of the characterSet, an error state message is
+ * If the characterSet is loading, a loading state message is shown. If the
+ * characterSet has no symbols, an empty state message is shown. If there is an
+ * error during loading/parsing of the characterSet, an error state message is
  * shown and more details on the error are logged to the console.
  *
  * @fontosdk importable
- * @react
- * @category add-on/fontoxml-special-characters
  */
 const SymbolsGrid: FC<{
 	/**
-	 * The name of the character set to display, as used in {@link SpecialCharactersManager#addCharacterSet}.
+	 * @remarks
+	 * The name of the character set to display, as used in {@link
+	 * SpecialCharactersManager#addCharacterSet}.
 	 *
 	 * @fontosdk
 	 */
 	characterSet: string;
 	/**
+	 * @remarks
 	 * The number of columns to use in the grid.
 	 *
 	 * @fontosdk
 	 */
 	columns?: number;
 	/**
+	 * @remarks
 	 * Function to be called when an item in the grid is clicked.
 	 *
-	 * This can be used, for example, to close the {@link Drop} containing the grid when a character is inserted.
+	 * This can be used, for example, to close the {@link Drop} containing the grid
+	 * when a character is inserted.
 	 *
 	 * {@inheritDoc fds/types#OnItemClickCallback}
 	 *
@@ -46,22 +50,24 @@ const SymbolsGrid: FC<{
 	 */
 	onItemClick?(...args: unknown[]): unknown;
 	/**
-	 * A CSS font-family string that will be prepended to the default FDS 'content' font-family to
-	 * render the Unicode symbols.
-	 * (The default 'content' font-family is: Merriweather, Georgia, 'Times New Roman', Times,
-	 * BravuraRegular, BravuraTextRegular, Code2000Regular, Code2001Regular, serif).
-	 * Note: when the browser renders a character (of a Unicode symbol) it uses the first font in
-	 * the font-family string that has a glyph for that character. So by prepending a custom font
-	 * name, that font gets the first chance to provide a glyph and render the character.
+	 * @remarks
+	 * A CSS font-family string that will be prepended to the default FDS 'content'
+	 * font-family to render the Unicode symbols. (The default 'content' font-family
+	 * is: Merriweather, Georgia, 'Times New Roman', Times, BravuraRegular,
+	 * BravuraTextRegular, Code2000Regular, Code2001Regular, serif). Note: when the
+	 * browser renders a character (of a Unicode symbol) it uses the first font in the
+	 * font-family string that has a glyph for that character. So by prepending a
+	 * custom font name, that font gets the first chance to provide a glyph and render
+	 * the character.
 	 *
-	 * This can be used to render certain unicode icons you use commonly in your publications with
-	 * your own custom (publication) font.
-	 * This is usually set when using a custom (publication) font for certain/all parts of your
-	 * document in the editor (via the {@link registerFontStack} API and related fontStack CVK
-	 * option).
+	 * This can be used to render certain unicode icons you use commonly in your
+	 * publications with your own custom (publication) font. This is usually set when
+	 * using a custom (publication) font for certain/all parts of your document in the
+	 * editor (via the {@link registerFontStack} API and related fontStack CVK option).
 	 *
-	 * Setting the same font-family for both the CVK content and the special characters UI ensures
-	 * users do not get confused by having the same symbol render differently in different places.
+	 * Setting the same font-family for both the CVK content and the special characters
+	 * UI ensures users do not get confused by having the same symbol render
+	 * differently in different places.
 	 *
 	 * @fontosdk
 	 */

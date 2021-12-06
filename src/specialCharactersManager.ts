@@ -8,13 +8,14 @@ const KEY_NAME =
 	`-XqtFs2523dDYdsTeBGTDfc`;
 
 /**
- * Enables registration of custom character sets to be displayed in the “Insert special character” modal.
- * Registration can be done using the addCharacterSetPath method. While we also provide a method for
- * adding a character set directly into the build, addCharacterSet, adding it via a path instead excludes
- * it from building into the main.js resulting in a faster initial load.
+ * @remarks
+ * Enables registration of custom character sets to be displayed in the “Insert
+ * special character” modal. Registration can be done using the addCharacterSetPath
+ * method. While we also provide a method for adding a character set directly into
+ * the build, addCharacterSet, adding it via a path instead excludes it from
+ * building into the main.js resulting in a faster initial load.
  *
  * @fontosdk
- * @category add-on/fontoxml-special-characters
  */
 class SpecialCharactersManager {
 	_characterSetByName: Object;
@@ -31,38 +32,40 @@ class SpecialCharactersManager {
 	}
 
 	/**
-	 * Register the specified characterSet for use by the special-character-insert operation under the specified name.
+	 * @remarks
+	 * Register the specified characterSet for use by the special-character-insert
+	 * operation under the specified name.
 	 *
 	 * @fontosdk
 	 *
-	 * @param  {string}    name
-	 * @param  {CharacterSetEntry[]}  characterSet
+	 * @param name         -
+	 * @param characterSet -
 	 */
 	addCharacterSet(name: string, characterSet: CharacterSetEntry[]): void {
 		this._characterSetByName[name] = Promise.resolve(characterSet);
 	}
 
 	/**
-	 * Register the specified file path used to fetch the characterSet under the specified name.
-	 * Character sets should be placed in (a subfolder of) the assets folder. An example of this would be
-	 * 'assets/character-sets/characterSet.json'. The character set should contain an Array of
-	 * {@link CharacterSetEntry} objects.
+	 * @remarks
+	 * Register the specified file path used to fetch the characterSet under the
+	 * specified name. Character sets should be placed in (a subfolder of) the assets
+	 * folder. An example of this would be 'assets/character-sets/characterSet.json'.
+	 * The character set should contain an Array of {@link CharacterSetEntry} objects.
 	 *
 	 * @fontosdk
 	 *
-	 * @param  {string}  name
-	 * @param  {string}  characterSetPath
+	 * @param name             -
+	 * @param characterSetPath -
 	 */
 	addCharacterSetPath(name: string, characterSetPath: string): void {
 		this._characterSetPathByName[name] = characterSetPath;
 	}
 
 	/**
+	 * @remarks
 	 * Retrieve the character set with the given name
 	 *
-	 * @param  {string}  name
-	 *
-	 * @return  {Promise<CharacterSetEntry[]>}
+	 * @param name -
 	 */
 	async getCharacterSet(name: string): Promise<CharacterSetEntry[]> {
 		const characterSet = this._characterSetByName[name];
@@ -93,9 +96,10 @@ class SpecialCharactersManager {
 	}
 
 	/**
+	 * @remarks
 	 * This works synchronously and it is used to get recent symbols.
 	 *
-	 * @return  {CharacterSetEntry[]}  characterEntry
+	 * @returns characterEntry
 	 */
 	getRecentSymbols(): CharacterSetEntry[] {
 		const data = window.localStorage.getItem(KEY_NAME);
@@ -113,9 +117,10 @@ class SpecialCharactersManager {
 	}
 
 	/**
+	 * @remarks
 	 * When a user clicks a character, it is marked as recently used by this method.
 	 *
-	 * @param  {CharacterSetEntry}  characterEntry
+	 * @param characterEntry -
 	 */
 	markAsRecentlyUsed(characterEntry: CharacterSetEntry): void {
 		const characterSet = this.getRecentSymbols() || [];
@@ -136,8 +141,8 @@ class SpecialCharactersManager {
 	}
 
 	/**
+	 * @remarks
 	 * Remove the characterSet together with the key.
-	 *
 	 */
 	cleanStorage(): void {
 		window.localStorage.removeItem(KEY_NAME);
@@ -146,6 +151,6 @@ class SpecialCharactersManager {
 
 /**
  * @fontosdk importable
- * @category manager
+ * @category Managers
  */
 export default new SpecialCharactersManager();
