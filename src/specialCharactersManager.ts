@@ -9,6 +9,10 @@ const KEY_NAME =
 
 /**
  * @remarks
+ * This is the class definition of a singleton. Please do not import or instantiate
+ * this class directly, instead use the {@link specialCharactersManager} instance
+ * directly.
+ *
  * Enables registration of custom character sets to be displayed in the “Insert
  * special character” modal. Registration can be done using the addCharacterSetPath
  * method. While we also provide a method for adding a character set directly into
@@ -150,6 +154,10 @@ class SpecialCharactersManager {
 }
 
 /**
+ * @remarks
+ * Please see {@link SpecialCharactersManager | the class definition} for more information on
+ * available methods and properties.
+ *
  * @fontosdk importable
  * @category Managers
  */
