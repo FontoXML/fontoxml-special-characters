@@ -21,7 +21,7 @@ const KEY_NAME =
  *
  * @fontosdk
  */
-class SpecialCharactersManager {
+export class SpecialCharactersManager {
 	_characterSetByName: Object;
 
 	_characterSetPathByName: Object;
