@@ -161,4 +161,6 @@ export class SpecialCharactersManager {
  * @fontosdk importable
  * @category Managers
  */
-export default new SpecialCharactersManager();
+const specialCharactersManager = new SpecialCharactersManager();
+
+export default specialCharactersManager;
