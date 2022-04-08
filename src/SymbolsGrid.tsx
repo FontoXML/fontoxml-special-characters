@@ -86,7 +86,7 @@ const SymbolsGrid: FC<{
 	// only the last promise is resolved.
 	const getCharacterSet = useMemo(
 		() =>
-			onlyResolveLastPromise(async (characterSetName) => {
+			onlyResolveLastPromise(async (characterSetName: string) => {
 				return specialCharactersManager.getCharacterSet(
 					characterSetName
 				);
