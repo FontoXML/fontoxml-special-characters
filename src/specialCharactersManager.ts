@@ -1,6 +1,6 @@
 import Notifier from 'fontoxml-utils/src/Notifier';
 
-import type { CharacterSetEntry } from './types';
+import type { SpecialCharacterSetItem } from './types';
 
 const KEY_NAME =
 	`${window.location.host}|fontoxml-special-symbols|` +
@@ -45,7 +45,10 @@ export class SpecialCharactersManager {
 	 * @param name         -
 	 * @param characterSet -
 	 */
-	addCharacterSet(name: string, characterSet: CharacterSetEntry[]): void {
+	addCharacterSet(
+		name: string,
+		characterSet: SpecialCharacterSetItem[]
+	): void {
 		this._characterSetByName[name] = Promise.resolve(characterSet);
 	}
 
@@ -54,7 +57,7 @@ export class SpecialCharactersManager {
 	 * Register the specified file path used to fetch the characterSet under the
 	 * specified name. Character sets should be placed in (a subfolder of) the assets
 	 * folder. An example of this would be 'assets/character-sets/characterSet.json'.
-	 * The character set should contain an Array of {@link CharacterSetEntry} objects.
+	 * The character set should contain an Array of {@link SpecialCharacterSetItem} objects.
 	 *
 	 * @fontosdk
 	 *
@@ -71,7 +74,7 @@ export class SpecialCharactersManager {
 	 *
 	 * @param name -
 	 */
-	async getCharacterSet(name: string): Promise<CharacterSetEntry[]> {
+	async getCharacterSet(name: string): Promise<SpecialCharacterSetItem[]> {
 		const characterSet = this._characterSetByName[name];
 		const characterSetPath = this._characterSetPathByName[name];
 		if (!characterSet && !characterSetPath) {
@@ -105,7 +108,7 @@ export class SpecialCharactersManager {
 	 *
 	 * @returns characterEntry
 	 */
-	getRecentSymbols(): CharacterSetEntry[] {
+	getRecentSymbols(): SpecialCharacterSetItem[] {
 		const data = window.localStorage.getItem(KEY_NAME);
 		if (data) {
 			try {
@@ -126,7 +129,7 @@ export class SpecialCharactersManager {
 	 *
 	 * @param characterEntry -
 	 */
-	markAsRecentlyUsed(characterEntry: CharacterSetEntry): void {
+	markAsRecentlyUsed(characterEntry: SpecialCharacterSetItem): void {
 		const characterSet = this.getRecentSymbols() || [];
 		const index = characterSet.findIndex(
 			(character) => characterEntry.id === character.id

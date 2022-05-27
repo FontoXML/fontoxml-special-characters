@@ -21,9 +21,9 @@
  * ]
  * ```
  *
- * @fontosdk
+ * @fontosdk importable
  */
-export type CharacterSetEntry = {
+export type SpecialCharacterSetItem = {
 	/**
 	 * @remarks
 	 * Unicode code points to insert when the character is inserted into the document,
