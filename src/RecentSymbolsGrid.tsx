@@ -56,7 +56,7 @@ const RecentSymbolsGrid: FC<{
 	 * This can be used, for example, to close the {@link Drop} containing the grid
 	 * when a character is inserted.
 	 *
-	 * {@inheritDoc fds/types#OnItemClickCallback}
+	 * {@inheritDoc fds/types#FdsOnItemClickCallback}
 	 *
 	 * @fontosdk
 	 */
