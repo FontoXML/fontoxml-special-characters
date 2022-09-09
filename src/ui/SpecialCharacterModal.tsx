@@ -413,6 +413,7 @@ class SpecialCharacterModal extends Component<
 									placeholder={searchInputPlaceholder}
 									ref={this.handleSearchInputRef}
 									value={searchInputValue}
+									data-test-id="special-character-modal-search-input"
 								/>
 							</Block>
 						</ModalBodyToolbar>
